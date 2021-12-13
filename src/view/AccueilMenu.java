@@ -47,7 +47,7 @@ public class AccueilMenu extends JPanel {
 		setLayout(null);
 		
 		JPanel panel = new JPanel();
-		//les sous-menus disparaissent quand on clique n'importe où dans la page
+		//les sous-menus disparaissent quand on clique n'importe oï¿½ dans la page
 		panel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -148,7 +148,7 @@ public class AccueilMenu extends JPanel {
 		btnAide.setBounds(1161, 215, 161, 33);
 		panel.add(btnAide);
 		
-		//bouton de déconnexion qui revient à la page de connexion
+		//bouton de dï¿½connexion qui revient ï¿½ la page de connexion
 		JButton btnDeco = new JButton("");
 		btnDeco.addMouseListener(new MouseAdapter() {
 			@Override
@@ -163,7 +163,7 @@ public class AccueilMenu extends JPanel {
 		btnDeco.setBounds(1360, 820, 80, 80);
 		panel.add(btnDeco);
 		
-		//début des sous-menus
+		//dï¿½but des sous-menus
 		
 		btnVente.setFont(new Font("Tahoma", Font.PLAIN, 22));
 		btnVente.setBackground(new Color(242, 193, 102));
@@ -199,7 +199,7 @@ public class AccueilMenu extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				PanelsManager.contentPane.removeAll();
-				//PanelsManager.contentPane.add(PanelsManager.switchToCommandesClientView());
+				PanelsManager.contentPane.add(PanelsManager.switchToCommandesClientPanel());
 				PanelsManager.contentPane.repaint();
 				PanelsManager.contentPane.revalidate();
 			}
@@ -271,7 +271,7 @@ public class AccueilMenu extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				PanelsManager.contentPane.removeAll();
-				PanelsManager.contentPane.add(PanelsManager.switchToLambdaPanel());
+				PanelsManager.contentPane.add(PanelsManager.switchToNouveauClientPanel());
 				PanelsManager.contentPane.repaint();
 				PanelsManager.contentPane.revalidate();
 			}
@@ -357,7 +357,7 @@ public class AccueilMenu extends JPanel {
 		
 	}
 	
-	//méthode pour rendre les sous-menus invisibles
+	//mï¿½thode pour rendre les sous-menus invisibles
 	public void setSsBtnFalse() {
 		btnVente.setBackground(new Color(242, 193, 102));
 		btnVenteDirecte.setVisible(false);

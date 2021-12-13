@@ -110,6 +110,14 @@ public class CommandesClientView extends JPanel {
 		ImageIcon imageIcon1 = new ImageIcon("C:\\Users\\Quentin\\Downloads\\sign-out.png");
 		Image image1 = imageIcon1.getImage(); // transform it
 		Image newimg1 = image1.getScaledInstance(75, 75,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
+		accueilBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				PanelsManager.contentPane.removeAll();
+				PanelsManager.contentPane.add(PanelsManager.switchToAccueilMenu());
+				PanelsManager.contentPane.revalidate();
+				PanelsManager.contentPane.repaint();
+			}
+		});
 		imageIcon1 = new ImageIcon(newimg1);  // transform it back
 		
 		JLabel lblNewLabel = new JLabel("Historique");

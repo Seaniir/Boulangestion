@@ -89,9 +89,9 @@ public class Login extends JPanel {
 			
 			if(usDao.login(login_saisie, pwd_saisie)) {
 				
-				JOptionPane.showMessageDialog(null, "Félicitation");			
+				JOptionPane.showMessageDialog(null, "Fï¿½licitation");			
 				PanelsManager.contentPane.removeAll();
-				//PanelsManager.contentPane.add(PanelsManager.switchToAcceuilMenu());
+				PanelsManager.contentPane.add(PanelsManager.switchToAccueilMenu());
 				PanelsManager.contentPane.repaint();
 				PanelsManager.contentPane.revalidate();
 				

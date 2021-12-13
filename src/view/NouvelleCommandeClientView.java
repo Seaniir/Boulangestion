@@ -50,6 +50,14 @@ public class NouvelleCommandeClientView extends JPanel {
 		accueilBtn.setIcon(accueilImage);
 		accueilBtn.setBounds(1333, 0, 107, 75);
 		panel_1.add(accueilBtn);
+		accueilBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				PanelsManager.contentPane.removeAll();
+				PanelsManager.contentPane.add(PanelsManager.switchToAccueilMenu());
+				PanelsManager.contentPane.revalidate();
+				PanelsManager.contentPane.repaint();
+			}
+		});
 
 		JButton historiqueBtn = new JButton("");
 		ImageIcon imageIcon = new ImageIcon("C:\\Users\\Quentin\\Downloads\\history.png");

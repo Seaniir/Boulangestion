@@ -76,7 +76,7 @@ public class NouveauClient extends JPanel {
 		btnAccueil.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				PanelsManager.contentPane.removeAll();
-				//PanelsManager.contentPane.add(PanelsManager.switchToAcceuilMenu());
+				PanelsManager.contentPane.add(PanelsManager.switchToAccueilMenu());
 				PanelsManager.contentPane.repaint();
 				PanelsManager.contentPane.revalidate();
 			}
@@ -192,7 +192,7 @@ public class NouveauClient extends JPanel {
 		JButton btnAnnuler = new JButton("Annuler");
 		btnAnnuler.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int n = JOptionPane.showConfirmDialog(null, "Etes vous sur de vouloir annulé?","Annuler",JOptionPane.YES_NO_OPTION);
+				int n = JOptionPane.showConfirmDialog(null, "Etes vous sur de vouloir annulï¿½?","Annuler",JOptionPane.YES_NO_OPTION);
 				if (n == JOptionPane.YES_OPTION) {
 					nameValue.setText("");
 					firstNameValue.setText("");
