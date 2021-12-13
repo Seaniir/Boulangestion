@@ -52,7 +52,6 @@ public class Hub extends JFrame {
 	 */
 	public Hub() {
 		getContentPane().setFont(new Font("Tahoma", Font.PLAIN, 10));
-		getContentPane().setEnabled(false);
 		getContentPane().setBackground(Color.PINK);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(0, 0, 1440, 900);
@@ -130,7 +129,7 @@ public class Hub extends JFrame {
 				}		
 			}
 		});
-		btnConnexion.setFont(new Font("Tahoma", Font.BOLD, 15));
+		btnConnexion.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 15));
 		btnConnexion.setBounds(10, 199, 373, 61);
 		panel.add(btnConnexion);
 		
@@ -138,10 +137,5 @@ public class Hub extends JFrame {
 		lblCopyright.setBounds(0, 840, 1426, 13);
 		lblCopyright.setHorizontalAlignment(SwingConstants.CENTER);
 		getContentPane().add(lblCopyright);
-		
-		JLabel lblimg = new JLabel("New label");
-		lblimg.setBounds(0, 0, 1426, 873);
-		getContentPane().add(lblimg);
-		lblimg.setIcon(new ImageIcon("C:\\Users\\Julien\\Desktop\\projetBoulang\\croissants-french-pastries-croissants-background-bakery-products-breakfast-besthqwallpapers.com-1440x900.jpg"));
 	}
 }
