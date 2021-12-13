@@ -8,8 +8,7 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import javax.swing.JLabel;
-import java.awt.Font;
+
 
 public class Hub extends JFrame {
 
@@ -36,12 +35,13 @@ public class Hub extends JFrame {
 	 */
 	public Hub() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(0, 0, 1470, 900);
+		setBounds(0, 0, 1440, 900);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
 		PanelsManager.contentPane = contentPane;
-		PanelsManager.contentPane.add(PanelsManager.switchToCommandesClientPanel());
+		//PanelsManager.contentPane.add(PanelsManager.switchToLambdaPanel());
+		PanelsManager.contentPane.add(PanelsManager.switchToAccueilMenu());
 		setContentPane(PanelsManager.contentPane);
 	}
 }
