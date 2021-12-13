@@ -20,14 +20,14 @@ import java.util.Date;
 import java.util.List;
 import java.util.Vector;
 
-public class commandesClientView extends JPanel {
+public class CommandesClientView extends JPanel {
 
 	private JTable table;
 	JButton button = new JButton();
 	/**
 	 * Create the panel.
 	 */
-	public commandesClientView() {
+	public CommandesClientView() {
 		setBounds(0, 0, 1440, 900);
 		setLayout(null);
 		
@@ -121,16 +121,15 @@ public class commandesClientView extends JPanel {
 		JLabel lblAccueil = new JLabel("Accueil");
 		lblAccueil.setHorizontalAlignment(SwingConstants.CENTER);
 		lblAccueil.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		lblAccueil.setBounds(1333, 74, 127, 25);
+		lblAccueil.setBounds(1323, 74, 127, 25);
 		panel_1.add(lblAccueil);
 		accueilBtn.setIcon(imageIcon1);
-		accueilBtn.setBounds(1333, 0, 107, 99);
+		accueilBtn.setBounds(1333, 0, 107, 76);
 		panel_1.add(accueilBtn);
 		
 		JButton historiqueBtn = new JButton("");
-		historiqueBtn.setVerticalAlignment(SwingConstants.TOP);
 		historiqueBtn.setIcon(imageIcon);
-		historiqueBtn.setBounds(0, 0, 127, 99);
+		historiqueBtn.setBounds(0, 0, 127, 76);
 		panel_1.add(historiqueBtn);
 
 	}

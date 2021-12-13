@@ -1,14 +1,14 @@
 package controller;
 
-import view.commandesClientView;
+import view.CommandesClientView;
 import view.lambdaPanel;
-import view.nouvelleCommandeView;
+import view.NouvelleCommandeClientView;
 
 import javax.swing.*;
 
 public class PanelsManager {
     public static JPanel contentPane;
     public static JPanel switchToLambdaPanel(){return new lambdaPanel();}
-    public static JPanel switchToCommandesClientPanel(){return new commandesClientView();}
-    public static JPanel switchToNouvelleCommandePanel(){return new nouvelleCommandeView();}
+    public static JPanel switchToCommandesClientPanel(){return new CommandesClientView();}
+    public static JPanel switchToNouvelleCommandePanel(){return new NouvelleCommandeClientView();}
 }

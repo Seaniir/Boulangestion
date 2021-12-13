@@ -1,24 +1,28 @@
 package view;
 
+import controller.PanelsManager;
+
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import java.awt.Color;
+import java.awt.*;
 import javax.swing.JLabel;
-import java.awt.Font;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import javax.swing.SwingConstants;
 import javax.swing.JButton;
 import javax.swing.JRadioButton;
+import javax.swing.ImageIcon;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
-public class nouvelleCommandeView extends JPanel {
+public class NouvelleCommandeClientView extends JPanel {
 	private JTable table;
 
 	/**
 	 * Create the panel.
 	 */
-	public nouvelleCommandeView() {
+	public NouvelleCommandeClientView() {
 		setBounds(0, 0, 1440, 900);
 		setLayout(null);
 		
@@ -28,26 +32,69 @@ public class nouvelleCommandeView extends JPanel {
 		panel_1.setBounds(0, 0, 1440, 99);
 		add(panel_1);
 		
-		JLabel lblNewLabel = new JLabel("Historique");
+		JButton accueilBtn = new JButton("");
+		ImageIcon accueilImage = new ImageIcon("C:\\Users\\Quentin\\Downloads\\sign-out.png");
+		Image accueilImageImage = accueilImage.getImage(); // transform it
+		Image newimg4 = accueilImageImage.getScaledInstance(75, 75,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
+		accueilImage = new ImageIcon(newimg4);  // transform it back
+		accueilBtn.setIcon(accueilImage);
+		accueilBtn.setBounds(1333, 0, 107, 75);
+		panel_1.add(accueilBtn);
+
+		JButton historiqueBtn = new JButton("");
+		ImageIcon imageIcon = new ImageIcon("C:\\Users\\Quentin\\Downloads\\history.png");
+		Image image = imageIcon.getImage(); // transform it
+		Image newimg = image.getScaledInstance(75, 75,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
+		imageIcon = new ImageIcon(newimg);  // transform it back
+		historiqueBtn.setIcon(imageIcon);
+		historiqueBtn.setBounds(127, 0, 127, 75);
+		panel_1.add(historiqueBtn);
+		
+		JButton clientBtn = new JButton("");
+		ImageIcon imageClient = new ImageIcon("C:\\Users\\Quentin\\Downloads\\user.png");
+		Image imageClientImage = imageClient.getImage(); // transform it
+		Image newimg2 = imageClientImage.getScaledInstance(75, 75,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
+		imageClient = new ImageIcon(newimg2);  // transform it back
+		clientBtn.setBounds(0, 0, 127, 75);
+		clientBtn.setIcon(imageClient);
+		panel_1.add(clientBtn);
+		
+		JButton returnBtn = new JButton("");
+		returnBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				PanelsManager.contentPane.removeAll();
+				PanelsManager.contentPane.add(PanelsManager.switchToCommandesClientPanel());
+				PanelsManager.contentPane.revalidate();
+				PanelsManager.contentPane.repaint();
+			}
+		});
+		ImageIcon imageReturn = new ImageIcon("C:\\Users\\Quentin\\Downloads\\return.png");
+		Image imageReturnImage = imageReturn.getImage(); // transform it
+		Image newimg3 = imageReturnImage.getScaledInstance(75, 75,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
+		imageReturn = new ImageIcon(newimg3);  // transform it back
+		returnBtn.setBounds(253, 0, 127, 75);
+		returnBtn.setIcon(imageReturn);
+		panel_1.add(returnBtn);
+		
+		JLabel lblNewLabel = new JLabel("Clients");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		lblNewLabel.setBounds(0, 74, 127, 25);
 		panel_1.add(lblNewLabel);
 		
-		JLabel lblAccueil = new JLabel("Accueil");
-		lblAccueil.setHorizontalAlignment(SwingConstants.CENTER);
-		lblAccueil.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		lblAccueil.setBounds(1333, 74, 127, 25);
-		panel_1.add(lblAccueil);
+		JLabel lblNewLabel_9 = new JLabel("Historique");
+		lblNewLabel_9.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel_9.setBounds(127, 74, 127, 25);
+		panel_1.add(lblNewLabel_9);
 		
-		JButton accueilBtn = new JButton("");
-		accueilBtn.setBounds(1333, 0, 107, 99);
-		panel_1.add(accueilBtn);
+		JLabel lblNewLabel_10 = new JLabel("Retour");
+		lblNewLabel_10.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel_10.setBounds(253, 74, 127, 25);
+		panel_1.add(lblNewLabel_10);
 		
-		JButton historiqueBtn = new JButton("");
-		historiqueBtn.setVerticalAlignment(SwingConstants.TOP);
-		historiqueBtn.setBounds(0, 0, 127, 99);
-		panel_1.add(historiqueBtn);
+		JLabel lblNewLabel_11 = new JLabel("Accueil");
+		lblNewLabel_11.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel_11.setBounds(1333, 74, 107, 25);
+		panel_1.add(lblNewLabel_11);
 		
 		JPanel panel = new JPanel();
 		panel.setLayout(null);
