@@ -3,15 +3,26 @@ package view;
 import javax.swing.JPanel;
 import java.awt.Color;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
+
+import controller.ClientDao;
+import controller.PanelsManager;
+import controller.UserDao;
+import model.Client;
+
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.regex.Pattern;
+
 import javax.swing.JTextField;
 import javax.swing.JTextArea;
 import javax.swing.JPasswordField;
 import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class NouveauClient extends JPanel {
 	private JTextField nameValue;
@@ -35,34 +46,45 @@ public class NouveauClient extends JPanel {
 		add(panel);
 		panel.setLayout(null);
 		
-		JLabel lblBack = new JLabel("");
-		lblBack.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-			}
-		});
-		lblBack.setVerticalAlignment(SwingConstants.BOTTOM);
-		lblBack.setHorizontalAlignment(SwingConstants.CENTER);
-		lblBack.setIcon(new ImageIcon("C:\\Users\\Julien\\Desktop\\projetBoulang\\arrow_left.png"));
-		lblBack.setBounds(10, 10, 160, 72);
-		panel.add(lblBack);
-		
 		JLabel lblNewLabel = new JLabel("Retour");
 		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setBounds(10, 102, 160, 19);
 		panel.add(lblNewLabel);
 		
-		JLabel lblNewLabel_1 = new JLabel("");
-		lblNewLabel_1.setIcon(new ImageIcon("C:\\Users\\Julien\\Desktop\\projetBoulang\\exit.png"));
-		lblNewLabel_1.setBounds(1331, 10, 99, 89);
-		panel.add(lblNewLabel_1);
-		
 		JLabel lblAccueil = new JLabel("Accueil");
 		lblAccueil.setHorizontalAlignment(SwingConstants.CENTER);
 		lblAccueil.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		lblAccueil.setBounds(1270, 102, 160, 19);
 		panel.add(lblAccueil);
+		
+		JButton btnBack = new JButton("");
+		btnBack.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				PanelsManager.contentPane.removeAll();
+				//PanelsManager.contentPane.add(PanelsManager.switchToListeClients());
+				PanelsManager.contentPane.repaint();
+				PanelsManager.contentPane.revalidate();
+			}
+		});
+		btnBack.setBackground(Color.WHITE);
+		btnBack.setIcon(new ImageIcon("C:\\Users\\Julien\\Desktop\\projetBoulang\\arrow_left.png"));
+		btnBack.setBounds(10, 10, 160, 82);
+		panel.add(btnBack);
+		
+		JButton btnAccueil = new JButton("");
+		btnAccueil.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				PanelsManager.contentPane.removeAll();
+				//PanelsManager.contentPane.add(PanelsManager.switchToAcceuilMenu());
+				PanelsManager.contentPane.repaint();
+				PanelsManager.contentPane.revalidate();
+			}
+		});
+		btnAccueil.setBackground(Color.WHITE);
+		btnAccueil.setIcon(new ImageIcon("C:\\Users\\Julien\\Desktop\\projetBoulang\\exit.png"));
+		btnAccueil.setBounds(1270, 10, 160, 82);
+		panel.add(btnAccueil);
 		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBackground(new Color(255, 255, 255));
@@ -137,12 +159,56 @@ public class NouveauClient extends JPanel {
 		panel_1.add(cityValue);
 		
 		JButton btnNewButton = new JButton("Valider");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String name_saisie = nameValue.getText();
+				String firstName_saisie = firstNameValue.getText();
+				String adress_saisie = adressValue.getText();
+				int zip_saisie = zipValue.getX();
+				String city_saisie = cityValue.getText();
+				String tel_saisie = telValue.getText();
+				String email_saisie = emailValue.getText();
+				Client nouveau = new Client(name_saisie,firstName_saisie,adress_saisie,zip_saisie,city_saisie,tel_saisie,email_saisie);
+				if(!(Pattern.matches("^[a-zA-Z0-9_.-]+[@][a-zA-Z0-9-]+[.]+[a-zA-Z0-9]+$",email_saisie))) {
+					JOptionPane.showMessageDialog(null, "Mail invalide","Error",JOptionPane.ERROR_MESSAGE);
+				}else {
+					
+					ClientDao clientDao = new ClientDao();
+					
+					if (clientDao.mailAlreadyExists(email_saisie)) {
+						clientDao.inscription(nouveau);
+					}else {
+						JOptionPane.showMessageDialog(null, "Mail existe deja","Error",JOptionPane.ERROR_MESSAGE);
+						
+					}
+				}
+			}
+		});
 		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		btnNewButton.setBackground(new Color(255, 140, 0));
 		btnNewButton.setBounds(168, 571, 155, 30);
 		panel_1.add(btnNewButton);
 		
 		JButton btnAnnuler = new JButton("Annuler");
+		btnAnnuler.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int n = JOptionPane.showConfirmDialog(null, "Etes vous sur de vouloir annulé?","Annuler",JOptionPane.YES_NO_OPTION);
+				if (n == JOptionPane.YES_OPTION) {
+					nameValue.setText("");
+					firstNameValue.setText("");
+					adressValue.setText("");
+					zipValue.setText("");
+					cityValue.setText("");
+					telValue.setText("");
+					emailValue.setText("");
+					// Ou renvoyer sur la page precedente.
+				} else if (n == JOptionPane.NO_OPTION) {
+					
+				} else {
+
+				}
+			}
+		});
 		btnAnnuler.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		btnAnnuler.setForeground(new Color(0, 0, 0));
 		btnAnnuler.setBackground(Color.GRAY);

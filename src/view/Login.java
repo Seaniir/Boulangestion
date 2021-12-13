@@ -75,7 +75,8 @@ public class Login extends JPanel {
 		
 		JButton btnNewButton = new JButton("Se Connecter");
 		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {String login_saisie = loginValue.getText();
+			public void actionPerformed(ActionEvent e) {
+			String login_saisie = loginValue.getText();
 			String pwd_saisie = String.valueOf(pwdValue.getPassword()); 
 			User nouveau = new User();
 			
