@@ -1,23 +1,33 @@
 package view;
 
+import controller.CommandeClientDAO;
 import controller.PanelsManager;
+import controller.ProduitDAO;
+import model.CommandeClient;
+import model.Produit;
 
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
+import javax.swing.*;
 import java.awt.*;
-import javax.swing.JLabel;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import javax.swing.SwingConstants;
-import javax.swing.JButton;
-import javax.swing.JRadioButton;
-import javax.swing.ImageIcon;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Vector;
 
 public class NouvelleCommandeClientView extends JPanel {
 	private JTable table;
+	JButton button = new JButton();
+	JComboBox comboBox = new JComboBox();
 
 	/**
 	 * Create the panel.
@@ -49,7 +59,15 @@ public class NouvelleCommandeClientView extends JPanel {
 		historiqueBtn.setIcon(imageIcon);
 		historiqueBtn.setBounds(127, 0, 127, 75);
 		panel_1.add(historiqueBtn);
-		
+		button.addActionListener(
+				new ActionListener()
+				{
+					public void actionPerformed(ActionEvent event)
+					{
+						JOptionPane.showMessageDialog(null,"Do you want to modify this line?");
+					}
+				}
+		);
 		JButton clientBtn = new JButton("");
 		ImageIcon imageClient = new ImageIcon("C:\\Users\\Quentin\\Downloads\\user.png");
 		Image imageClientImage = imageClient.getImage(); // transform it
@@ -205,5 +223,86 @@ public class NouvelleCommandeClientView extends JPanel {
 		rdbtnNewRadioButton_1.setBounds(18, 47, 109, 23);
 		panel_5.add(rdbtnNewRadioButton_1);
 
+		table = new JTable();
+		table.setRowSelectionAllowed(false);
+		scrollPane.setViewportView(table);
+		table.setRowHeight(100);
+		table.setModel(liste());
+		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+		centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+		table.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
+		table.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(comboBox));
+		table.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
+		table.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
+		table.getColumnModel().getColumn(4).setCellRenderer(centerRenderer);
+		table.getColumnModel().getColumn(5).setCellRenderer(centerRenderer);
+		comboBox.addActionListener(
+				new ActionListener()
+				{
+					public void actionPerformed(ActionEvent event)
+					{
+						ProduitDAO produitDAO = new ProduitDAO();
+						List<Produit> listProduits = new ArrayList<>();
+						listProduits.addAll(produitDAO.read());
+						for (Produit article : listProduits) {
+							if(article.getLibelle().equals(table.getValueAt(0, 1))) {
+								if(table.getValueAt(0, 1) != null) {
+									table.setValueAt(article.getPrixUnitaire(), 0, 2);
+								}
+							}
+						}
+					}
+				}
+		);
+	}
+
+	public DefaultTableModel liste() {
+
+		String [] col = {"Quantité","Libellé","Prix Unitaire", "Prix total HT", "Prix total TTC", "Montant réglé"};
+		DefaultTableModel tab = new DefaultTableModel(null, col);
+
+		ProduitDAO produitDAO = new ProduitDAO();
+		List<Produit> listProduits = new ArrayList<>();
+		listProduits.addAll(produitDAO.read());
+		for (Produit article : listProduits) {
+			comboBox.addItem(article.getLibelle());
+			Vector vect = new Vector();
+			vect.add(0);
+			tab.addRow(vect);
+		}
+		return tab;
+	}
+
+	class ButtonRenderer extends JButton implements TableCellRenderer
+	{
+		public ButtonRenderer() {
+			setOpaque(true);
+		}
+		public Component getTableCellRendererComponent(JTable table, Object value,
+													   boolean isSelected, boolean hasFocus, int row, int column) {
+			setText((value == null) ? "Modify" : value.toString());
+			return this;
+		}
+	}
+
+	class ButtonEditor extends DefaultCellEditor
+	{
+		private String label;
+
+		public ButtonEditor(JCheckBox checkBox)
+		{
+			super(checkBox);
+		}
+		public Component getTableCellEditorComponent(JTable table, Object value,
+													 boolean isSelected, int row, int column)
+		{
+			label = (value == null) ? "Modify" : value.toString();
+			button.setText(label);
+			return button;
+		}
+		public Object getCellEditorValue()
+		{
+			return new String(label);
+		}
 	}
 }
