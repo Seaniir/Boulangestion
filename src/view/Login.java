@@ -90,8 +90,7 @@ public class Login extends JPanel {
 				
 				JOptionPane.showMessageDialog(null, "Félicitation");			
 				PanelsManager.contentPane.removeAll();
-				//AccueilMenu accueilMenu = new AccueilMenu();
-				//PanelsManager.contentPane.add(accueilMenu);
+				//PanelsManager.contentPane.add(PanelsManager.switchToAcceuilMenu());
 				PanelsManager.contentPane.repaint();
 				PanelsManager.contentPane.revalidate();
 				

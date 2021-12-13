@@ -28,9 +28,6 @@ import javax.swing.ImageIcon;
 public class Hub extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField loginValue;
-	private JPasswordField pwdValue;
-
 	/**
 	 * Launch the application.
 	 */
@@ -57,7 +54,8 @@ public class Hub extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
 		PanelsManager.contentPane = contentPane;
-		PanelsManager.contentPane.add(PanelsManager.switchToLoginPanel());
+		//PanelsManager.contentPane.add(PanelsManager.switchToLoginPanel());
+		PanelsManager.contentPane.add(PanelsManager.switchToNouveauClientPanel());
 		setContentPane(PanelsManager.contentPane);
 	}
 }
