@@ -9,7 +9,7 @@ public class GetConnection {
 	public static Connection getConnection() {
 		 
 		String url = "jdbc:mysql://localhost/";
-		String dbName = "cda_21157";
+		String dbName = "boulangestion";
 		//Windows
 		String user="root";
 		String pwd="";

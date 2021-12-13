@@ -36,12 +36,12 @@ public class Hub extends JFrame {
 	 */
 	public Hub() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds(0, 0, 1470, 900);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
 		PanelsManager.contentPane = contentPane;
-		PanelsManager.contentPane.add(PanelsManager.switchToLambdaPanel());
+		PanelsManager.contentPane.add(PanelsManager.switchToCommandesClientPanel());
 		setContentPane(PanelsManager.contentPane);
 	}
 }
