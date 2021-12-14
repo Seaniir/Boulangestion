@@ -9,5 +9,5 @@ public interface IDao<T> {
 	public void update(T object, int idObject);
 	public void delete(int idToDelete);
 	
-	public List<T> findById(int id);
+	public T findById(int id);
 }

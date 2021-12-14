@@ -38,6 +38,7 @@ public class NewFournisseur extends JPanel {
 	private JTextField villeValue;
 	private JTextField telValue;
 	private JTextField emailValue;
+	public static boolean modify = false;
 	
 	/**
 	 * Create the panel.
@@ -62,6 +63,7 @@ public class NewFournisseur extends JPanel {
 				PanelsManager.contentPane.add(PanelsManager.switchToListeFournisseurs());
 				PanelsManager.contentPane.repaint();
 				PanelsManager.contentPane.revalidate();
+				modify = false;
 			}
 		});
 		btnRetour.setIcon(new ImageIcon("C:\\Users\\fredb\\AFPA\\workspace-java\\Boulangestion\\projetBoulang\\arrow_left.png"));
@@ -82,6 +84,7 @@ public class NewFournisseur extends JPanel {
 				PanelsManager.contentPane.add(PanelsManager.switchToAccueilMenu());
 				PanelsManager.contentPane.repaint();
 				PanelsManager.contentPane.revalidate();
+				modify = false;
 			}
 		});
 		btnAccueil.setIcon(new ImageIcon("C:\\Users\\fredb\\AFPA\\workspace-java\\Boulangestion\\projetBoulang\\exit.png"));
@@ -213,7 +216,8 @@ public class NewFournisseur extends JPanel {
 		JButton btnValider = new JButton("Valider");
 		btnValider.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String societeSaisie = societeValue.getText();
+				if(modify = false) {
+					String societeSaisie = societeValue.getText();
 				String correspSaisie = correspValue.getText();
 				String adresseSaisie = adressValue.getText();
 				int cpSaisie = Integer.valueOf(cpValue.getText());
@@ -227,6 +231,10 @@ public class NewFournisseur extends JPanel {
 				//ajoute le fournisseur à la bdd
 				fournisseurDao.create(nouveau);
 				clearFields();
+				}else {
+					
+				}
+				
 			}
 		});
 		btnValider.setFont(new Font("Tahoma", Font.PLAIN, 24));
@@ -241,7 +249,8 @@ public class NewFournisseur extends JPanel {
 				//pop-up de confirmation: si oui vide les champs, si non, ne fait rien
 				if (JOptionPane.showConfirmDialog(null, "Etes-vous sûr de vouloir annuler?", "Annulation",
 				        JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-					clearFields();	
+					clearFields();
+					modify = false;
 				}
 			}
 		});

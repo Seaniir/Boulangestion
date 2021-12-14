@@ -87,8 +87,8 @@ public class FournisseurDao implements IDao<Fournisseur>{
 	}
 
 	@Override
-	public List<Fournisseur> findById(int id) {
-		List<Fournisseur> listeFournisseurs = new ArrayList<>();
+	public Fournisseur findById(int id) {
+		
 		try {
 			PreparedStatement req = connect.prepareStatement("SELECT * FROM fournisseur WHERE id=?");
 			req.setInt(1, id);
@@ -96,23 +96,14 @@ public class FournisseurDao implements IDao<Fournisseur>{
 			ResultSet rs = req.executeQuery();
 			
 			while(rs.next()) {
-				Fournisseur fournisseur = new Fournisseur();
-				fournisseur.setId(rs.getInt("id"));
-				fournisseur.setSociete(rs.getString("societe"));
-				fournisseur.setCorrespondant(rs.getString("correspondant"));
-				fournisseur.setAdresse(rs.getString("adresse"));
-				fournisseur.setCodePostal(rs.getInt("cp"));
-				fournisseur.setVille(rs.getString("ville"));
-				fournisseur.setTel(rs.getString("tel"));
-				fournisseur.setEmail(rs.getString("email"));
-				
-				listeFournisseurs.add(fournisseur);
+				Fournisseur fournisseur = new Fournisseur(rs.getInt("id"),rs.getString("societe"),rs.getString("correspondant"),rs.getString("adresse"),rs.getInt("cp"),rs.getString("ville"),rs.getString("tel"),rs.getString("email"));
+				return fournisseur;
 			}
 		}catch(Exception e) {
 			e.printStackTrace();
 			
 		}
-		return listeFournisseurs;
+		return null;
 	}
 
 	

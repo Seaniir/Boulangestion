@@ -10,10 +10,6 @@ public class Fournisseur {
 	private String tel;
 	private String email;
 	
-	public Fournisseur() {
-		// TODO Auto-generated constructor stub
-	}
-	
 	public Fournisseur(String societe, String correspondant, String adresse, int codePostal, String ville, String tel,
 			String email) {
 		super();
@@ -31,6 +27,19 @@ public class Fournisseur {
 		super();
 		this.id = id;
 		this.societe = societe;
+		this.adresse = adresse;
+		this.codePostal = codePostal;
+		this.ville = ville;
+		this.tel = tel;
+		this.email = email;
+	}
+	
+	public Fournisseur(int id, String societe, String correspondant, String adresse, int codePostal, String ville,
+			String tel, String email) {
+		super();
+		this.id = id;
+		this.societe = societe;
+		this.correspondant = correspondant;
 		this.adresse = adresse;
 		this.codePostal = codePostal;
 		this.ville = ville;

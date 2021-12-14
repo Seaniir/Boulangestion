@@ -32,8 +32,10 @@ import javax.swing.JTable;
 
 public class ListeFournisseurs extends JPanel {
 	private JTable listingFournisseurs;
+	
 	JButton btnModifier = new JButton();
 	JButton btnHistorique = new JButton();
+	JButton btnDelete = new JButton();
 	/**
 	 * Create the panel.
 	 */
@@ -96,6 +98,8 @@ public class ListeFournisseurs extends JPanel {
 		listingFournisseurs.getColumn("Modifier").setCellEditor(new ButtonEditor(new JCheckBox()));
 		listingFournisseurs.getColumn("Historique").setCellRenderer(new SecondButtonRenderer());
 		listingFournisseurs.getColumn("Historique").setCellEditor(new SecondButtonEditor(new JCheckBox()));
+		listingFournisseurs.getColumn("Supprimer").setCellRenderer(new ThirdButtonRenderer());
+		listingFournisseurs.getColumn("Supprimer").setCellEditor(new ThirdButtonEditor(new JCheckBox()));
 		
 		//bouton de colonne "modifier" qui redirige vers le formulaire Fournisseur à modifier
 		btnModifier.addActionListener(new ActionListener(){			        
@@ -108,6 +112,7 @@ public class ListeFournisseurs extends JPanel {
 					PanelsManager.contentPane.add(PanelsManager.switchToNewFournisseur());
 					PanelsManager.contentPane.repaint();
 					PanelsManager.contentPane.revalidate();
+					NewFournisseur.modify = true;
 				}
 			}
 	    });
@@ -121,6 +126,20 @@ public class ListeFournisseurs extends JPanel {
 				PanelsManager.contentPane.add(PanelsManager.switchToLambdaPanel());
 				PanelsManager.contentPane.repaint();
 				PanelsManager.contentPane.revalidate();
+	        }
+	    });
+		
+		btnDelete.addActionListener(new ActionListener(){
+	        public void actionPerformed(ActionEvent event)
+	        {
+	        	//pop-up de confirmation: si oui va sur la suppression du fournisseur dans ma liste, pas dans la bdd, si non, ne fait rien
+				if (JOptionPane.showConfirmDialog(null, "Etes-vous sûr de vouloir supprimer?", "Attention",
+				        JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+					PanelsManager.contentPane.removeAll();
+					PanelsManager.contentPane.add(PanelsManager.switchToNewFournisseur());
+					PanelsManager.contentPane.repaint();
+					PanelsManager.contentPane.revalidate();
+				}
 	        }
 	    });
 		
@@ -143,7 +162,7 @@ public class ListeFournisseurs extends JPanel {
 	
 	//remplissage du tableau
 	public DefaultTableModel liste() {
-		String [] col = {"N° Fournisseur","Societe","Adresse","Telephone", "Email","Modifier", "Historique"};
+		String [] col = {"N° Fournisseur","Societe","Adresse","Telephone", "Email","Modifier", "Historique", "Supprimer"};
 		DefaultTableModel tab = new DefaultTableModel(null, col);
 		
 		FournisseurDao fournisseurDao = new FournisseurDao();
@@ -211,6 +230,34 @@ public class ListeFournisseurs extends JPanel {
 	      label = (value == null) ? "Historique" : value.toString();
 	      btnHistorique.setText(label);
 	      return btnHistorique;
+	    }
+	    public Object getCellEditorValue() 
+	    {
+	      return new String(label);
+	    }
+	 }
+	class ThirdButtonRenderer extends JButton implements TableCellRenderer{
+	    public ThirdButtonRenderer() {
+	      setOpaque(true);
+	    }
+	    public Component getTableCellRendererComponent(JTable table, Object value,
+	    boolean isSelected, boolean hasFocus, int row, int column) {
+	    	setText((value == null) ? "Supprimer" : value.toString());
+			return this;
+	    }
+	}
+	class ThirdButtonEditor extends DefaultCellEditor{
+	    public ThirdButtonEditor(JCheckBox checkBox) {
+			super(checkBox);
+			
+		}
+		private String label;
+	    
+	    public Component getTableCellEditorComponent(JTable table, Object value,
+	    boolean isSelected, int row, int column){
+	      label = (value == null) ? "Supprimer" : value.toString();
+	      btnDelete.setText(label);
+	      return btnDelete;
 	    }
 	    public Object getCellEditorValue() 
 	    {
