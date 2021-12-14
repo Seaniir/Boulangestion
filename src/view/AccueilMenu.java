@@ -44,6 +44,7 @@ public class AccueilMenu extends JPanel {
 	 */
 	
 	public AccueilMenu() {
+		setBounds(0, 0, 1440, 900);
 		setLayout(null);
 		
 		JPanel panel = new JPanel();
@@ -74,6 +75,7 @@ public class AccueilMenu extends JPanel {
 		btnVente.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				setSsBtnFalse();
 				btnVente.setBackground(new Color(253, 232, 202));
 				btnVenteDirecte.setVisible(true);
 				btnDevis.setVisible(true);
@@ -154,7 +156,7 @@ public class AccueilMenu extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				PanelsManager.contentPane.removeAll();
-				PanelsManager.contentPane.add(PanelsManager.switchToLambdaPanel());
+				PanelsManager.contentPane.add(PanelsManager.switchToLoginPanel());
 				PanelsManager.contentPane.repaint();
 				PanelsManager.contentPane.revalidate();
 			}
@@ -214,10 +216,7 @@ public class AccueilMenu extends JPanel {
 		btnHistoriqueVC.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				PanelsManager.contentPane.removeAll();
-				PanelsManager.contentPane.add(PanelsManager.switchToLambdaPanel());
-				PanelsManager.contentPane.repaint();
-				PanelsManager.contentPane.revalidate();
+				
 			}
 		});
 		btnHistoriqueVC.setFont(new Font("Tahoma", Font.PLAIN, 18));

@@ -33,6 +33,19 @@ public class Fournisseur {
 		this.tel = tel;
 		this.email = email;
 	}
+	
+	public Fournisseur(int id, String societe, String correspondant, String adresse, int codePostal, String ville,
+			String tel, String email) {
+		super();
+		this.id = id;
+		this.societe = societe;
+		this.correspondant = correspondant;
+		this.adresse = adresse;
+		this.codePostal = codePostal;
+		this.ville = ville;
+		this.tel = tel;
+		this.email = email;
+	}
 
 	public String getSociete() {
 		return societe;
@@ -92,6 +105,10 @@ public class Fournisseur {
 
 	public int getId() {
 		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 	
 }

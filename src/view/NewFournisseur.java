@@ -9,17 +9,26 @@ import javax.swing.JOptionPane;
 
 import java.awt.Font;
 import javax.swing.ImageIcon;
+import javax.swing.InputVerifier;
 import javax.swing.SwingConstants;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
+import controller.FournisseurDao;
 import controller.PanelsManager;
+import model.Fournisseur;
 
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.regex.Pattern;
+import java.awt.event.InputMethodListener;
+import java.awt.event.InputMethodEvent;
 
 public class NewFournisseur extends JPanel {
 	private JTextField societeValue;
@@ -29,7 +38,8 @@ public class NewFournisseur extends JPanel {
 	private JTextField villeValue;
 	private JTextField telValue;
 	private JTextField emailValue;
-
+	public static boolean modify = false;
+	
 	/**
 	 * Create the panel.
 	 */
@@ -53,6 +63,7 @@ public class NewFournisseur extends JPanel {
 				PanelsManager.contentPane.add(PanelsManager.switchToListeFournisseurs());
 				PanelsManager.contentPane.repaint();
 				PanelsManager.contentPane.revalidate();
+				modify = false;
 			}
 		});
 		btnRetour.setIcon(new ImageIcon("C:\\Users\\fredb\\AFPA\\workspace-java\\Boulangestion\\projetBoulang\\arrow_left.png"));
@@ -62,7 +73,7 @@ public class NewFournisseur extends JPanel {
 		JLabel lblNewLabel = new JLabel("Retour");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		lblNewLabel.setBounds(10, 62, 63, 14);
+		lblNewLabel.setBounds(10, 62, 63, 18);
 		menu.add(lblNewLabel);
 		
 		JButton btnAccueil = new JButton("");
@@ -73,6 +84,7 @@ public class NewFournisseur extends JPanel {
 				PanelsManager.contentPane.add(PanelsManager.switchToAccueilMenu());
 				PanelsManager.contentPane.repaint();
 				PanelsManager.contentPane.revalidate();
+				modify = false;
 			}
 		});
 		btnAccueil.setIcon(new ImageIcon("C:\\Users\\fredb\\AFPA\\workspace-java\\Boulangestion\\projetBoulang\\exit.png"));
@@ -82,7 +94,7 @@ public class NewFournisseur extends JPanel {
 		JLabel lblNewLabel_1 = new JLabel("Accueil");
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		lblNewLabel_1.setBounds(1355, 62, 63, 14);
+		lblNewLabel_1.setBounds(1355, 62, 63, 18);
 		menu.add(lblNewLabel_1);
 		
 		JPanel formulaire = new JPanel();
@@ -165,11 +177,38 @@ public class NewFournisseur extends JPanel {
 		formulaire.add(lblEmail);
 		
 		telValue = new JTextField();
+		telValue.setInputVerifier(new InputVerifier() {
+			//verifie le tel à la saisie
+			@Override
+			public boolean verify(JComponent input) {
+				String tel = ((JTextField) input).getText().trim();
+				if(tel.matches("^(?:(?:\\+|00)33|0)\\s*[1-9](?:[\\s.-]*\\d{2}){4}$") || tel.isEmpty()) {
+					return true;
+				}else {
+					JOptionPane.showMessageDialog(null, "Téléphone invalide", "Error", JOptionPane.ERROR_MESSAGE);
+					return false;
+				}
+			}
+		});
 		telValue.setColumns(10);
 		telValue.setBounds(277, 420, 540, 32);
 		formulaire.add(telValue);
 		
 		emailValue = new JTextField();
+		//vérifie le mail à la saisie
+		emailValue.setInputVerifier(new InputVerifier() {
+			
+			@Override
+			public boolean verify(JComponent input) {
+				String mail = ((JTextField) input).getText().trim();
+				if(mail.matches("^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+[.]+[a-zA-Z0-9]{2,6}+$") || mail.isEmpty()) {
+					return true;
+				}else {
+					JOptionPane.showMessageDialog(null, "Email invalide", "Error", JOptionPane.ERROR_MESSAGE);
+					return false;
+				}
+			}
+		});
 		emailValue.setColumns(10);
 		emailValue.setBounds(277, 498, 540, 32);
 		formulaire.add(emailValue);
@@ -177,6 +216,25 @@ public class NewFournisseur extends JPanel {
 		JButton btnValider = new JButton("Valider");
 		btnValider.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if(modify = false) {
+					String societeSaisie = societeValue.getText();
+				String correspSaisie = correspValue.getText();
+				String adresseSaisie = adressValue.getText();
+				int cpSaisie = Integer.valueOf(cpValue.getText());
+				String villeSaisie = villeValue.getText();
+				String telSaisie = telValue.getText();
+				String emailSaisie = emailValue.getText();
+				
+				Fournisseur nouveau = new Fournisseur(societeSaisie, correspSaisie, adresseSaisie, cpSaisie, villeSaisie, telSaisie, emailSaisie);
+				
+				FournisseurDao fournisseurDao = new FournisseurDao();
+				//ajoute le fournisseur à la bdd
+				fournisseurDao.create(nouveau);
+				clearFields();
+				}else {
+					
+				}
+				
 			}
 		});
 		btnValider.setFont(new Font("Tahoma", Font.PLAIN, 24));
@@ -187,12 +245,28 @@ public class NewFournisseur extends JPanel {
 		JButton btnAnnuler = new JButton("Annuler");
 		btnAnnuler.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showConfirmDialog(btnAnnuler, e, "Etes-vous sûr de vouloir annuler?", ABORT);
+				
+				//pop-up de confirmation: si oui vide les champs, si non, ne fait rien
+				if (JOptionPane.showConfirmDialog(null, "Etes-vous sûr de vouloir annuler?", "Annulation",
+				        JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+					clearFields();
+					modify = false;
+				}
 			}
 		});
 		btnAnnuler.setFont(new Font("Tahoma", Font.PLAIN, 24));
 		btnAnnuler.setBounds(590, 593, 191, 50);
 		formulaire.add(btnAnnuler);
 		
+	}
+	//méthode pour vider les champs
+	public void clearFields() {
+		societeValue.setText(null);
+		correspValue.setText(null);
+		adressValue.setText(null);
+		cpValue.setText(null);
+		villeValue.setText(null);
+		telValue.setText(null);
+		emailValue.setText(null);	
 	}
 }
