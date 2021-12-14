@@ -2,6 +2,7 @@ package model;
 
 public class Client {
 	// Attributes
+	
 	private String name;
 	private String firstName;
 	private String adress;
@@ -24,6 +25,7 @@ public class Client {
 		this.email = email;
 	}
 	// Getter Setter
+	
 	public String getName() {
 		return name;
 	}
@@ -45,6 +47,7 @@ public class Client {
 	public String getEmail() {
 		return email;
 	}
+	
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -65,6 +68,12 @@ public class Client {
 	}
 	public void setEmail(String email) {
 		this.email = email;
+	}
+	// To String
+	@Override
+	public String toString() {
+		return "Client [name=" + name + ", firstName=" + firstName + ", adress=" + adress + ", zip="
+				+ zip + ", city=" + city + ", tel=" + tel + ", email=" + email + "]";
 	}
 	
 }

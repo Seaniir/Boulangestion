@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 
+import controller.ClientDao;
 import controller.IDao;
 import controller.PanelsManager;
 import javax.swing.JTable;
@@ -53,19 +54,45 @@ public class ListeClients extends JPanel {
 		btnAccueil.setBounds(1270, 10, 160, 82);
 		panel.add(btnAccueil);
 		
-		JScrollPane scrollPane = new JScrollPane();
+		/*JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(113, 231, 1217, 509);
-		add(scrollPane);
+		add(scrollPane);*/
 		
 		// Table
-		table = new JTable();
+		/*table = new JTable();
 		model = new DefaultTableModel();
 		Object[] column = {"N°Client","Nom","Prenom","Adresse","Téléphone","Email","Modifier","Historique"};
 		Object[] row = new Object[0];
 		model.setColumnIdentifiers(column);
 		table.setModel(model);
-		scrollPane.setViewportView(table);
+		scrollPane.setViewportView(table);*/
 		
+		ClientDao clientDao = new ClientDao();
+		if(clientDao.read().isEmpty()) {
+			JLabel lblNewLabel = new JLabel("Aucun client repertorié");
+			lblNewLabel.setBounds(59, 25, 718, 150);
+			panel.add(lblNewLabel);
+		} else {
+			JScrollPane scrollPane = new JScrollPane();
+			scrollPane.setBounds(10, 0, 911, 321);
+			panel.add(scrollPane);
+			
+			table = new JTable();
+			/*table.addMouseListener(new MouseAdapter() {
+				public void mouseClicked(MouseEvent e) {
+					int id = table.getSelectedRow();
+					
+					int article_id = (int) table.getModel().getValueAt(id, 0);
+					
+					contentPane.removeAll();
+					ShowArticle show = new ShowArticle(article_id);
+					//show.setVisible(true);
+					contentPane.add(show);
+					contentPane.repaint();
+					contentPane.revalidate();*/
+		}
+		
+		// Ajouter un client
 		JButton btnNewClient = new JButton("Nouveau Client");
 		btnNewClient.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
