@@ -1,6 +1,7 @@
 package controller;
 
 import view.CommandesClientView;
+import view.ListeClients;
 import view.AccueilMenu;
 import view.ListeFournisseurs;
 import view.NewFournisseur;
@@ -22,4 +23,5 @@ public class PanelsManager {
     public static JPanel switchToNewFournisseur(){return new NewFournisseur();}
     public static JPanel switchToCommandesClientPanel(){return new CommandesClientView();}
     public static JPanel switchToNouvelleCommandePanel(){return new NouvelleCommandeClientView();}
+    public static JPanel switchToListeClientsPanel(){return new ListeClients();}
 }

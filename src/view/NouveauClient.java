@@ -174,7 +174,7 @@ public class NouveauClient extends JPanel {
 				}else {
 					
 					ClientDao clientDao = new ClientDao();
-					
+					model.addRow(row);
 					if (clientDao.mailAlreadyExists(email_saisie)) {
 						clientDao.inscription(nouveau);
 					}else {
