@@ -2,6 +2,7 @@ package model;
 
 public class Client {
 	// Attributes
+	private int id;
 	private String name;
 	private String firstName;
 	private String adress;
@@ -10,9 +11,8 @@ public class Client {
 	private String tel;
 	private String email;
 	// Constructors
-	public Client() {
-		super();
-	}
+
+	public Client(){};
 	public Client(String name, String firstName, String adress, int zip, String city, String tel, String email) {
 		super();
 		this.name = name;
@@ -23,6 +23,28 @@ public class Client {
 		this.tel = tel;
 		this.email = email;
 	}
+
+	public Client(int id, String name, String firstName, String adress, int zip, String city, String tel,
+				  String email) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.firstName = firstName;
+		this.adress = adress;
+		this.zip = zip;
+		this.city = city;
+		this.tel = tel;
+		this.email = email;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	// Getter Setter
 	public String getName() {
 		return name;

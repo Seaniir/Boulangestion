@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import model.Client;
 
@@ -44,5 +46,27 @@ Connection connect = controller.GetConnection.getConnection();
 			e.printStackTrace();
 		}
 		return msg;
+	}
+
+	public List<Client> read() {
+
+		PreparedStatement sql;
+		ResultSet rs = null;
+		List<Client> listeClient = new ArrayList<>();
+		try {
+			sql = connect.prepareStatement("SELECT * FROM clients");
+			rs = sql.executeQuery();
+			while(rs.next()) {
+				Client client = new Client(rs.getInt("id"),rs.getString("nom"),rs.getString("prenom"),rs.getString("adresse"),rs.getInt("zip"),rs.getString("ville"),
+						rs.getString("telephone"),rs.getString("email"));
+
+				listeClient.add(client);
+			}
+			System.out.println("-------------------"+listeClient);
+		}catch(Exception e) {
+			e.printStackTrace();
+			System.out.println("Insertion KO - KO - KO");
+		}
+		return listeClient;
 	}
 }
