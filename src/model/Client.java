@@ -23,9 +23,9 @@ public class Client {
 		this.tel = tel;
 		this.email = email;
 	}
-
+	
 	public Client(int id, String name, String firstName, String adress, int zip, String city, String tel,
-				  String email) {
+			String email) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -67,6 +67,10 @@ public class Client {
 	public String getEmail() {
 		return email;
 	}
+	public int getId() {
+		return id;
+	}
+	
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -87,6 +91,13 @@ public class Client {
 	}
 	public void setEmail(String email) {
 		this.email = email;
+	}
+	
+	// To String
+	@Override
+	public String toString() {
+		return "Client [name=" + name + ", firstName=" + firstName + ", adress=" + adress + ", zip="
+				+ zip + ", city=" + city + ", tel=" + tel + ", email=" + email + "]";
 	}
 	
 }
