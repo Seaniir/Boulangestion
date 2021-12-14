@@ -21,7 +21,7 @@ public class CommandeClientDAO {
         try {
 
             PreparedStatement req = connect.prepareStatement("INSERT INTO commandesclient"
-                    + "(created_at, withdrawal_at, fk_client, nbrArticles, prixTotal, accompte, status) VALUES (NOW(),?,?,?,?,?,?) ");
+                    + "(created_at, withdrawal_at, fk_client, nbrArticles, prixTotal, accompte, status, typePaiment) VALUES (NOW(),?,?,?,?,?,?,?) ");
 
             req.setDate(1, sqlDate);
             req.setInt(2, object.getFk_client());
@@ -29,6 +29,7 @@ public class CommandeClientDAO {
             req.setFloat(4, object.getPrixTotal());
             req.setBoolean(5, object.isAccompte());
             req.setFloat(6, object.getPrixTotal());
+            req.setString(7, object.getTypePaiment());
 
             req.executeUpdate();
             message = true;

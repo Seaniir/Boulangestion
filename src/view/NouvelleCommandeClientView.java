@@ -1,10 +1,15 @@
 package view;
 
+import controller.ClientDao;
 import controller.CommandeClientDAO;
 import controller.PanelsManager;
 import controller.ProduitDAO;
+import model.Client;
 import model.CommandeClient;
 import model.Produit;
+import org.jdatepicker.impl.JDatePanelImpl;
+import org.jdatepicker.impl.JDatePickerImpl;
+import org.jdatepicker.impl.UtilDateModel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -23,9 +28,11 @@ import java.util.*;
 import java.util.List;
 
 public class NouvelleCommandeClientView extends JPanel {
+	static Client currentClient = new Client();
 	private JTable table;
 	JButton button = new JButton();
 	JComboBox comboBox = new JComboBox();
+	JLabel prixTotal_label = new JLabel();
 
 	/**
 	 * Create the panel.
@@ -63,7 +70,7 @@ public class NouvelleCommandeClientView extends JPanel {
 		Image newimg = image.getScaledInstance(75, 75,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
 		imageIcon = new ImageIcon(newimg);  // transform it back
 		historiqueBtn.setIcon(imageIcon);
-		historiqueBtn.setBounds(127, 0, 127, 75);
+		historiqueBtn.setBounds(0, 0, 127, 75);
 		panel_1.add(historiqueBtn);
 		button.addActionListener(
 				new ActionListener()
@@ -74,14 +81,10 @@ public class NouvelleCommandeClientView extends JPanel {
 					}
 				}
 		);
-		JButton clientBtn = new JButton("");
 		ImageIcon imageClient = new ImageIcon("C:\\Users\\Quentin\\Downloads\\user.png");
 		Image imageClientImage = imageClient.getImage(); // transform it
 		Image newimg2 = imageClientImage.getScaledInstance(75, 75,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
-		imageClient = new ImageIcon(newimg2);  // transform it back
-		clientBtn.setBounds(0, 0, 127, 75);
-		clientBtn.setIcon(imageClient);
-		panel_1.add(clientBtn);
+		imageClient = new ImageIcon(newimg2);
 
 		JButton returnBtn = new JButton("");
 		returnBtn.addActionListener(new ActionListener() {
@@ -96,23 +99,18 @@ public class NouvelleCommandeClientView extends JPanel {
 		Image imageReturnImage = imageReturn.getImage(); // transform it
 		Image newimg3 = imageReturnImage.getScaledInstance(75, 75,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
 		imageReturn = new ImageIcon(newimg3);  // transform it back
-		returnBtn.setBounds(253, 0, 127, 75);
+		returnBtn.setBounds(127, 0, 127, 75);
 		returnBtn.setIcon(imageReturn);
 		panel_1.add(returnBtn);
 
-		JLabel lblNewLabel = new JLabel("Clients");
-		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setBounds(0, 74, 127, 25);
-		panel_1.add(lblNewLabel);
-
 		JLabel lblNewLabel_9 = new JLabel("Historique");
 		lblNewLabel_9.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_9.setBounds(127, 74, 127, 25);
+		lblNewLabel_9.setBounds(0, 74, 127, 25);
 		panel_1.add(lblNewLabel_9);
 
 		JLabel lblNewLabel_10 = new JLabel("Retour");
 		lblNewLabel_10.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_10.setBounds(253, 74, 127, 25);
+		lblNewLabel_10.setBounds(127, 74, 127, 25);
 		panel_1.add(lblNewLabel_10);
 
 		JLabel lblNewLabel_11 = new JLabel("Accueil");
@@ -152,12 +150,59 @@ public class NouvelleCommandeClientView extends JPanel {
 		panel_2.add(lblNewLabel_4);
 
 		JLabel lblNewLabel_5 = new JLabel("Pr\u00E9nom :");
-		lblNewLabel_5.setBounds(238, 42, 78, 14);
+		lblNewLabel_5.setBounds(237, 26, 78, 14);
 		panel_2.add(lblNewLabel_5);
+		
+		JComboBox comboBox_1 = new JComboBox();
+		ClientDao clientDao = new ClientDao();
+		List<Client> listClients = new ArrayList<>();
+		listClients.addAll(clientDao.read());
+		comboBox_1.addItem(null);
+		for (Client clients : listClients) {
+			comboBox_1.addItem(clients.getName());
+		}
+		comboBox_1.setBounds(56, 22, 118, 22);
+		
+		JLabel adresseLabel = new JLabel("");
+		adresseLabel.setBounds(80, 55, 229, 33);
+		panel_2.add(adresseLabel);
+		
+		JLabel phoneLabel = new JLabel("");
+		phoneLabel.setBounds(90, 95, 100, 44);
+		panel_2.add(phoneLabel);
+		
+		JLabel prenomLabel = new JLabel("");
+		prenomLabel.setBounds(300, 8, 118, 50);
+		panel_2.add(prenomLabel);
 
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(10, 167, 1014, 452);
 		panel.add(scrollPane);
+
+		comboBox_1.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				if(e.getStateChange() == ItemEvent.SELECTED) { // Check if the value got selected, ignore if it has been deselected
+					for (Client client : listClients) {
+						if(client.getName().equals(e.getItem().toString())) {
+							currentClient.setName(client.getName());
+							currentClient.setEmail(client.getEmail());
+							currentClient.setFirstName(client.getFirstName());
+							currentClient.setTel(client.getTel());
+							currentClient.setId(client.getId());
+							currentClient.setTel(client.getTel());
+							currentClient.setAdress(client.getAdress());
+							currentClient.setCity(client.getCity());
+							currentClient.setZip(client.getZip());
+							adresseLabel.setText(client.getAdress());
+							prenomLabel.setText(client.getFirstName());
+							phoneLabel.setText(client.getTel());
+						}
+					}
+				}
+			}
+		});
+		panel_2.add(comboBox_1);
 
 		table = new JTable();
 		table.setRowSelectionAllowed(false);
@@ -176,7 +221,7 @@ public class NouvelleCommandeClientView extends JPanel {
 
 		JLabel lblNewLabel_6_1 = new JLabel("Date de retrait :");
 		lblNewLabel_6_1.setFont(new Font("Tahoma", Font.PLAIN, 22));
-		lblNewLabel_6_1.setBounds(10, 59, 189, 37);
+		lblNewLabel_6_1.setBounds(10, 79, 189, 37);
 		panel_3.add(lblNewLabel_6_1);
 
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -199,34 +244,52 @@ public class NouvelleCommandeClientView extends JPanel {
 
 		JLabel lblNewLabel_7 = new JLabel("Total :");
 		lblNewLabel_7.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		lblNewLabel_7.setBounds(1202, 351, 116, 35);
+		lblNewLabel_7.setBounds(1199, 196, 116, 35);
 		panel.add(lblNewLabel_7);
 
 		JPanel panel_4 = new JPanel();
-		panel_4.setBounds(1159, 381, 145, 99);
+		panel_4.setBounds(1128, 238, 208, 99);
 		panel.add(panel_4);
 		panel_4.setLayout(null);
 
-		JLabel prixTotal_label = new JLabel("");
-		prixTotal_label.setBounds(10, 11, 125, 77);
+		prixTotal_label = new JLabel("");
+		prixTotal_label.setHorizontalAlignment(SwingConstants.CENTER);
+		prixTotal_label.setFont(new Font("Tahoma", Font.PLAIN, 30));
+		prixTotal_label.setBounds(38, 11, 125, 77);
 		panel_4.add(prixTotal_label);
 
 		JLabel lblNewLabel_8 = new JLabel("M\u00E9thode de paiment");
+		lblNewLabel_8.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblNewLabel_8.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_8.setBounds(1159, 540, 145, 14);
+		lblNewLabel_8.setBounds(1128, 381, 208, 25);
 		panel.add(lblNewLabel_8);
 
 		JPanel panel_5 = new JPanel();
-		panel_5.setBounds(1159, 562, 145, 77);
+		panel_5.setBounds(1159, 417, 156, 90);
 		panel.add(panel_5);
 		panel_5.setLayout(null);
 
 		JRadioButton rdbtnNewRadioButton = new JRadioButton("Esp\u00E8ces");
-		rdbtnNewRadioButton.setBounds(18, 7, 109, 23);
-		panel_5.add(rdbtnNewRadioButton);
+		rdbtnNewRadioButton.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		rdbtnNewRadioButton.setBounds(18, 22, 109, 23);
 
 		JRadioButton rdbtnNewRadioButton_1 = new JRadioButton("Carte banquaire");
-		rdbtnNewRadioButton_1.setBounds(18, 47, 109, 23);
+		rdbtnNewRadioButton_1.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		rdbtnNewRadioButton_1.setBounds(18, 48, 132, 23);
+
+		rdbtnNewRadioButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				rdbtnNewRadioButton_1.setSelected(false);
+			}
+		});
+
+		rdbtnNewRadioButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				rdbtnNewRadioButton.setSelected(false);
+			}
+		});
+
+		panel_5.add(rdbtnNewRadioButton);
 		panel_5.add(rdbtnNewRadioButton_1);
 
 		table = new JTable();
@@ -244,6 +307,56 @@ public class NouvelleCommandeClientView extends JPanel {
 		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 30));
 		btnNewButton.setBounds(105, 630, 760, 77);
 		panel.add(btnNewButton);
+		
+		JButton btnNewButton_1 = new JButton("Valider");
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				CommandeClientDAO commandeClientDAO = new CommandeClientDAO();
+				String typePaiment = "";
+				if(rdbtnNewRadioButton.isSelected())
+				{
+					typePaiment = "Espèces";
+				}
+				else if(rdbtnNewRadioButton_1.isSelected())
+				{
+					typePaiment = "Carte banquaire";
+				}
+				Date date = new Date();
+				Date date1 = new Date();
+				String stringDate = new SimpleDateFormat("dd/MM/yyyy").format(created_at_label.getText());
+				String stringDate2 = new SimpleDateFormat("dd/MM/yyyy").format(withdrawal_at_label.getText());
+				try {
+					date = new SimpleDateFormat("dd/MM/yyyy").parse(stringDate);
+				} catch (ParseException ex) {
+					ex.printStackTrace();
+				}
+				try {
+					date1 = new SimpleDateFormat("dd/MM/yyyy").parse(stringDate2);
+				} catch (ParseException ex) {
+					ex.printStackTrace();
+				}
+				commandeClientDAO.add(new CommandeClient(date, date1, currentClient.getId(), table.getRowCount(), Float.parseFloat(prixTotal_label.getText()), true, "En cours", typePaiment));
+			}
+		});
+		btnNewButton_1.setBackground(Color.ORANGE);
+		btnNewButton_1.setFont(new Font("Tahoma", Font.PLAIN, 25));
+		btnNewButton_1.setBounds(1102, 557, 249, 56);
+		panel.add(btnNewButton_1);
+
+		UtilDateModel model = new UtilDateModel();
+		Properties p = new Properties();
+		p.put("text.today", "Today");
+		p.put("text.month", "Month");
+		p.put("text.year", "Year");
+		JDatePanelImpl datePanel = new JDatePanelImpl(model, p);
+		JDatePickerImpl datePicker = new JDatePickerImpl(datePanel, new DateLabelFormatter());
+		datePicker.setBounds(840, 200, 150, 30);
+		add(datePicker);
+
+		JButton btnNewButton_1_1 = new JButton("Annuler");
+		btnNewButton_1_1.setFont(new Font("Tahoma", Font.PLAIN, 25));
+		btnNewButton_1_1.setBounds(1102, 630, 249, 56);
+		panel.add(btnNewButton_1_1);
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 		centerRenderer.setHorizontalAlignment(JLabel.CENTER);
 		table.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
@@ -264,6 +377,12 @@ public class NouvelleCommandeClientView extends JPanel {
 						table.setValueAt(Float.parseFloat(table.getValueAt(row, 0).toString()) * Float.parseFloat(table.getValueAt(row, 2).toString()), row, 3);
 						table.setValueAt(Float.parseFloat(table.getValueAt(row, 0).toString()) * (Float.parseFloat(table.getValueAt(row, 2).toString()) * 2), row, 4);
 						table.setValueAt(Float.parseFloat(table.getValueAt(row, 0).toString()) * (Float.parseFloat(table.getValueAt(row, 2).toString()) * 2), row, 5);
+						float prixTotal = 0;
+						for (int i = 0 ; i < table.getRowCount() ; i++)
+						{
+							prixTotal += Float.parseFloat(table.getValueAt(i, 5).toString());
+						}
+						prixTotal_label.setText(Float.toString(prixTotal));
 					}
 				} else {
 					// editing started
@@ -288,6 +407,12 @@ public class NouvelleCommandeClientView extends JPanel {
 								table.setValueAt(Float.parseFloat(table.getValueAt(row, 0).toString()) * Float.parseFloat(table.getValueAt(row, 2).toString()), row, 3);
 								table.setValueAt(Float.parseFloat(table.getValueAt(row, 0).toString()) * (Float.parseFloat(table.getValueAt(row, 2).toString()) * 2), row, 4);
 								table.setValueAt(Float.parseFloat(table.getValueAt(row, 0).toString()) * (Float.parseFloat(table.getValueAt(row, 2).toString()) * 2), row, 5);
+								float prixTotal = 0;
+								for (int i = 0 ; i < table.getRowCount() ; i++)
+								{
+									prixTotal += Float.parseFloat(table.getValueAt(i, 5).toString());
+								}
+								prixTotal_label.setText(Float.toString(prixTotal));
 							}
 					}
 				}
@@ -313,6 +438,7 @@ public class NouvelleCommandeClientView extends JPanel {
 		vect.add(0);
 		vect.add(0);
 		tab.addRow(vect);
+		prixTotal_label.setText(Float.toString(0));
 		return tab;
 	}
 
@@ -335,7 +461,7 @@ public class NouvelleCommandeClientView extends JPanel {
 
 	public class DateLabelFormatter extends JFormattedTextField.AbstractFormatter {
 
-		private String datePattern = "yyyy-MM-dd";
+		private String datePattern = "dd/MM/yyy";
 		private SimpleDateFormat dateFormatter = new SimpleDateFormat(datePattern);
 
 		@Override

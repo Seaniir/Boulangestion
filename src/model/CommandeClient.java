@@ -11,14 +11,14 @@ public class CommandeClient
     private float prixTotal;
     private boolean accompte;
     private String status;
+    private String typePaiment;
 
         public CommandeClient() {
             super();
         }
 
-        public CommandeClient(int id, Date created_at, Date withdrawal_at, int fk_client, int nbrArticles, float prixTotal, boolean accompte, String status) {
+        public CommandeClient(Date created_at, Date withdrawal_at, int fk_client, int nbrArticles, float prixTotal, boolean accompte, String status, String typePaiment) {
             super();
-            this.id = id;
             this.created_at = created_at;
             this.withdrawal_at = withdrawal_at;
             this.fk_client = fk_client;
@@ -26,6 +26,7 @@ public class CommandeClient
             this.prixTotal = prixTotal;
             this.accompte = accompte;
             this.status = status;
+            this.typePaiment = typePaiment;
         }
 
     public int getId() {
@@ -58,6 +59,10 @@ public class CommandeClient
 
     public String getStatus() {
         return status;
+    }
+
+    public String getTypePaiment() {
+        return typePaiment;
     }
 
     public void setId(int id) {
