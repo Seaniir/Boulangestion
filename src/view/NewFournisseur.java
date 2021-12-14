@@ -11,7 +11,9 @@ import java.awt.Font;
 import javax.swing.ImageIcon;
 import javax.swing.SwingConstants;
 
+import controller.FournisseurDao;
 import controller.PanelsManager;
+import model.Fournisseur;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -20,6 +22,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.regex.Pattern;
+import java.awt.event.InputMethodListener;
+import java.awt.event.InputMethodEvent;
 
 public class NewFournisseur extends JPanel {
 	private JTextField societeValue;
@@ -177,6 +182,23 @@ public class NewFournisseur extends JPanel {
 		JButton btnValider = new JButton("Valider");
 		btnValider.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				String societeSaisie = societeValue.getText();
+				String correspSaisie = correspValue.getText();
+				String adresseSaisie = adressValue.getText();
+				int cpSaisie = Integer.valueOf(cpValue.getText());
+				String villeSaisie = villeValue.getText();
+				String telSaisie = telValue.getText();
+				String emailSaisie = emailValue.getText();
+				
+				Fournisseur nouveau = new Fournisseur(societeSaisie, correspSaisie, adresseSaisie, cpSaisie, villeSaisie, telSaisie, emailSaisie);
+				
+//				//vérification email:
+//				if(!(Pattern.matches("^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+[.]+[a-zA-Z0-9]{2,6}+$", emailSaisie)) || !(Pattern.matches("^(?:(?:\\+|00)33|0)\\s*[1-9](?:[\\s.-]*\\d{2}){4}$", telSaisie))) {
+//					JOptionPane.showMessageDialog(null, "Email invalide", "Error", JOptionPane.ERROR_MESSAGE);
+//				}else {
+//					FournisseurDao fournisseurDao = new FournisseurDao();
+//					fournisseurDao.create(nouveau);
+//				}
 			}
 		});
 		btnValider.setFont(new Font("Tahoma", Font.PLAIN, 24));
@@ -187,7 +209,14 @@ public class NewFournisseur extends JPanel {
 		JButton btnAnnuler = new JButton("Annuler");
 		btnAnnuler.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showConfirmDialog(btnAnnuler, e, "Etes-vous sûr de vouloir annuler?", ABORT);
+				if (JOptionPane.showConfirmDialog(null, "Are you sure?", "WARNING",
+				        JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+				    // yes option
+					
+				} else {
+				    // no option
+				}
+				
 			}
 		});
 		btnAnnuler.setFont(new Font("Tahoma", Font.PLAIN, 24));

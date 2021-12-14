@@ -44,6 +44,7 @@ public class AccueilMenu extends JPanel {
 	 */
 	
 	public AccueilMenu() {
+		setBounds(0, 0, 1440, 900);
 		setLayout(null);
 		
 		JPanel panel = new JPanel();
@@ -74,6 +75,7 @@ public class AccueilMenu extends JPanel {
 		btnVente.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				setSsBtnFalse();
 				btnVente.setBackground(new Color(253, 232, 202));
 				btnVenteDirecte.setVisible(true);
 				btnDevis.setVisible(true);
