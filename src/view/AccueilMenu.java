@@ -156,7 +156,7 @@ public class AccueilMenu extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				PanelsManager.contentPane.removeAll();
-				PanelsManager.contentPane.add(PanelsManager.switchToLambdaPanel());
+				PanelsManager.contentPane.add(PanelsManager.switchToLoginPanel());
 				PanelsManager.contentPane.repaint();
 				PanelsManager.contentPane.revalidate();
 			}
@@ -216,10 +216,7 @@ public class AccueilMenu extends JPanel {
 		btnHistoriqueVC.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				PanelsManager.contentPane.removeAll();
-				PanelsManager.contentPane.add(PanelsManager.switchToLambdaPanel());
-				PanelsManager.contentPane.repaint();
-				PanelsManager.contentPane.revalidate();
+				
 			}
 		});
 		btnHistoriqueVC.setFont(new Font("Tahoma", Font.PLAIN, 18));

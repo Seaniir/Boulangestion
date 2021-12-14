@@ -17,7 +17,6 @@ public class PanelsManager {
     public static JPanel switchToLoginPanel(){return new Login();}
     public static JPanel switchToNouveauClientPanel(){return new NouveauClient();}
     public static JPanel switchToAccueilMenu(){return new AccueilMenu();}
-    //public static JPanel switchToCommandesClientView(){return new CommandesClientView();}
     public static JPanel switchToListeFournisseurs(){return new ListeFournisseurs();}
     public static JPanel switchToNewFournisseur(){return new NewFournisseur();}
     public static JPanel switchToCommandesClientPanel(){return new CommandesClientView();}

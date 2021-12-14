@@ -40,7 +40,7 @@ public class FournisseurDao implements IDao<Fournisseur>{
 	public List<Fournisseur> read() {
 		PreparedStatement sql2;
 		try {
-			sql2 = connect.prepareStatement("SELECT * FROM etudiant");
+			sql2 = connect.prepareStatement("SELECT * FROM fournisseur");
 			rs = sql2.executeQuery();
 			
 			while(rs.next()) {
