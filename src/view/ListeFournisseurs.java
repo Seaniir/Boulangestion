@@ -2,8 +2,11 @@ package view;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.Component;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
@@ -12,19 +15,25 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 
 import controller.FournisseurDao;
 import controller.PanelsManager;
 import model.Fournisseur;
 
+import javax.swing.DefaultCellEditor;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 public class ListeFournisseurs extends JPanel {
 	private JTable listingFournisseurs;
+	JButton btnModifier = new JButton();
+	JButton btnHistorique = new JButton();
 	/**
 	 * Create the panel.
 	 */
@@ -61,12 +70,12 @@ public class ListeFournisseurs extends JPanel {
 		
 		JPanel listing = new JPanel();
 		listing.setBackground(new Color(255, 255, 255));
-		listing.setBounds(264, 155, 912, 706);
+		listing.setBounds(59, 100, 1300, 624);
 		add(listing);
 		listing.setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(0, 0, 912, 706);
+		scrollPane.setBounds(0, 0, 1300, 624);
 		listing.add(scrollPane);
 		
 		listingFournisseurs = new JTable();
@@ -74,6 +83,8 @@ public class ListeFournisseurs extends JPanel {
 		scrollPane.setViewportView(listingFournisseurs);
 		listingFournisseurs.setRowHeight(100);
 		listingFournisseurs.setModel(liste());
+		
+		//Centrer le contenu des cellules
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 		centerRenderer.setHorizontalAlignment(JLabel.CENTER);
 		listingFournisseurs.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
@@ -81,9 +92,56 @@ public class ListeFournisseurs extends JPanel {
 		listingFournisseurs.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
 		listingFournisseurs.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
 		listingFournisseurs.getColumnModel().getColumn(4).setCellRenderer(centerRenderer);
-		listingFournisseurs.getColumnModel().getColumn(5).setCellRenderer(centerRenderer);
-		listingFournisseurs.getColumnModel().getColumn(6).setCellRenderer(centerRenderer);
+		listingFournisseurs.getColumn("Modifier").setCellRenderer(new ButtonRenderer());
+		listingFournisseurs.getColumn("Modifier").setCellEditor(new ButtonEditor(new JCheckBox()));
+		listingFournisseurs.getColumn("Historique").setCellRenderer(new SecondButtonRenderer());
+		listingFournisseurs.getColumn("Historique").setCellEditor(new SecondButtonEditor(new JCheckBox()));
+		
+		//bouton de colonne "modifier" qui redirige vers le formulaire Fournisseur à modifier
+		btnModifier.addActionListener(new ActionListener(){			        
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				//pop-up de confirmation: si oui va sur la modification du fournisseur, si non, ne fait rien
+				if (JOptionPane.showConfirmDialog(null, "Etes-vous sûr de vouloir modifier?", "Attention",
+				        JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+					PanelsManager.contentPane.removeAll();
+					PanelsManager.contentPane.add(PanelsManager.switchToNewFournisseur());
+					PanelsManager.contentPane.repaint();
+					PanelsManager.contentPane.revalidate();
+				}
+			}
+	    });
+		
+		//bouton de la colonne "historique" qui redirige vers la page de listing commandes fournisseurs filtré par la 
+		//société
+		btnHistorique.addActionListener(new ActionListener(){
+	        public void actionPerformed(ActionEvent event)
+	        {
+	        	PanelsManager.contentPane.removeAll();
+				PanelsManager.contentPane.add(PanelsManager.switchToLambdaPanel());
+				PanelsManager.contentPane.repaint();
+				PanelsManager.contentPane.revalidate();
+	        }
+	    });
+		
+		//redirection pour ajouter un nouveau fournisseur
+		JButton btnNewFournisseur = new JButton("Nouveau Fournisseur");
+		btnNewFournisseur.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				PanelsManager.contentPane.removeAll();
+				PanelsManager.contentPane.add(PanelsManager.switchToNewFournisseur());
+				PanelsManager.contentPane.revalidate();
+				PanelsManager.contentPane.repaint();
+			}
+		});
+		btnNewFournisseur.setFont(new Font("Tahoma", Font.PLAIN, 30));
+		btnNewFournisseur.setBackground(new Color(242, 193, 102));
+		btnNewFournisseur.setForeground(new Color(0, 0, 0));
+		btnNewFournisseur.setBounds(470, 823, 499, 53);
+		add(btnNewFournisseur);
 	}
+	
+	//remplissage du tableau
 	public DefaultTableModel liste() {
 		String [] col = {"N° Fournisseur","Societe","Adresse","Telephone", "Email","Modifier", "Historique"};
 		DefaultTableModel tab = new DefaultTableModel(null, col);
@@ -102,6 +160,62 @@ public class ListeFournisseurs extends JPanel {
 			 tab.addRow(vect);
 		}
 		return tab;
-		
 	}
+	
+	class ButtonRenderer extends JButton implements TableCellRenderer{
+	    public ButtonRenderer() {
+	      setOpaque(true);
+	    }
+	    public Component getTableCellRendererComponent(JTable table, Object value,
+	    boolean isSelected, boolean hasFocus, int row, int column) {
+	    	setText((value == null) ? "Modifier" : value.toString());
+			return this;
+	    }
+	}
+	class ButtonEditor extends DefaultCellEditor{
+	    private String label;
+	    
+	    public ButtonEditor(JCheckBox checkBox){
+	      super(checkBox);
+	    }
+	    public Component getTableCellEditorComponent(JTable table, Object value,
+	    boolean isSelected, int row, int column){
+	      label = (value == null) ? "Modifier" : value.toString();
+	      btnModifier.setText(label);
+	      return btnModifier;
+	    }
+	    public Object getCellEditorValue() 
+	    {
+	      return new String(label);
+	    }
+	 }
+	class SecondButtonRenderer extends JButton implements TableCellRenderer{
+	    public SecondButtonRenderer() {
+	      setOpaque(true);
+	    }
+	    public Component getTableCellRendererComponent(JTable table, Object value,
+	    boolean isSelected, boolean hasFocus, int row, int column) {
+	    	setText((value == null) ? "Historique" : value.toString());
+			return this;
+	    }
+	}
+	class SecondButtonEditor extends DefaultCellEditor{
+	    public SecondButtonEditor(JCheckBox checkBox) {
+			super(checkBox);
+			
+		}
+		private String label;
+	    
+	    public Component getTableCellEditorComponent(JTable table, Object value,
+	    boolean isSelected, int row, int column){
+	      label = (value == null) ? "Historique" : value.toString();
+	      btnHistorique.setText(label);
+	      return btnHistorique;
+	    }
+	    public Object getCellEditorValue() 
+	    {
+	      return new String(label);
+	    }
+	 }
 }
+

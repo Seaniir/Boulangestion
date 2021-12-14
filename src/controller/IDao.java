@@ -8,4 +8,6 @@ public interface IDao<T> {
 	public List<T> read();
 	public void update(T object, int idObject);
 	public void delete(int idToDelete);
+	
+	public List<T> findById(int id);
 }

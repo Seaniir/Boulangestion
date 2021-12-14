@@ -32,8 +32,7 @@ public class FournisseurDao implements IDao<Fournisseur>{
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-		
+		}	
 	}
 
 	@Override
@@ -57,17 +56,21 @@ public class FournisseurDao implements IDao<Fournisseur>{
 	@Override
 	public void update(Fournisseur fournisseur, int idFournisseur) {
 		try {
-			PreparedStatement sql = connect.prepareStatement("UPDATE fournisseur SET societe=?, correspondant=? WHERE etudiant.id=?");
+			PreparedStatement sql = connect.prepareStatement("UPDATE fournisseur SET societe=?, correspondant=?, adresse=?, cp=?, ville=?, tel=?, email=? WHERE fournisseur.id=?");
 			sql.setString(1, fournisseur.getSociete());
 			sql.setString(2, fournisseur.getCorrespondant());
-			sql.setInt(3, idFournisseur);
+			sql.setString(3, fournisseur.getAdresse());
+			sql.setInt(4, fournisseur.getCodePostal());
+			sql.setString(5, fournisseur.getVille());
+			sql.setString(6, fournisseur.getTel());
+			sql.setString(7, fournisseur.getEmail());
+			sql.setInt(8, idFournisseur);
 			
 			sql.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 	}
 	
 	@Override
@@ -81,6 +84,35 @@ public class FournisseurDao implements IDao<Fournisseur>{
 			e.printStackTrace();
 		}
 		
+	}
+
+	@Override
+	public List<Fournisseur> findById(int id) {
+		List<Fournisseur> listeFournisseurs = new ArrayList<>();
+		try {
+			PreparedStatement req = connect.prepareStatement("SELECT * FROM fournisseur WHERE id=?");
+			req.setInt(1, id);
+			
+			ResultSet rs = req.executeQuery();
+			
+			while(rs.next()) {
+				Fournisseur fournisseur = new Fournisseur();
+				fournisseur.setId(rs.getInt("id"));
+				fournisseur.setSociete(rs.getString("societe"));
+				fournisseur.setCorrespondant(rs.getString("correspondant"));
+				fournisseur.setAdresse(rs.getString("adresse"));
+				fournisseur.setCodePostal(rs.getInt("cp"));
+				fournisseur.setVille(rs.getString("ville"));
+				fournisseur.setTel(rs.getString("tel"));
+				fournisseur.setEmail(rs.getString("email"));
+				
+				listeFournisseurs.add(fournisseur);
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+			
+		}
+		return listeFournisseurs;
 	}
 
 	

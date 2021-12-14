@@ -37,44 +37,44 @@ public class CommandesClientView extends JPanel {
 		add(panel);
 		panel.setLayout(null);
 		
-				JScrollPane scrollPane = new JScrollPane();
-				panel.add(scrollPane);
-				scrollPane.setBounds(21, 11, 1388, 622);
+		JScrollPane scrollPane = new JScrollPane();
+		panel.add(scrollPane);
+		scrollPane.setBounds(21, 11, 1388, 622);
 				
-						table = new JTable();
-						table.setRowSelectionAllowed(false);
-						table.addMouseListener(new MouseAdapter() {
-							@Override
-							public void mouseClicked(MouseEvent e) {
-								int id = table.getSelectedRow();
+		table = new JTable();
+		table.setRowSelectionAllowed(false);
+		table.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				int id = table.getSelectedRow();
 
-								int article_id = (int) table.getModel().getValueAt(id, 0);
+				int article_id = (int) table.getModel().getValueAt(id, 0);
 
-								removeAll();
+				removeAll();
 
-								repaint();
-								revalidate();
-							}
-						});
+				repaint();
+				revalidate();
+			}
+		});
 						
-								scrollPane.setViewportView(table);
-								table.setRowHeight(100);
-								table.setModel(liste());
-								
-								JButton btnNewButton = new JButton("Nouvelle Commande");
-								btnNewButton.addActionListener(new ActionListener() {
-									public void actionPerformed(ActionEvent e) {
-										PanelsManager.contentPane.removeAll();
-										PanelsManager.contentPane.add(PanelsManager.switchToNouvelleCommandePanel());
-										PanelsManager.contentPane.revalidate();
-										PanelsManager.contentPane.repaint();
-									}
-								});
-								btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 30));
-								btnNewButton.setBackground(new Color(255, 165, 0));
-								btnNewButton.setForeground(new Color(0, 0, 0));
-								btnNewButton.setBounds(467, 663, 499, 53);
-								panel.add(btnNewButton);
+		scrollPane.setViewportView(table);
+		table.setRowHeight(100);
+		table.setModel(liste());
+		
+		JButton btnNewButton = new JButton("Nouvelle Commande");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				PanelsManager.contentPane.removeAll();
+				PanelsManager.contentPane.add(PanelsManager.switchToNouvelleCommandePanel());
+				PanelsManager.contentPane.revalidate();
+				PanelsManager.contentPane.repaint();
+			}
+		});
+		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 30));
+		btnNewButton.setBackground(new Color(255, 165, 0));
+		btnNewButton.setForeground(new Color(0, 0, 0));
+		btnNewButton.setBounds(467, 663, 499, 53);
+		panel.add(btnNewButton);
 		button.addActionListener(
 				new ActionListener()
 				{
