@@ -162,6 +162,11 @@ public class ListeClients extends JPanel {
 		{
 			label = (value == null) ? "Modify" : value.toString();
 			btnModify.setText(label);
+			NouveauClient.modify = true;
+			PanelsManager.contentPane.removeAll();
+			PanelsManager.contentPane.add(PanelsManager.switchToNouveauClientPanel());
+			PanelsManager.contentPane.repaint();
+			PanelsManager.contentPane.revalidate();
 			return btnModify;
 		}
 		public Object getCellEditorValue()
@@ -190,6 +195,10 @@ public class ListeClients extends JPanel {
 	    boolean isSelected, int row, int column){
 	      label = (value == null) ? "Historique" : value.toString();
 	      btnBrowsingHistory.setText(label);
+	      PanelsManager.contentPane.removeAll();
+			PanelsManager.contentPane.add(PanelsManager.switchToCommandesClientPanel());
+			PanelsManager.contentPane.repaint();
+			PanelsManager.contentPane.revalidate();
 	      return btnBrowsingHistory;
 	    }
 	    public Object getCellEditorValue() 
