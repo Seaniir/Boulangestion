@@ -16,20 +16,21 @@ public class CommandeClientDAO {
 
     public boolean add(CommandeClient object) {
         java.util.Date utilDate = object.getWithdrawal_at();
-        java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+        java.sql.Date sqlDate = new java.sql.Date(object.getWithdrawal_at().getTime());
         boolean message = false;
         try {
 
-            PreparedStatement req = connect.prepareStatement("INSERT INTO commandesclient"
-                    + "(created_at, withdrawal_at, fk_client, nbrArticles, prixTotal, accompte, status, typePaiment) VALUES (NOW(),?,?,?,?,?,?,?) ");
+            PreparedStatement req = connect.prepareStatement("INSERT INTO commandesclients"
+                    + "(created_at, withdrawal_at, fk_client, nbrArticles, prixTotal, accompte, status, typePaiment, produits) VALUES (NOW(),?,?,?,?,?,?,?,?) ");
 
             req.setDate(1, sqlDate);
             req.setInt(2, object.getFk_client());
             req.setInt(3, object.getNbrArticles());
             req.setFloat(4, object.getPrixTotal());
             req.setBoolean(5, object.isAccompte());
-            req.setFloat(6, object.getPrixTotal());
+            req.setString(6, object.getStatus());
             req.setString(7, object.getTypePaiment());
+            req.setString(8, object.getProduits());
 
             req.executeUpdate();
             message = true;

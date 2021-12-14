@@ -1,5 +1,6 @@
 package view;
 
+import com.google.gson.Gson;
 import controller.ClientDao;
 import controller.CommandeClientDAO;
 import controller.PanelsManager;
@@ -309,6 +310,17 @@ public class NouvelleCommandeClientView extends JPanel {
 		panel.add(btnNewButton);
 		
 		JButton btnNewButton_1 = new JButton("Valider");
+
+		UtilDateModel model = new UtilDateModel();
+		Properties p = new Properties();
+		p.put("text.today", "Today");
+		p.put("text.month", "Month");
+		p.put("text.year", "Year");
+		JDatePanelImpl datePanel = new JDatePanelImpl(model, p);
+		JDatePickerImpl datePicker = new JDatePickerImpl(datePanel, new DateLabelFormatter());
+		datePicker.setBounds(840, 200, 150, 30);
+		add(datePicker);
+
 		btnNewButton_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				CommandeClientDAO commandeClientDAO = new CommandeClientDAO();
@@ -321,37 +333,36 @@ public class NouvelleCommandeClientView extends JPanel {
 				{
 					typePaiment = "Carte banquaire";
 				}
-				Date date = new Date();
-				Date date1 = new Date();
-				String stringDate = new SimpleDateFormat("dd/MM/yyyy").format(created_at_label.getText());
-				String stringDate2 = new SimpleDateFormat("dd/MM/yyyy").format(withdrawal_at_label.getText());
+				DateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE);
+
+				DateFormat inputFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE);
+				System.out.println(datePicker.getJFormattedTextField().getText());
+				int m = table.getRowCount(), n = table.getColumnCount();
+				ArrayList<ArrayList<Object>> matrix = new ArrayList<ArrayList<Object>>();
+
+				for (int i = 0; i < m; i++) {
+					ArrayList<Object> row = new ArrayList<Object>();
+					for (int j = 0; j < n; j++) {
+						row.add(table.getValueAt(i, j));
+					}
+					matrix.add(row);
+				}
+				System.out.println(matrix);
+				String json = new Gson().toJson(matrix);
+				System.out.println(json);
+				Date date = null;
 				try {
-					date = new SimpleDateFormat("dd/MM/yyyy").parse(stringDate);
+					date = inputFormat.parse(datePicker.getJFormattedTextField().getText());
 				} catch (ParseException ex) {
 					ex.printStackTrace();
 				}
-				try {
-					date1 = new SimpleDateFormat("dd/MM/yyyy").parse(stringDate2);
-				} catch (ParseException ex) {
-					ex.printStackTrace();
-				}
-				commandeClientDAO.add(new CommandeClient(date, date1, currentClient.getId(), table.getRowCount(), Float.parseFloat(prixTotal_label.getText()), true, "En cours", typePaiment));
+				commandeClientDAO.add(new CommandeClient(date, date, currentClient.getId(), table.getRowCount(), Float.parseFloat(prixTotal_label.getText()), true, "En cours", typePaiment,json));
 			}
 		});
 		btnNewButton_1.setBackground(Color.ORANGE);
 		btnNewButton_1.setFont(new Font("Tahoma", Font.PLAIN, 25));
 		btnNewButton_1.setBounds(1102, 557, 249, 56);
 		panel.add(btnNewButton_1);
-
-		UtilDateModel model = new UtilDateModel();
-		Properties p = new Properties();
-		p.put("text.today", "Today");
-		p.put("text.month", "Month");
-		p.put("text.year", "Year");
-		JDatePanelImpl datePanel = new JDatePanelImpl(model, p);
-		JDatePickerImpl datePicker = new JDatePickerImpl(datePanel, new DateLabelFormatter());
-		datePicker.setBounds(840, 200, 150, 30);
-		add(datePicker);
 
 		JButton btnNewButton_1_1 = new JButton("Annuler");
 		btnNewButton_1_1.setFont(new Font("Tahoma", Font.PLAIN, 25));
