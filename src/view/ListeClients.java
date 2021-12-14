@@ -1,26 +1,41 @@
 package view;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Vector;
 
+import javax.swing.DefaultCellEditor;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 
 import controller.ClientDao;
 import controller.IDao;
 import controller.PanelsManager;
+import model.Client;
+import view.CommandesClientView.ButtonEditor;
+import view.CommandesClientView.ButtonRenderer;
+
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
 
 public class ListeClients extends JPanel {
-	DefaultTableModel model;
-	private JTable table;
+	
+	private JTable listingClients;
+	JButton btnModify = new JButton();
+	JButton btnBrowsingHistory = new JButton();
+	
 	/**
 	 * Create the panel.
 	 */
@@ -53,45 +68,6 @@ public class ListeClients extends JPanel {
 		btnAccueil.setIcon(new ImageIcon("C:\\Users\\Julien\\Desktop\\projetBoulang\\exit.png"));
 		btnAccueil.setBounds(1270, 10, 160, 82);
 		panel.add(btnAccueil);
-		
-		/*JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(113, 231, 1217, 509);
-		add(scrollPane);*/
-		
-		// Table
-		/*table = new JTable();
-		model = new DefaultTableModel();
-		Object[] column = {"N°Client","Nom","Prenom","Adresse","Téléphone","Email","Modifier","Historique"};
-		Object[] row = new Object[0];
-		model.setColumnIdentifiers(column);
-		table.setModel(model);
-		scrollPane.setViewportView(table);*/
-		
-		ClientDao clientDao = new ClientDao();
-		if(clientDao.read().isEmpty()) {
-			JLabel lblNewLabel = new JLabel("Aucun client repertorié");
-			lblNewLabel.setBounds(59, 25, 718, 150);
-			panel.add(lblNewLabel);
-		} else {
-			JScrollPane scrollPane = new JScrollPane();
-			scrollPane.setBounds(10, 0, 911, 321);
-			panel.add(scrollPane);
-			
-			table = new JTable();
-			/*table.addMouseListener(new MouseAdapter() {
-				public void mouseClicked(MouseEvent e) {
-					int id = table.getSelectedRow();
-					
-					int article_id = (int) table.getModel().getValueAt(id, 0);
-					
-					contentPane.removeAll();
-					ShowArticle show = new ShowArticle(article_id);
-					//show.setVisible(true);
-					contentPane.add(show);
-					contentPane.repaint();
-					contentPane.revalidate();*/
-		}
-		
 		// Ajouter un client
 		JButton btnNewClient = new JButton("Nouveau Client");
 		btnNewClient.addActionListener(new ActionListener() {
@@ -100,16 +76,125 @@ public class ListeClients extends JPanel {
 				PanelsManager.contentPane.add(PanelsManager.switchToNouveauClientPanel());
 				PanelsManager.contentPane.repaint();
 				PanelsManager.contentPane.revalidate();
+			
 			}
 		});
 		btnNewClient.setBackground(new Color(244, 164, 96));
 		btnNewClient.setFont(new Font("Tahoma", Font.PLAIN, 25));
-		btnNewClient.setBounds(469, 792, 463, 43);
+		btnNewClient.setBounds(503, 914, 463, 43);
 		add(btnNewClient);
 		
+		/*JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(113, 231, 1217, 509);
+		add(scrollPane);*/
 		
+		// Table
+		JPanel listing = new JPanel();
+		listing.setBackground(new Color(255, 255, 255));
+		listing.setBounds(264, 155, 912, 706);
+		add(listing);
+		listing.setLayout(null);
 		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(0, 0, 912, 706);
+		listing.add(scrollPane);
 		
+		listingClients = new JTable();
+		listingClients.setRowSelectionAllowed(false);
+		scrollPane.setViewportView(listingClients);
+		listingClients.setRowHeight(100);
+		listingClients.setModel(liste());
+		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+		centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+		listingClients.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
+		listingClients.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
+		listingClients.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
+		listingClients.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
+		listingClients.getColumnModel().getColumn(4).setCellRenderer(centerRenderer);
+		listingClients.getColumnModel().getColumn(5).setCellRenderer(centerRenderer);
+		listingClients.getColumnModel().getColumn(6).setCellRenderer(centerRenderer);
+		listingClients.getColumn("Modifier").setCellRenderer(new ButtonRenderer());
+		listingClients.getColumn("Modifier").setCellEditor(new ButtonEditor(new JCheckBox()));
+		listingClients.getColumn("Historique").setCellRenderer(new SecondButtonRenderer());
+		listingClients.getColumn("Historique").setCellEditor(new SecondButtonEditor(new JCheckBox()));
+	}
+		public DefaultTableModel liste() {
+			String [] col = {"N° Client","Nom","Prénom","Adresse", "Téléphone","Email", "Modifier","Historique"};
+			DefaultTableModel tab = new DefaultTableModel(null, col);
+			
+			ClientDao clientDao = new ClientDao();
+			List<Client> listClients = new ArrayList<>();
+			listClients.addAll(clientDao.read());
+			for (Client client : listClients) {
+				Vector vect = new Vector();
+				 vect.add(client.getId());
+				 vect.add(client.getName());
+				 vect.add(client.getFirstName());
+				 vect.add(client.getAdress()+" "+client.getZip()+" "+client.getCity());
+				 vect.add(client.getTel());
+				 vect.add(client.getEmail());
+				 
+				 tab.addRow(vect);
+		}
+		return tab;
+
 		
+	}
+	class ButtonRenderer extends JButton implements TableCellRenderer{
+			public ButtonRenderer() {
+				setOpaque(true);
+			}
+			public Component getTableCellRendererComponent(JTable table, Object value,
+														   boolean isSelected, boolean hasFocus, int row, int column) {
+				setText((value == null) ? "Modify" : value.toString());
+				return this;
+			}
+	}
+	class ButtonEditor extends DefaultCellEditor{
+		private String label;
+
+		public ButtonEditor(JCheckBox checkBox)
+		{
+			super(checkBox);
+		}
+		public Component getTableCellEditorComponent(JTable table, Object value,
+													 boolean isSelected, int row, int column)
+		{
+			label = (value == null) ? "Modify" : value.toString();
+			btnModify.setText(label);
+			return btnModify;
+		}
+		public Object getCellEditorValue()
+		{
+			return new String(label);
+		}
+	}
+	class SecondButtonRenderer extends JButton implements TableCellRenderer{
+	    public SecondButtonRenderer() {
+	      setOpaque(true);
+	    }
+	    public Component getTableCellRendererComponent(JTable table, Object value,
+	    boolean isSelected, boolean hasFocus, int row, int column) {
+	    	setText((value == null) ? "Historique" : value.toString());
+			return this;
+	    }
+	}
+	class SecondButtonEditor extends DefaultCellEditor{
+	    public SecondButtonEditor(JCheckBox checkBox) {
+			super(checkBox);
+			
+		}
+		private String label;
+	    
+	    public Component getTableCellEditorComponent(JTable table, Object value,
+	    boolean isSelected, int row, int column){
+	      label = (value == null) ? "Historique" : value.toString();
+	      btnBrowsingHistory.setText(label);
+	      return btnBrowsingHistory;
+	    }
+	    public Object getCellEditorValue() 
+	    {
+	      return new String(label);
+	    }
 	}
 }
