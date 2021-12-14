@@ -102,5 +102,10 @@ public class ClientDao implements IDao<Client> {
 		// TODO Auto-generated method stub
 		
 	}
-	
+
+	@Override
+	public Client findById(int id) {
+		return null;
+	}
+
 }

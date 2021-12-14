@@ -67,9 +67,6 @@ public class Client {
 	public String getEmail() {
 		return email;
 	}
-	public int getId() {
-		return id;
-	}
 	
 	public void setName(String name) {
 		this.name = name;
