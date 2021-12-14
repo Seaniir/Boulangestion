@@ -86,14 +86,6 @@ public class CommandesClientView extends JPanel {
 		);
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 		centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-		table.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
-		table.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
-		table.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
-		table.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
-		table.getColumnModel().getColumn(4).setCellRenderer(centerRenderer);
-		table.getColumnModel().getColumn(5).setCellRenderer(centerRenderer);
-		table.getColumnModel().getColumn(6).setCellRenderer(centerRenderer);
-		table.getColumnModel().getColumn(7).setCellRenderer(centerRenderer);
 		table.getColumn("D\u00e9tails").setCellRenderer(new ButtonRenderer());
 		table.getColumn("D\u00e9tails").setCellEditor(new ButtonEditor(new JCheckBox()));
 		JPanel panel_1 = new JPanel();

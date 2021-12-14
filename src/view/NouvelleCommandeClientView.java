@@ -9,17 +9,18 @@ import model.Produit;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
-import java.util.ArrayList;
-import java.util.Date;
+import java.util.*;
 import java.util.List;
-import java.util.Vector;
 
 public class NouvelleCommandeClientView extends JPanel {
 	private JTable table;
@@ -237,7 +238,7 @@ public class NouvelleCommandeClientView extends JPanel {
 		JButton btnNewButton = new JButton("Ajouter un produit");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
+				relisting();
 			}
 		});
 		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 30));
@@ -251,6 +252,24 @@ public class NouvelleCommandeClientView extends JPanel {
 		table.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
 		table.getColumnModel().getColumn(4).setCellRenderer(centerRenderer);
 		table.getColumnModel().getColumn(5).setCellRenderer(centerRenderer);
+		table.addPropertyChangeListener("tableCellEditor", new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				if (evt.getNewValue() == null) {
+					int row = table.getSelectedRow();
+					int column = table.getSelectedColumn();
+					System.out.println(table.getColumnName(column));
+					if (table.getColumnName(column).equals("Quantité"))
+					{
+						table.setValueAt(Float.parseFloat(table.getValueAt(row, 0).toString()) * Float.parseFloat(table.getValueAt(row, 2).toString()), row, 3);
+						table.setValueAt(Float.parseFloat(table.getValueAt(row, 0).toString()) * (Float.parseFloat(table.getValueAt(row, 2).toString()) * 2), row, 4);
+						table.setValueAt(Float.parseFloat(table.getValueAt(row, 0).toString()) * (Float.parseFloat(table.getValueAt(row, 2).toString()) * 2), row, 5);
+					}
+				} else {
+					// editing started
+				}
+			}
+		});
 		comboBox.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
@@ -266,7 +285,9 @@ public class NouvelleCommandeClientView extends JPanel {
 						System.out.println(e.getItem().toString());
 							if(article.getLibelle().equals(e.getItem().toString())) {
 								table.setValueAt(article.getPrixUnitaire(), row, 2);
-								table.setValueAt(article.getPrixUnitaire() * 2, row, 3);
+								table.setValueAt(Float.parseFloat(table.getValueAt(row, 0).toString()) * Float.parseFloat(table.getValueAt(row, 2).toString()), row, 3);
+								table.setValueAt(Float.parseFloat(table.getValueAt(row, 0).toString()) * (Float.parseFloat(table.getValueAt(row, 2).toString()) * 2), row, 4);
+								table.setValueAt(Float.parseFloat(table.getValueAt(row, 0).toString()) * (Float.parseFloat(table.getValueAt(row, 2).toString()) * 2), row, 5);
 							}
 					}
 				}
@@ -288,8 +309,49 @@ public class NouvelleCommandeClientView extends JPanel {
 		vect.add(0);
 		vect.add(listProduits.get(0).getLibelle());
 		vect.add(listProduits.get(0).getPrixUnitaire());
-		vect.add(listProduits.get(0).getPrixUnitaire() * 2);
+		vect.add(0);
+		vect.add(0);
+		vect.add(0);
 		tab.addRow(vect);
 		return tab;
+	}
+
+	public void relisting()
+	{
+		DefaultTableModel model = (DefaultTableModel) table.getModel();
+		ProduitDAO produitDAO = new ProduitDAO();
+		List<Produit> listProduits = new ArrayList<>();
+		listProduits.addAll(produitDAO.read());
+		Vector vect = new Vector();
+		vect.add(0);
+		vect.add(listProduits.get(0).getLibelle());
+		vect.add(listProduits.get(0).getPrixUnitaire());
+		vect.add(0);
+		vect.add(0);
+		vect.add(0);
+		model.addRow(vect);
+		table.setModel(model);
+	}
+
+	public class DateLabelFormatter extends JFormattedTextField.AbstractFormatter {
+
+		private String datePattern = "yyyy-MM-dd";
+		private SimpleDateFormat dateFormatter = new SimpleDateFormat(datePattern);
+
+		@Override
+		public Object stringToValue(String text) throws ParseException {
+			return dateFormatter.parseObject(text);
+		}
+
+		@Override
+		public String valueToString(Object value) throws ParseException {
+			if (value != null) {
+				Calendar cal = (Calendar) value;
+				return dateFormatter.format(cal.getTime());
+			}
+
+			return "";
+		}
+
 	}
 }
