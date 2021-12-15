@@ -47,6 +47,27 @@ public class CommandeClientDAO {
 
     }
 
+    public void update(CommandeClient commandeClient, int idCommandeClient) {
+        java.util.Date utilDate = commandeClient.getWithdrawal_at();
+        java.sql.Date sqlDate = new java.sql.Date(commandeClient.getWithdrawal_at().getTime());
+        try {
+            PreparedStatement sql = connect.prepareStatement("UPDATE commandesclients SET withdrawal_at=?, fk_client=?, nbrArticles=?, prixTotal=?, accompte=?, status=?, typePaiment=?, produits=? WHERE commandesclients.id=?");
+            sql.setDate(1, sqlDate);
+            sql.setInt(2, commandeClient.getFk_client());
+            sql.setInt(3, commandeClient.getNbrArticles());
+            sql.setFloat(4, commandeClient.getPrixTotal());
+            sql.setBoolean(5, commandeClient.isAccompte());
+            sql.setString(6, commandeClient.getStatus());
+            sql.setString(7, commandeClient.getTypePaiment());
+            sql.setString(8, commandeClient.getProduits());
+            sql.setInt(9, idCommandeClient);
+            sql.executeUpdate();
+        } catch (SQLException e) {
+
+            e.printStackTrace();
+        }
+
+    }
 
     //Affichage des articles
     public List<CommandeClient> read() {
@@ -81,6 +102,16 @@ public class CommandeClientDAO {
         return commandeClient;
     }
 
+    public void delete(int idToDelete) {
+        try {
+            PreparedStatement sql = connect.prepareStatement("DELETE FROM commandesclients WHERE id=?");
+            sql.setInt(1, idToDelete);
+            sql.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     public ConnectionUrlParser.Pair<CommandeClient, Client> findById(int id) {
         ConnectionUrlParser.Pair<CommandeClient, Client> pair = null;

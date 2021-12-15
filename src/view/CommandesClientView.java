@@ -25,7 +25,8 @@ import java.util.Vector;
 public class CommandesClientView extends JPanel {
 
 	private JTable table;
-	JButton button = new JButton();
+	JButton btnModifier = new JButton();
+	JButton btnAnnuler = new JButton();
 	/**
 	 * Create the panel.
 	 */
@@ -81,12 +82,50 @@ public class CommandesClientView extends JPanel {
 		btnNewButton.setForeground(new Color(0, 0, 0));
 		btnNewButton.setBounds(467, 663, 499, 53);
 		panel.add(btnNewButton);
-		button.addActionListener(
+		btnModifier.addActionListener(
 				new ActionListener()
 				{
 					public void actionPerformed(ActionEvent event)
 					{
-						JOptionPane.showMessageDialog(null,"Do you want to modify this line?");
+						int n = JOptionPane.showConfirmDialog(null,"Voulez-vous modifier cette commande ?", "Modifier", JOptionPane.YES_NO_OPTION);
+						if(n == JOptionPane.YES_OPTION)
+						{
+							CommandeClientDAO commandeClientDAO = new CommandeClientDAO();
+							ConnectionUrlParser.Pair<CommandeClient, Client> pair = commandeClientDAO.findById((int)table.getValueAt(table.getSelectedRow(), 0));
+							NouvelleCommandeClientView.currentCommande = pair.left;
+							NouvelleCommandeClientView.currentClient = pair.right;
+							NouvelleCommandeClientView.modify = true;
+							PanelsManager.contentPane.removeAll();
+							PanelsManager.contentPane.add(PanelsManager.switchToNouvelleCommandePanel());
+							PanelsManager.contentPane.revalidate();
+							PanelsManager.contentPane.repaint();
+						}
+						else
+						{
+
+						}
+					}
+				}
+		);
+		btnAnnuler.addActionListener(
+				new ActionListener()
+				{
+					public void actionPerformed(ActionEvent event)
+					{
+						int n = JOptionPane.showConfirmDialog(null,"Voulez-vous annuler cette commande ?", "Annuler", JOptionPane.YES_NO_OPTION);
+						if(n == JOptionPane.YES_OPTION)
+						{
+							CommandeClientDAO commandeClientDAO = new CommandeClientDAO();
+							commandeClientDAO.delete((int)table.getValueAt(table.getSelectedRow(), 0));
+							PanelsManager.contentPane.removeAll();
+							PanelsManager.contentPane.add(PanelsManager.switchToCommandesClientPanel());
+							PanelsManager.contentPane.revalidate();
+							PanelsManager.contentPane.repaint();
+						}
+						else
+						{
+
+						}
 					}
 				}
 		);
@@ -100,8 +139,10 @@ public class CommandesClientView extends JPanel {
 		table.getColumnModel().getColumn(5).setCellRenderer(centerRenderer);
 		table.getColumnModel().getColumn(6).setCellRenderer(centerRenderer);
 		table.getColumnModel().getColumn(7).setCellRenderer(centerRenderer);
-		table.getColumn("D\u00e9tails").setCellRenderer(new ButtonRenderer());
-		table.getColumn("D\u00e9tails").setCellEditor(new ButtonEditor(new JCheckBox()));
+		table.getColumn("Modifier").setCellRenderer(new ButtonRenderer());
+		table.getColumn("Modifier").setCellEditor(new ButtonEditor(new JCheckBox()));
+		table.getColumn("Annuler").setCellRenderer(new SecondButtonRenderer());
+		table.getColumn("Annuler").setCellEditor(new SecondButtonEditor(new JCheckBox()));
 		JPanel panel_1 = new JPanel();
 		panel_1.setBackground(new Color(255, 255, 255));
 		panel_1.setBounds(0, 0, 1440, 99);
@@ -150,7 +191,7 @@ public class CommandesClientView extends JPanel {
 
 	public DefaultTableModel liste() {
 
-		String [] col = {"ID","Date création","Retirer à", "Client", "Nombres d'articles", "Prix Total", "Accompte", "Status", "D\u00e9tails"};
+		String [] col = {"ID","Date création","Retirer à", "Client", "Nombres d'articles", "Prix Total", "Accompte", "Status", "Modifier", "Annuler"};
 		DefaultTableModel tab = new DefaultTableModel(null, col);
 
 		CommandeClientDAO commandeClientDAO = new CommandeClientDAO();
@@ -184,7 +225,7 @@ public class CommandesClientView extends JPanel {
 		}
 		public Component getTableCellRendererComponent(JTable table, Object value,
 													   boolean isSelected, boolean hasFocus, int row, int column) {
-			setText((value == null) ? "Modify" : value.toString());
+			setText((value == null) ? "Modifier" : value.toString());
 			return this;
 		}
 	}
@@ -200,9 +241,42 @@ public class CommandesClientView extends JPanel {
 		public Component getTableCellEditorComponent(JTable table, Object value,
 													 boolean isSelected, int row, int column)
 		{
-			label = (value == null) ? "Modify" : value.toString();
-			button.setText(label);
-			return button;
+			label = (value == null) ? "Modifier" : value.toString();
+			btnModifier.setText(label);
+			return btnModifier;
+		}
+		public Object getCellEditorValue()
+		{
+			return new String(label);
+		}
+	}
+
+	class SecondButtonRenderer extends JButton implements TableCellRenderer
+	{
+		public SecondButtonRenderer() {
+			setOpaque(true);
+		}
+		public Component getTableCellRendererComponent(JTable table, Object value,
+													   boolean isSelected, boolean hasFocus, int row, int column) {
+			setText((value == null) ? "Annuler" : value.toString());
+			return this;
+		}
+	}
+
+	class SecondButtonEditor extends DefaultCellEditor
+	{
+		private String label;
+
+		public SecondButtonEditor(JCheckBox checkBox)
+		{
+			super(checkBox);
+		}
+		public Component getTableCellEditorComponent(JTable table, Object value,
+													 boolean isSelected, int row, int column)
+		{
+			label = (value == null) ? "Annuler" : value.toString();
+			btnAnnuler.setText(label);
+			return btnAnnuler;
 		}
 		public Object getCellEditorValue()
 		{

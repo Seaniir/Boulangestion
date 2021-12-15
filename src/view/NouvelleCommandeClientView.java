@@ -1,6 +1,7 @@
 package view;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import controller.ClientDao;
 import controller.CommandeClientDAO;
 import controller.PanelsManager;
@@ -17,6 +18,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.lang.reflect.Type;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -29,7 +31,9 @@ import java.util.*;
 import java.util.List;
 
 public class NouvelleCommandeClientView extends JPanel {
+	static public boolean modify = false;
 	static Client currentClient = new Client();
+	static CommandeClient currentCommande = new CommandeClient();
 	private JTable table;
 	JButton button = new JButton();
 	JComboBox comboBox = new JComboBox();
@@ -58,6 +62,9 @@ public class NouvelleCommandeClientView extends JPanel {
 		panel_1.add(accueilBtn);
 		accueilBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				currentClient = new Client();
+				currentCommande = new CommandeClient();
+				modify = false;
 				PanelsManager.contentPane.removeAll();
 				PanelsManager.contentPane.add(PanelsManager.switchToAccueilMenu());
 				PanelsManager.contentPane.revalidate();
@@ -90,6 +97,9 @@ public class NouvelleCommandeClientView extends JPanel {
 		JButton returnBtn = new JButton("");
 		returnBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				currentClient = new Client();
+				currentCommande = new CommandeClient();
+				modify = false;
 				PanelsManager.contentPane.removeAll();
 				PanelsManager.contentPane.add(PanelsManager.switchToCommandesClientPanel());
 				PanelsManager.contentPane.revalidate();
@@ -153,14 +163,23 @@ public class NouvelleCommandeClientView extends JPanel {
 		JLabel lblNewLabel_5 = new JLabel("Pr\u00E9nom :");
 		lblNewLabel_5.setBounds(237, 26, 78, 14);
 		panel_2.add(lblNewLabel_5);
-		
+
 		JComboBox comboBox_1 = new JComboBox();
 		ClientDao clientDao = new ClientDao();
 		List<Client> listClients = new ArrayList<>();
 		listClients.addAll(clientDao.read());
-		comboBox_1.addItem(null);
-		for (Client clients : listClients) {
-			comboBox_1.addItem(clients.getName());
+		if(modify) {
+			comboBox_1.addItem(currentClient.getName());
+			for (Client clients : listClients) {
+				if (clients.getId() != currentClient.getId())
+					comboBox_1.addItem(clients.getName());
+			}
+		}
+		else {
+			comboBox_1.addItem(null);
+			for (Client clients : listClients) {
+				comboBox_1.addItem(clients.getName());
+			}
 		}
 		comboBox_1.setBounds(56, 22, 118, 22);
 		
@@ -233,11 +252,6 @@ public class NouvelleCommandeClientView extends JPanel {
 		created_at_label.setBounds(271, 11, 189, 37);
 		panel_3.add(created_at_label);
 
-		JLabel withdrawal_at_label = new JLabel("");
-		withdrawal_at_label.setFont(new Font("Tahoma", Font.PLAIN, 22));
-		withdrawal_at_label.setBounds(271, 59, 189, 37);
-		panel_3.add(withdrawal_at_label);
-
 		JLabel id_commande_label = new JLabel("");
 		id_commande_label.setFont(new Font("Tahoma", Font.PLAIN, 22));
 		id_commande_label.setBounds(350, 100, 189, 37);
@@ -308,9 +322,32 @@ public class NouvelleCommandeClientView extends JPanel {
 		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 30));
 		btnNewButton.setBounds(105, 630, 760, 77);
 		panel.add(btnNewButton);
-		
-		JButton btnNewButton_1 = new JButton("Valider");
 
+		JButton btnNewButton_1 = new JButton();
+		if(modify)
+		{
+			btnNewButton_1.setText("Modifier");
+		}
+		else
+		{
+			btnNewButton_1.setText("Valider");
+		}
+
+		String strDate = null;
+		if(modify) {
+			if (currentCommande.getTypePaiment().equals("Espèces")) {
+				rdbtnNewRadioButton.setSelected(true);
+			} else if (currentCommande.getTypePaiment().equals("Carte banquaire")) {
+				rdbtnNewRadioButton_1.setSelected(true);
+			}
+			prenomLabel.setText(currentClient.getFirstName());
+			adresseLabel.setText(currentClient.getAdress());
+			phoneLabel.setText(currentClient.getTel());
+			Date date = currentCommande.getWithdrawal_at();
+			DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+			strDate = dateFormat.format(date);
+		}
+		
 		UtilDateModel model = new UtilDateModel();
 		Properties p = new Properties();
 		p.put("text.today", "Today");
@@ -319,6 +356,7 @@ public class NouvelleCommandeClientView extends JPanel {
 		JDatePanelImpl datePanel = new JDatePanelImpl(model, p);
 		JDatePickerImpl datePicker = new JDatePickerImpl(datePanel, new DateLabelFormatter());
 		datePicker.setBounds(840, 200, 150, 30);
+		datePicker.getJFormattedTextField().setText(strDate);
 		add(datePicker);
 
 		btnNewButton_1.addActionListener(new ActionListener() {
@@ -359,7 +397,10 @@ public class NouvelleCommandeClientView extends JPanel {
 				} catch (ParseException ex) {
 					ex.printStackTrace();
 				}
-				commandeClientDAO.add(new CommandeClient(date, date, currentClient.getId(), table.getRowCount(), Float.parseFloat(prixTotal_label.getText()), true, "En cours", typePaiment,json));
+				if(modify)
+					commandeClientDAO.update(new CommandeClient(date, date, currentClient.getId(), table.getRowCount(), Float.parseFloat(prixTotal_label.getText()), true, "En cours", typePaiment,json), currentCommande.getId());
+				else
+					commandeClientDAO.add(new CommandeClient(date, date, currentClient.getId(), table.getRowCount(), Float.parseFloat(prixTotal_label.getText()), true, "En cours", typePaiment,json));
 			}
 		});
 		btnNewButton_1.setBackground(Color.ORANGE);
@@ -371,6 +412,13 @@ public class NouvelleCommandeClientView extends JPanel {
 		btnNewButton_1_1.setFont(new Font("Tahoma", Font.PLAIN, 25));
 		btnNewButton_1_1.setBounds(1102, 630, 249, 56);
 		panel.add(btnNewButton_1_1);
+		float prixTotal = 0;
+		for(int i = 0 ; i < table.getRowCount() ; i++)
+		{
+			prixTotal += Float.parseFloat(table.getValueAt(i, 5).toString());
+			System.out.println(table.getValueAt(i, 5));
+		}
+		prixTotal_label.setText(String.valueOf(prixTotal));
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 		centerRenderer.setHorizontalAlignment(JLabel.CENTER);
 		table.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
@@ -444,15 +492,34 @@ public class NouvelleCommandeClientView extends JPanel {
 		for (Produit article : listProduits) {
 			comboBox.addItem(article.getLibelle());
 		}
-		Vector vect = new Vector();
-		vect.add(0);
-		vect.add(listProduits.get(0).getLibelle());
-		vect.add(listProduits.get(0).getPrixUnitaire());
-		vect.add(0);
-		vect.add(0);
-		vect.add(0);
-		tab.addRow(vect);
-		prixTotal_label.setText(Float.toString(0));
+		if (modify)
+		{
+			Gson gson = new Gson();
+			Type type = new TypeToken<ArrayList<ArrayList<Produit>>>(){}.getType();
+			ArrayList<ArrayList<Produit>> contactList = gson.fromJson(currentCommande.getProduits(), type);
+			for (ArrayList<Produit> produit : contactList){
+				Vector vect = new Vector();
+				vect.add(produit.get(0).getId());
+				vect.add(produit.get(0).getLibelle());
+				vect.add(produit.get(0).getPrixUnitaire());
+				vect.add(produit.get(0).getPrixUnitaire() * 2);
+				vect.add(produit.get(0).getPrixUnitaire() * 2);
+				vect.add(produit.get(0).getPrixUnitaire() * 2 * produit.get(0).getId());
+				tab.addRow(vect);
+			}
+		}
+		else
+		{
+			Vector vect = new Vector();
+			vect.add(0);
+			vect.add(listProduits.get(0).getLibelle());
+			vect.add(listProduits.get(0).getPrixUnitaire());
+			vect.add(0);
+			vect.add(0);
+			vect.add(0);
+			tab.addRow(vect);
+			prixTotal_label.setText(Float.toString(0));
+		}
 		return tab;
 	}
 
