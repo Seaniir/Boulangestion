@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.mysql.cj.conf.ConnectionUrlParser;
+import model.Client;
 import model.CommandeClient;
 
 public class CommandeClientDAO {
@@ -45,6 +47,27 @@ public class CommandeClientDAO {
 
     }
 
+    public void update(CommandeClient commandeClient, int idCommandeClient) {
+        java.util.Date utilDate = commandeClient.getWithdrawal_at();
+        java.sql.Date sqlDate = new java.sql.Date(commandeClient.getWithdrawal_at().getTime());
+        try {
+            PreparedStatement sql = connect.prepareStatement("UPDATE commandesclients SET withdrawal_at=?, fk_client=?, nbrArticles=?, prixTotal=?, accompte=?, status=?, typePaiment=?, produits=? WHERE commandesclients.id=?");
+            sql.setDate(1, sqlDate);
+            sql.setInt(2, commandeClient.getFk_client());
+            sql.setInt(3, commandeClient.getNbrArticles());
+            sql.setFloat(4, commandeClient.getPrixTotal());
+            sql.setBoolean(5, commandeClient.isAccompte());
+            sql.setString(6, commandeClient.getStatus());
+            sql.setString(7, commandeClient.getTypePaiment());
+            sql.setString(8, commandeClient.getProduits());
+            sql.setInt(9, idCommandeClient);
+            sql.executeUpdate();
+        } catch (SQLException e) {
+
+            e.printStackTrace();
+        }
+
+    }
 
     //Affichage des articles
     public List<CommandeClient> read() {
@@ -79,32 +102,58 @@ public class CommandeClientDAO {
         return commandeClient;
     }
 
-
-    /*public List<Article> findById(int id) {
-        List<Article> listearticle = new ArrayList<>();
+    public void delete(int idToDelete) {
         try {
-            PreparedStatement req = connect.prepareStatement("SELECT * FROM article WHERE id=?");
+            PreparedStatement sql = connect.prepareStatement("DELETE FROM commandesclients WHERE id=?");
+            sql.setInt(1, idToDelete);
+            sql.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public ConnectionUrlParser.Pair<CommandeClient, Client> findById(int id) {
+        ConnectionUrlParser.Pair<CommandeClient, Client> pair = null;
+        try {
+            PreparedStatement req = connect.prepareStatement("SELECT * FROM commandesclients INNER JOIN clients ON clients.id = commandesclients.fk_client AND commandesclients.id = ?");
             req.setInt(1, id);
 
             ResultSet rs = req.executeQuery();
-
             while(rs.next()) {
-                Article article = new Article();
+                CommandeClient article = new CommandeClient();
+                Client client = new Client();
                 article.setId(rs.getInt("id"));
-                article.setTitre(rs.getString("titre"));
-                article.setResume(rs.getString("resume"));
-                article.setContenu(rs.getString("contenu"));
                 article.setCreated_at(rs.getDate("created_at"));
-                article.setAuteur(rs.getString("auteur"));
+                article.setWithdrawal_at(rs.getDate("withdrawal_at"));
+                article.setFk_client(rs.getInt("fk_client"));
+                article.setNbrArticles(rs.getInt("nbrArticles"));
+                article.setPrixTotal(rs.getFloat("prixTotal"));
+                article.setAccompte(rs.getBoolean("accompte"));
+                article.setStatus(rs.getString("status"));
+                article.setTypePaiment(rs.getString("typePaiment"));
+                article.setProduits(rs.getString("produits"));
+                client.setId(rs.getInt("clients.id"));
+                client.setName(rs.getString("nom"));
+                client.setFirstName(rs.getString("prenom"));
+                client.setAdress(rs.getString("adresse"));
+                client.setZip(rs.getInt("zip"));
+                client.setCity(rs.getString("ville"));
+                client.setTel(rs.getString("telephone"));
+                client.setEmail(rs.getString("email"));
 
-                listearticle.add(article);
+                pair = new ConnectionUrlParser.Pair<>(article, client);
             }
-            System.out.println(listearticle);
         }catch(Exception e) {
             e.printStackTrace();
             System.out.println("Insertion KO - KO - KO");
         }
-        return listearticle;
-    }*/
+        return pair;
+    }
+
+    public static ConnectionUrlParser.Pair<Integer, String> getTwo()
+    {
+        return new ConnectionUrlParser.Pair<Integer, String>(10, "GeeksforGeeks");
+    }
 
 }

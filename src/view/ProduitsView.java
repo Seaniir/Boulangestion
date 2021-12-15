@@ -3,8 +3,10 @@ package view;
 import com.mysql.cj.conf.ConnectionUrlParser;
 import controller.CommandeClientDAO;
 import controller.PanelsManager;
+import controller.ProduitDAO;
 import model.Client;
 import model.CommandeClient;
+import model.Produit;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -22,7 +24,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Vector;
 
-public class CommandesClientView extends JPanel {
+public class ProduitsView extends JPanel {
 
 	private JTable table;
 	JButton btnModifier = new JButton();
@@ -30,7 +32,7 @@ public class CommandesClientView extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public CommandesClientView() {
+	public ProduitsView() {
 		setBounds(0, 0, 1440, 900);
 		setLayout(null);
 
@@ -68,7 +70,7 @@ public class CommandesClientView extends JPanel {
 		table.setRowHeight(100);
 		table.setModel(liste());
 
-		JButton btnNewButton = new JButton("Nouvelle Commande");
+		JButton btnNewButton = new JButton("Nouveau produit");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				PanelsManager.contentPane.removeAll();
@@ -131,8 +133,8 @@ public class CommandesClientView extends JPanel {
 		table.getColumnModel().getColumn(7).setCellRenderer(centerRenderer);
 		table.getColumn("Modifier").setCellRenderer(new ButtonRenderer());
 		table.getColumn("Modifier").setCellEditor(new ButtonEditor(new JCheckBox()));
-		table.getColumn("Annuler").setCellRenderer(new SecondButtonRenderer());
-		table.getColumn("Annuler").setCellEditor(new SecondButtonEditor(new JCheckBox()));
+		table.getColumn("Supprimer").setCellRenderer(new SecondButtonRenderer());
+		table.getColumn("Supprimer").setCellEditor(new SecondButtonEditor(new JCheckBox()));
 		JPanel panel_1 = new JPanel();
 		panel_1.setBackground(new Color(255, 255, 255));
 		panel_1.setBounds(0, 0, 1440, 99);
@@ -182,38 +184,29 @@ public class CommandesClientView extends JPanel {
 	public DefaultTableModel liste() {
 
 		String[] col = {
-				"ID",
-				"Date création",
-				"Retirer à",
-				"Client",
-				"Nombres d'articles",
-				"Prix Total",
-				"Accompte",
-				"Status",
+				"Libellé",
+				"Fabricant",
+				"Poids (kg)",
+				"Quantité",
+				"Prix HT",
+				"Prix TTC",
 				"Modifier",
-				"Annuler"
+				"Historique",
+				"Supprimer"
 		};
 		DefaultTableModel tab = new DefaultTableModel(null, col);
 
-		CommandeClientDAO commandeClientDAO = new CommandeClientDAO();
-		List < CommandeClient > listArticle = new ArrayList < > ();
-		listArticle.addAll(commandeClientDAO.read());
-		for (CommandeClient article: listArticle) {
+		ProduitDAO produitDAO = new ProduitDAO();
+		List <Produit> produits = new ArrayList < > ();
+		produits.addAll(produitDAO.read());
+		for (Produit produit: produits) {
 			Vector vect = new Vector();
-			DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-			Date dateObj = article.getCreated_at();
-			String created_at = df.format(dateObj);
-			DateFormat dw = new SimpleDateFormat("dd/MM/yyyy");
-			Date dateW = article.getWithdrawal_at();
-			String withdrawal_at = dw.format(dateW);
-			vect.add(article.getId());
-			vect.add(created_at);
-			vect.add(withdrawal_at);
-			vect.add(article.getFk_client());
-			vect.add(article.getNbrArticles());
-			vect.add(article.getPrixTotal());
-			vect.add(article.isAccompte());
-			vect.add(article.getStatus());
+			vect.add(produit.getLibelle());
+			vect.add(produit.getFabricant());
+			vect.add(produit.getPoids());
+			vect.add(produit.getQuantite());
+			vect.add(produit.getPrixHT());
+			vect.add(produit.getPrixTTC());
 			tab.addRow(vect);
 		}
 		return tab;

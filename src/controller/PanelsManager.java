@@ -1,14 +1,6 @@
 package controller;
 
-import view.CommandesClientView;
-import view.ListeClients;
-import view.AccueilMenu;
-import view.ListeFournisseurs;
-import view.NewFournisseur;
-import view.Login;
-import view.NouveauClient;
-import view.lambdaPanel;
-import view.NouvelleCommandeClientView;
+import view.*;
 
 import javax.swing.*;
 
@@ -23,4 +15,6 @@ public class PanelsManager {
     public static JPanel switchToCommandesClientPanel(){return new CommandesClientView();}
     public static JPanel switchToNouvelleCommandePanel(){return new NouvelleCommandeClientView();}
     public static JPanel switchToListeClientsPanel(){return new ListeClients();}
+    public static JPanel switchtoDetailsCommandesClients(){return new DetailsCommandesClient();}
+    public static JPanel switchtoProduitsViewPanel(){return new ProduitsView();}
 }
