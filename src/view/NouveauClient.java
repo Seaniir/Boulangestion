@@ -31,6 +31,7 @@ public class NouveauClient extends JPanel {
 	public static boolean modify = false;
 	
 	public NouveauClient() {
+		setBounds(0, 0, 1440, 900);
 		setBackground(new Color(255, 239, 213));
 		setLayout(null);
 		

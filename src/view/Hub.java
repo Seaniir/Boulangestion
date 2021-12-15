@@ -55,8 +55,7 @@ public class Hub extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
 		PanelsManager.contentPane = contentPane;
-		//PanelsManager.contentPane.add(PanelsManager.switchToLoginPanel());
-		PanelsManager.contentPane.add(PanelsManager.switchToListeClientsPanel());
+		PanelsManager.contentPane.add(PanelsManager.switchToHistoriqueVentesCommandesPanel());
 		setContentPane(PanelsManager.contentPane);
 	}
 }
