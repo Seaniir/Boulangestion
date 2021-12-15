@@ -84,10 +84,6 @@ public class ListeClients extends JPanel {
 		btnNewClient.setBounds(503, 914, 463, 43);
 		add(btnNewClient);
 		
-		/*JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(113, 231, 1217, 509);
-		add(scrollPane);*/
-		
 		// Table
 		JPanel listing = new JPanel();
 		listing.setBackground(new Color(255, 255, 255));
@@ -163,6 +159,8 @@ public class ListeClients extends JPanel {
 			label = (value == null) ? "Modify" : value.toString();
 			btnModify.setText(label);
 			NouveauClient.modify = true;
+			ClientDao clientDao = new ClientDao();
+			clientDao.findById((int)listingClients.getValueAt(listingClients.getSelectedRow(),1));
 			PanelsManager.contentPane.removeAll();
 			PanelsManager.contentPane.add(PanelsManager.switchToNouveauClientPanel());
 			PanelsManager.contentPane.repaint();
