@@ -56,8 +56,8 @@ public class DetailsCommandesClient extends JPanel {
 		JButton accueilBtn = new JButton("");
 		ImageIcon accueilImage = new ImageIcon("C:\\Users\\Quentin\\Downloads\\sign-out.png");
 		Image accueilImageImage = accueilImage.getImage(); // transform it
-		Image newimg4 = accueilImageImage.getScaledInstance(75, 75,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
-		accueilImage = new ImageIcon(newimg4);  // transform it back
+		Image newimg4 = accueilImageImage.getScaledInstance(75, 75, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
+		accueilImage = new ImageIcon(newimg4); // transform it back
 		accueilBtn.setIcon(accueilImage);
 		accueilBtn.setBounds(1333, 0, 107, 75);
 		panel_1.add(accueilBtn);
@@ -73,23 +73,21 @@ public class DetailsCommandesClient extends JPanel {
 		JButton historiqueBtn = new JButton("");
 		ImageIcon imageIcon = new ImageIcon("C:\\Users\\Quentin\\Downloads\\history.png");
 		Image image = imageIcon.getImage(); // transform it
-		Image newimg = image.getScaledInstance(75, 75,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
-		imageIcon = new ImageIcon(newimg);  // transform it back
+		Image newimg = image.getScaledInstance(75, 75, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
+		imageIcon = new ImageIcon(newimg); // transform it back
 		historiqueBtn.setIcon(imageIcon);
 		historiqueBtn.setBounds(0, 0, 127, 75);
 		panel_1.add(historiqueBtn);
 		button.addActionListener(
-				new ActionListener()
-				{
-					public void actionPerformed(ActionEvent event)
-					{
-						JOptionPane.showMessageDialog(null,"Do you want to modify this line?");
+				new ActionListener() {
+					public void actionPerformed(ActionEvent event) {
+						JOptionPane.showMessageDialog(null, "Do you want to modify this line?");
 					}
 				}
 		);
 		ImageIcon imageClient = new ImageIcon("C:\\Users\\Quentin\\Downloads\\user.png");
 		Image imageClientImage = imageClient.getImage(); // transform it
-		Image newimg2 = imageClientImage.getScaledInstance(75, 75,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
+		Image newimg2 = imageClientImage.getScaledInstance(75, 75, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
 		imageClient = new ImageIcon(newimg2);
 
 		JButton returnBtn = new JButton("");
@@ -103,8 +101,8 @@ public class DetailsCommandesClient extends JPanel {
 		});
 		ImageIcon imageReturn = new ImageIcon("C:\\Users\\Quentin\\Downloads\\return.png");
 		Image imageReturnImage = imageReturn.getImage(); // transform it
-		Image newimg3 = imageReturnImage.getScaledInstance(75, 75,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
-		imageReturn = new ImageIcon(newimg3);  // transform it back
+		Image newimg3 = imageReturnImage.getScaledInstance(75, 75, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
+		imageReturn = new ImageIcon(newimg3); // transform it back
 		returnBtn.setBounds(127, 0, 127, 75);
 		returnBtn.setIcon(imageReturn);
 		panel_1.add(returnBtn);
@@ -159,21 +157,21 @@ public class DetailsCommandesClient extends JPanel {
 		lblNewLabel_5.setBounds(237, 26, 78, 14);
 		panel_2.add(lblNewLabel_5);
 		ClientDao clientDao = new ClientDao();
-		List<Client> listClients = new ArrayList<>();
+		List < Client > listClients = new ArrayList < > ();
 		listClients.addAll(clientDao.read());
-		
+
 		JLabel adresseLabel = new JLabel("");
 		adresseLabel.setBounds(80, 55, 229, 33);
 		panel_2.add(adresseLabel);
-		
+
 		JLabel phoneLabel = new JLabel("");
 		phoneLabel.setBounds(90, 95, 100, 44);
 		panel_2.add(phoneLabel);
-		
+
 		JLabel prenomLabel = new JLabel("");
 		prenomLabel.setBounds(300, 8, 118, 50);
 		panel_2.add(prenomLabel);
-		
+
 		JLabel nameLabel = new JLabel("");
 		nameLabel.setBounds(60, 20, 229, 25);
 		panel_2.add(nameLabel);
@@ -209,7 +207,7 @@ public class DetailsCommandesClient extends JPanel {
 		id_commande_label.setFont(new Font("Tahoma", Font.PLAIN, 22));
 		id_commande_label.setBounds(350, 100, 189, 37);
 		panel_3.add(id_commande_label);
-		
+
 		JLabel withdrawal_at_label = new JLabel("");
 		withdrawal_at_label.setFont(new Font("Tahoma", Font.PLAIN, 22));
 		withdrawal_at_label.setBounds(271, 79, 166, 45);
@@ -274,18 +272,14 @@ public class DetailsCommandesClient extends JPanel {
 		table_1.setRowHeight(100);
 		table_1.setModel(liste());
 		float prixTotal = 0;
-		for(int i = 0 ; i < table_1.getRowCount() ; i++)
-		{
+		for (int i = 0; i < table_1.getRowCount(); i++) {
 			prixTotal += Float.parseFloat(table_1.getValueAt(i, 5).toString());
 			System.out.println(table_1.getValueAt(i, 5));
 		}
 		prixTotal_label.setText(String.valueOf(prixTotal));
-		if(currentCommande.getTypePaiment().equals("Espèces"))
-		{
+		if (currentCommande.getTypePaiment().equals("Espèces")) {
 			rdbtnNewRadioButton.setSelected(true);
-		}
-		else if(currentCommande.getTypePaiment().equals("Carte banquaire"))
-		{
+		} else if (currentCommande.getTypePaiment().equals("Carte banquaire")) {
 			rdbtnNewRadioButton_1.setSelected(true);
 		}
 		nameLabel.setText(currentClient.getName());
@@ -312,19 +306,26 @@ public class DetailsCommandesClient extends JPanel {
 	}
 
 	public DefaultTableModel liste() {
-		String [] col = {"Quantité","Libellé","Prix Unitaire", "Prix total HT", "Prix total TTC", "Montant réglé"};
+		String[] col = {
+				"Quantité",
+				"Libellé",
+				"Prix Unitaire",
+				"Prix total HT",
+				"Prix total TTC",
+				"Montant réglé"
+		};
 		DefaultTableModel tab = new DefaultTableModel(null, col);
 
 		ProduitDAO produitDAO = new ProduitDAO();
-		List<Produit> listProduits = new ArrayList<>();
+		List < Produit > listProduits = new ArrayList < > ();
 		listProduits.addAll(produitDAO.read());
-		for (Produit article : listProduits) {
+		for (Produit article: listProduits) {
 			comboBox.addItem(article.getLibelle());
 		}
 		Gson gson = new Gson();
-		Type type = new TypeToken<ArrayList<ArrayList<Produit>>>(){}.getType();
-		ArrayList<ArrayList<Produit>> contactList = gson.fromJson(currentCommande.getProduits(), type);
-		for (ArrayList<Produit> produit : contactList){
+		Type type = new TypeToken < ArrayList < ArrayList < Produit >>> () {}.getType();
+		ArrayList < ArrayList < Produit >> contactList = gson.fromJson(currentCommande.getProduits(), type);
+		for (ArrayList < Produit > produit: contactList) {
 			Vector vect = new Vector();
 			vect.add(produit.get(0).getId());
 			vect.add(produit.get(0).getLibelle());

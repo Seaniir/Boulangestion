@@ -16,4 +16,5 @@ public class PanelsManager {
     public static JPanel switchToNouvelleCommandePanel(){return new NouvelleCommandeClientView();}
     public static JPanel switchToListeClientsPanel(){return new ListeClients();}
     public static JPanel switchtoDetailsCommandesClients(){return new DetailsCommandesClient();}
+    public static JPanel switchtoProduitsViewPanel(){return new ProduitsView();}
 }

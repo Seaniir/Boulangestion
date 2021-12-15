@@ -13,15 +13,19 @@ public class ProduitDAO {
     //Appel de la connection
     Connection connect = GetConnection.getConnection();
 
-    public boolean add(Produit object) {
+    public boolean add(Produit produit) {
         boolean message = false;
         try {
 
             PreparedStatement req = connect.prepareStatement("INSERT INTO produits"
-                    + "(libelle, prixUnitaire) VALUES (?,?) ");
+                    + "(libelle, fabricant, poids, quantite, prixHT, prixTTC) VALUES (?,?,?,?,?,?) ");
 
-            req.setString(1, object.getLibelle());
-            req.setFloat(2, object.getPrixUnitaire());
+            req.setString(1, produit.getLibelle());
+            req.setString(2, produit.getFabricant());
+            req.setFloat(3, produit.getPoids());
+            req.setInt(4, produit.getQuantite());
+            req.setFloat(5, produit.getPrixHT());
+            req.setFloat(6, produit.getPrixTTC());
 
             req.executeUpdate();
             message = true;
@@ -49,7 +53,11 @@ public class ProduitDAO {
                 Produit article = new Produit();
                 article.setId(rs.getInt("id"));
                 article.setLibelle(rs.getString("libelle"));
-                article.setPrixUnitaire(rs.getFloat("prixUnitaire"));
+                article.setFabricant(rs.getString("fabricant"));
+                article.setPoids(rs.getFloat("poids"));
+                article.setQuantite(rs.getInt("quantite"));
+                article.setPrixHT(rs.getFloat("prixHT"));
+                article.setPrixTTC(rs.getFloat("prixTTC"));
 
                 produits.add(article);
             }

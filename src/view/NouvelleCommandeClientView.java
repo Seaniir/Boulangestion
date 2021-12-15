@@ -55,8 +55,8 @@ public class NouvelleCommandeClientView extends JPanel {
 		JButton accueilBtn = new JButton("");
 		ImageIcon accueilImage = new ImageIcon("C:\\Users\\Quentin\\Downloads\\sign-out.png");
 		Image accueilImageImage = accueilImage.getImage(); // transform it
-		Image newimg4 = accueilImageImage.getScaledInstance(75, 75,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
-		accueilImage = new ImageIcon(newimg4);  // transform it back
+		Image newimg4 = accueilImageImage.getScaledInstance(75, 75, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
+		accueilImage = new ImageIcon(newimg4); // transform it back
 		accueilBtn.setIcon(accueilImage);
 		accueilBtn.setBounds(1333, 0, 107, 75);
 		panel_1.add(accueilBtn);
@@ -75,23 +75,21 @@ public class NouvelleCommandeClientView extends JPanel {
 		JButton historiqueBtn = new JButton("");
 		ImageIcon imageIcon = new ImageIcon("C:\\Users\\Quentin\\Downloads\\history.png");
 		Image image = imageIcon.getImage(); // transform it
-		Image newimg = image.getScaledInstance(75, 75,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
-		imageIcon = new ImageIcon(newimg);  // transform it back
+		Image newimg = image.getScaledInstance(75, 75, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
+		imageIcon = new ImageIcon(newimg); // transform it back
 		historiqueBtn.setIcon(imageIcon);
 		historiqueBtn.setBounds(0, 0, 127, 75);
 		panel_1.add(historiqueBtn);
 		button.addActionListener(
-				new ActionListener()
-				{
-					public void actionPerformed(ActionEvent event)
-					{
-						JOptionPane.showMessageDialog(null,"Do you want to modify this line?");
+				new ActionListener() {
+					public void actionPerformed(ActionEvent event) {
+						JOptionPane.showMessageDialog(null, "Do you want to modify this line?");
 					}
 				}
 		);
 		ImageIcon imageClient = new ImageIcon("C:\\Users\\Quentin\\Downloads\\user.png");
 		Image imageClientImage = imageClient.getImage(); // transform it
-		Image newimg2 = imageClientImage.getScaledInstance(75, 75,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
+		Image newimg2 = imageClientImage.getScaledInstance(75, 75, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
 		imageClient = new ImageIcon(newimg2);
 
 		JButton returnBtn = new JButton("");
@@ -108,8 +106,8 @@ public class NouvelleCommandeClientView extends JPanel {
 		});
 		ImageIcon imageReturn = new ImageIcon("C:\\Users\\Quentin\\Downloads\\return.png");
 		Image imageReturnImage = imageReturn.getImage(); // transform it
-		Image newimg3 = imageReturnImage.getScaledInstance(75, 75,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
-		imageReturn = new ImageIcon(newimg3);  // transform it back
+		Image newimg3 = imageReturnImage.getScaledInstance(75, 75, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
+		imageReturn = new ImageIcon(newimg3); // transform it back
 		returnBtn.setBounds(127, 0, 127, 75);
 		returnBtn.setIcon(imageReturn);
 		panel_1.add(returnBtn);
@@ -166,31 +164,30 @@ public class NouvelleCommandeClientView extends JPanel {
 
 		JComboBox comboBox_1 = new JComboBox();
 		ClientDao clientDao = new ClientDao();
-		List<Client> listClients = new ArrayList<>();
+		List < Client > listClients = new ArrayList < > ();
 		listClients.addAll(clientDao.read());
-		if(modify) {
+		if (modify) {
 			comboBox_1.addItem(currentClient.getName());
-			for (Client clients : listClients) {
+			for (Client clients: listClients) {
 				if (clients.getId() != currentClient.getId())
 					comboBox_1.addItem(clients.getName());
 			}
-		}
-		else {
+		} else {
 			comboBox_1.addItem(null);
-			for (Client clients : listClients) {
+			for (Client clients: listClients) {
 				comboBox_1.addItem(clients.getName());
 			}
 		}
 		comboBox_1.setBounds(56, 22, 118, 22);
-		
+
 		JLabel adresseLabel = new JLabel("");
 		adresseLabel.setBounds(80, 55, 229, 33);
 		panel_2.add(adresseLabel);
-		
+
 		JLabel phoneLabel = new JLabel("");
 		phoneLabel.setBounds(90, 95, 100, 44);
 		panel_2.add(phoneLabel);
-		
+
 		JLabel prenomLabel = new JLabel("");
 		prenomLabel.setBounds(300, 8, 118, 50);
 		panel_2.add(prenomLabel);
@@ -202,9 +199,9 @@ public class NouvelleCommandeClientView extends JPanel {
 		comboBox_1.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
-				if(e.getStateChange() == ItemEvent.SELECTED) { // Check if the value got selected, ignore if it has been deselected
-					for (Client client : listClients) {
-						if(client.getName().equals(e.getItem().toString())) {
+				if (e.getStateChange() == ItemEvent.SELECTED) { // Check if the value got selected, ignore if it has been deselected
+					for (Client client: listClients) {
+						if (client.getName().equals(e.getItem().toString())) {
 							currentClient.setName(client.getName());
 							currentClient.setEmail(client.getEmail());
 							currentClient.setFirstName(client.getFirstName());
@@ -312,7 +309,7 @@ public class NouvelleCommandeClientView extends JPanel {
 		scrollPane.setViewportView(table);
 		table.setRowHeight(100);
 		table.setModel(liste());
-		
+
 		JButton btnNewButton = new JButton("Ajouter un produit");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -324,17 +321,14 @@ public class NouvelleCommandeClientView extends JPanel {
 		panel.add(btnNewButton);
 
 		JButton btnNewButton_1 = new JButton();
-		if(modify)
-		{
+		if (modify) {
 			btnNewButton_1.setText("Modifier");
-		}
-		else
-		{
+		} else {
 			btnNewButton_1.setText("Valider");
 		}
 
 		String strDate = null;
-		if(modify) {
+		if (modify) {
 			if (currentCommande.getTypePaiment().equals("Espèces")) {
 				rdbtnNewRadioButton.setSelected(true);
 			} else if (currentCommande.getTypePaiment().equals("Carte banquaire")) {
@@ -347,7 +341,7 @@ public class NouvelleCommandeClientView extends JPanel {
 			DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 			strDate = dateFormat.format(date);
 		}
-		
+
 		UtilDateModel model = new UtilDateModel();
 		Properties p = new Properties();
 		p.put("text.today", "Today");
@@ -363,12 +357,9 @@ public class NouvelleCommandeClientView extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				CommandeClientDAO commandeClientDAO = new CommandeClientDAO();
 				String typePaiment = "";
-				if(rdbtnNewRadioButton.isSelected())
-				{
+				if (rdbtnNewRadioButton.isSelected()) {
 					typePaiment = "Espèces";
-				}
-				else if(rdbtnNewRadioButton_1.isSelected())
-				{
+				} else if (rdbtnNewRadioButton_1.isSelected()) {
 					typePaiment = "Carte banquaire";
 				}
 				DateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE);
@@ -376,15 +367,15 @@ public class NouvelleCommandeClientView extends JPanel {
 				DateFormat inputFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE);
 				System.out.println(datePicker.getJFormattedTextField().getText());
 				int m = table.getRowCount(), n = table.getColumnCount();
-				ArrayList<ArrayList<Produit>> matrix = new ArrayList<ArrayList<Produit>>();
+				ArrayList < ArrayList < Produit >> matrix = new ArrayList < ArrayList < Produit >> ();
 
 				for (int i = 0; i < m; i++) {
-					ArrayList<Produit> row = new ArrayList<Produit>();
-						Produit produit = new Produit();
-						produit.setId(Integer.parseInt(table.getValueAt(i, 0).toString()));
-						produit.setLibelle((String) table.getValueAt(i, 1));
-						produit.setPrixUnitaire((Float) table.getValueAt(i, 2));
-						row.add(produit);
+					ArrayList < Produit > row = new ArrayList < Produit > ();
+					Produit produit = new Produit();
+					produit.setId(Integer.parseInt(table.getValueAt(i, 0).toString()));
+					produit.setLibelle((String) table.getValueAt(i, 1));
+					produit.setPrixUnitaire((Float) table.getValueAt(i, 2));
+					row.add(produit);
 					matrix.add(row);
 				}
 
@@ -397,10 +388,10 @@ public class NouvelleCommandeClientView extends JPanel {
 				} catch (ParseException ex) {
 					ex.printStackTrace();
 				}
-				if(modify)
-					commandeClientDAO.update(new CommandeClient(date, date, currentClient.getId(), table.getRowCount(), Float.parseFloat(prixTotal_label.getText()), true, "En cours", typePaiment,json), currentCommande.getId());
+				if (modify)
+					commandeClientDAO.update(new CommandeClient(date, date, currentClient.getId(), table.getRowCount(), Float.parseFloat(prixTotal_label.getText()), true, "En cours", typePaiment, json), currentCommande.getId());
 				else
-					commandeClientDAO.add(new CommandeClient(date, date, currentClient.getId(), table.getRowCount(), Float.parseFloat(prixTotal_label.getText()), true, "En cours", typePaiment,json));
+					commandeClientDAO.add(new CommandeClient(date, date, currentClient.getId(), table.getRowCount(), Float.parseFloat(prixTotal_label.getText()), true, "En cours", typePaiment, json));
 			}
 		});
 		btnNewButton_1.setBackground(Color.ORANGE);
@@ -413,8 +404,7 @@ public class NouvelleCommandeClientView extends JPanel {
 		btnNewButton_1_1.setBounds(1102, 630, 249, 56);
 		panel.add(btnNewButton_1_1);
 		float prixTotal = 0;
-		for(int i = 0 ; i < table.getRowCount() ; i++)
-		{
+		for (int i = 0; i < table.getRowCount(); i++) {
 			prixTotal += Float.parseFloat(table.getValueAt(i, 5).toString());
 			System.out.println(table.getValueAt(i, 5));
 		}
@@ -434,14 +424,12 @@ public class NouvelleCommandeClientView extends JPanel {
 					int row = table.getSelectedRow();
 					int column = table.getSelectedColumn();
 					System.out.println(table.getColumnName(column));
-					if (table.getColumnName(column).equals("Quantité"))
-					{
+					if (table.getColumnName(column).equals("Quantité")) {
 						table.setValueAt(Float.parseFloat(table.getValueAt(row, 0).toString()) * Float.parseFloat(table.getValueAt(row, 2).toString()), row, 3);
 						table.setValueAt(Float.parseFloat(table.getValueAt(row, 0).toString()) * (Float.parseFloat(table.getValueAt(row, 2).toString()) * 2), row, 4);
 						table.setValueAt(Float.parseFloat(table.getValueAt(row, 0).toString()) * (Float.parseFloat(table.getValueAt(row, 2).toString()) * 2), row, 5);
 						float prixTotal = 0;
-						for (int i = 0 ; i < table.getRowCount() ; i++)
-						{
+						for (int i = 0; i < table.getRowCount(); i++) {
 							prixTotal += Float.parseFloat(table.getValueAt(i, 5).toString());
 						}
 						prixTotal_label.setText(Float.toString(prixTotal));
@@ -454,28 +442,27 @@ public class NouvelleCommandeClientView extends JPanel {
 		comboBox.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
-				if(e.getStateChange() == ItemEvent.SELECTED) { // Check if the value got selected, ignore if it has been deselected
+				if (e.getStateChange() == ItemEvent.SELECTED) { // Check if the value got selected, ignore if it has been deselected
 					System.out.println(e.getItem().toString());
 					ProduitDAO produitDAO = new ProduitDAO();
-					List<Produit> listProduits = new ArrayList<>();
+					List < Produit > listProduits = new ArrayList < > ();
 					listProduits.addAll(produitDAO.read());
 					int row = table.getSelectedRow();
 					System.out.println(row);
-					for (Produit article : listProduits) {
+					for (Produit article: listProduits) {
 						System.out.println(article.getLibelle());
 						System.out.println(e.getItem().toString());
-							if(article.getLibelle().equals(e.getItem().toString())) {
-								table.setValueAt(article.getPrixUnitaire(), row, 2);
-								table.setValueAt(Float.parseFloat(table.getValueAt(row, 0).toString()) * Float.parseFloat(table.getValueAt(row, 2).toString()), row, 3);
-								table.setValueAt(Float.parseFloat(table.getValueAt(row, 0).toString()) * (Float.parseFloat(table.getValueAt(row, 2).toString()) * 2), row, 4);
-								table.setValueAt(Float.parseFloat(table.getValueAt(row, 0).toString()) * (Float.parseFloat(table.getValueAt(row, 2).toString()) * 2), row, 5);
-								float prixTotal = 0;
-								for (int i = 0 ; i < table.getRowCount() ; i++)
-								{
-									prixTotal += Float.parseFloat(table.getValueAt(i, 5).toString());
-								}
-								prixTotal_label.setText(Float.toString(prixTotal));
+						if (article.getLibelle().equals(e.getItem().toString())) {
+							table.setValueAt(article.getPrixUnitaire(), row, 2);
+							table.setValueAt(Float.parseFloat(table.getValueAt(row, 0).toString()) * Float.parseFloat(table.getValueAt(row, 2).toString()), row, 3);
+							table.setValueAt(Float.parseFloat(table.getValueAt(row, 0).toString()) * (Float.parseFloat(table.getValueAt(row, 2).toString()) * 2), row, 4);
+							table.setValueAt(Float.parseFloat(table.getValueAt(row, 0).toString()) * (Float.parseFloat(table.getValueAt(row, 2).toString()) * 2), row, 5);
+							float prixTotal = 0;
+							for (int i = 0; i < table.getRowCount(); i++) {
+								prixTotal += Float.parseFloat(table.getValueAt(i, 5).toString());
 							}
+							prixTotal_label.setText(Float.toString(prixTotal));
+						}
 					}
 				}
 			}
@@ -483,21 +470,27 @@ public class NouvelleCommandeClientView extends JPanel {
 	}
 
 	public DefaultTableModel liste() {
-		String [] col = {"Quantité","Libellé","Prix Unitaire", "Prix total HT", "Prix total TTC", "Montant réglé"};
+		String[] col = {
+				"Quantité",
+				"Libellé",
+				"Prix Unitaire",
+				"Prix total HT",
+				"Prix total TTC",
+				"Montant réglé"
+		};
 		DefaultTableModel tab = new DefaultTableModel(null, col);
 
 		ProduitDAO produitDAO = new ProduitDAO();
-		List<Produit> listProduits = new ArrayList<>();
+		List < Produit > listProduits = new ArrayList < > ();
 		listProduits.addAll(produitDAO.read());
-		for (Produit article : listProduits) {
+		for (Produit article: listProduits) {
 			comboBox.addItem(article.getLibelle());
 		}
-		if (modify)
-		{
+		if (modify) {
 			Gson gson = new Gson();
-			Type type = new TypeToken<ArrayList<ArrayList<Produit>>>(){}.getType();
-			ArrayList<ArrayList<Produit>> contactList = gson.fromJson(currentCommande.getProduits(), type);
-			for (ArrayList<Produit> produit : contactList){
+			Type type = new TypeToken < ArrayList < ArrayList < Produit >>> () {}.getType();
+			ArrayList < ArrayList < Produit >> contactList = gson.fromJson(currentCommande.getProduits(), type);
+			for (ArrayList < Produit > produit: contactList) {
 				Vector vect = new Vector();
 				vect.add(produit.get(0).getId());
 				vect.add(produit.get(0).getLibelle());
@@ -507,9 +500,7 @@ public class NouvelleCommandeClientView extends JPanel {
 				vect.add(produit.get(0).getPrixUnitaire() * 2 * produit.get(0).getId());
 				tab.addRow(vect);
 			}
-		}
-		else
-		{
+		} else {
 			Vector vect = new Vector();
 			vect.add(0);
 			vect.add(listProduits.get(0).getLibelle());
@@ -523,11 +514,10 @@ public class NouvelleCommandeClientView extends JPanel {
 		return tab;
 	}
 
-	public void relisting()
-	{
+	public void relisting() {
 		DefaultTableModel model = (DefaultTableModel) table.getModel();
 		ProduitDAO produitDAO = new ProduitDAO();
-		List<Produit> listProduits = new ArrayList<>();
+		List < Produit > listProduits = new ArrayList < > ();
 		listProduits.addAll(produitDAO.read());
 		Vector vect = new Vector();
 		vect.add(0);
