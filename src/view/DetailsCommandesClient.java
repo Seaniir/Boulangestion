@@ -329,10 +329,10 @@ public class DetailsCommandesClient extends JPanel {
 			Vector vect = new Vector();
 			vect.add(produit.get(0).getId());
 			vect.add(produit.get(0).getLibelle());
-			vect.add(produit.get(0).getPrixUnitaire());
-			vect.add(produit.get(0).getPrixUnitaire() * 2);
-			vect.add(produit.get(0).getPrixUnitaire() * 2);
-			vect.add(produit.get(0).getPrixUnitaire() * 2 * produit.get(0).getId());
+			//vect.add(produit.get(0).getPrixUnitaire());
+			//vect.add(produit.get(0).getPrixUnitaire() * 2);
+			//vect.add(produit.get(0).getPrixUnitaire() * 2);
+			//vect.add(produit.get(0).getPrixUnitaire() * 2 * produit.get(0).getId());
 			tab.addRow(vect);
 		}
 

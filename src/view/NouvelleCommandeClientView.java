@@ -374,7 +374,7 @@ public class NouvelleCommandeClientView extends JPanel {
 					Produit produit = new Produit();
 					produit.setId(Integer.parseInt(table.getValueAt(i, 0).toString()));
 					produit.setLibelle((String) table.getValueAt(i, 1));
-					produit.setPrixUnitaire((Float) table.getValueAt(i, 2));
+					//produit.setPrixUnitaire((Float) table.getValueAt(i, 2));
 					row.add(produit);
 					matrix.add(row);
 				}
@@ -453,7 +453,7 @@ public class NouvelleCommandeClientView extends JPanel {
 						System.out.println(article.getLibelle());
 						System.out.println(e.getItem().toString());
 						if (article.getLibelle().equals(e.getItem().toString())) {
-							table.setValueAt(article.getPrixUnitaire(), row, 2);
+							//table.setValueAt(article.getPrixUnitaire(), row, 2);
 							table.setValueAt(Float.parseFloat(table.getValueAt(row, 0).toString()) * Float.parseFloat(table.getValueAt(row, 2).toString()), row, 3);
 							table.setValueAt(Float.parseFloat(table.getValueAt(row, 0).toString()) * (Float.parseFloat(table.getValueAt(row, 2).toString()) * 2), row, 4);
 							table.setValueAt(Float.parseFloat(table.getValueAt(row, 0).toString()) * (Float.parseFloat(table.getValueAt(row, 2).toString()) * 2), row, 5);
@@ -494,17 +494,17 @@ public class NouvelleCommandeClientView extends JPanel {
 				Vector vect = new Vector();
 				vect.add(produit.get(0).getId());
 				vect.add(produit.get(0).getLibelle());
-				vect.add(produit.get(0).getPrixUnitaire());
-				vect.add(produit.get(0).getPrixUnitaire() * 2);
-				vect.add(produit.get(0).getPrixUnitaire() * 2);
-				vect.add(produit.get(0).getPrixUnitaire() * 2 * produit.get(0).getId());
+				//vect.add(produit.get(0).getPrixUnitaire());
+				//vect.add(produit.get(0).getPrixUnitaire() * 2);
+				//vect.add(produit.get(0).getPrixUnitaire() * 2);
+				//vect.add(produit.get(0).getPrixUnitaire() * 2 * produit.get(0).getId());
 				tab.addRow(vect);
 			}
 		} else {
 			Vector vect = new Vector();
 			vect.add(0);
 			vect.add(listProduits.get(0).getLibelle());
-			vect.add(listProduits.get(0).getPrixUnitaire());
+			//vect.add(listProduits.get(0).getPrixUnitaire());
 			vect.add(0);
 			vect.add(0);
 			vect.add(0);
@@ -522,7 +522,7 @@ public class NouvelleCommandeClientView extends JPanel {
 		Vector vect = new Vector();
 		vect.add(0);
 		vect.add(listProduits.get(0).getLibelle());
-		vect.add(listProduits.get(0).getPrixUnitaire());
+		//vect.add(listProduits.get(0).getPrixUnitaire());
 		vect.add(0);
 		vect.add(0);
 		vect.add(0);
