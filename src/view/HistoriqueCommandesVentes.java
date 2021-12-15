@@ -18,22 +18,24 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
-import controller.ClientDao;
+import controller.CommandeClientDAO;
+import controller.HistoriqueVentesCommandesDao;
 import controller.PanelsManager;
-import model.Client;
+import model.CommandeClient;
 
 import javax.swing.JTable;
 
-public class HistoriqueVentesCommandes extends JPanel {
+public class HistoriqueCommandesVentes extends JPanel {
 	private JTable listingHistorique;
 
 	/**
 	 * Create the panel.
 	 */
-	public HistoriqueVentesCommandes() {
+	public HistoriqueCommandesVentes() {
 		setBounds(0, 0, 1440, 900);
+		setBackground(new Color(255, 235, 205));
 		setLayout(null);
-		
+		// Panel TOP
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.WHITE);
 		panel.setBounds(0, 0, 1440, 131);
@@ -60,12 +62,8 @@ public class HistoriqueVentesCommandes extends JPanel {
 		btnAccueil.setBounds(1270, 10, 160, 82);
 		panel.add(btnAccueil);
 		
-		JPanel panel_1 = new JPanel();
-		panel_1.setForeground(Color.WHITE);
-		panel_1.setBackground(new Color(255, 239, 213));
-		panel_1.setBounds(0, 128, 1440, 772);
-		add(panel_1);
-		panel_1.setLayout(null);
+		// Panel Historique
+		
 		
 		JPanel listing = new JPanel();
 		listing.setBackground(new Color(255, 255, 255));
@@ -79,7 +77,7 @@ public class HistoriqueVentesCommandes extends JPanel {
 		
 		listingHistorique = new JTable();
 		listingHistorique.setRowSelectionAllowed(false);
-		scrollPane.setViewportView(listingClients);
+		scrollPane.setViewportView(listingHistorique);
 		listingHistorique.setRowHeight(100);
 		listingHistorique.setModel(liste());
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
@@ -90,24 +88,26 @@ public class HistoriqueVentesCommandes extends JPanel {
 		listingHistorique.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
 		listingHistorique.getColumnModel().getColumn(4).setCellRenderer(centerRenderer);
 		listingHistorique.getColumnModel().getColumn(5).setCellRenderer(centerRenderer);
-		listingHistorique.getColumnModel().getColumn(6).setCellRenderer(centerRenderer);
+		
 	}
 	
 	public DefaultTableModel liste() {
-		String [] col = {"N° Client","Nom","Prénom","Adresse", "Téléphone","Email", "Modifier","Historique","Supprimer"};
+		String [] col = {"N° commande/vente","Date","Client", "Nbr articles","Montant réglé", "Paiement"};
 		DefaultTableModel tab = new DefaultTableModel(null, col);
 		
-		ClientDao clientDao = new ClientDao();
-		List<Client> listClients = new ArrayList<>();
-		listClients.addAll(clientDao.read());
-		for (Client client : listClients) {
+		
+		CommandeClientDAO commandeClientDAO = new CommandeClientDAO();
+		List<CommandeClient> listCommandeClient = new ArrayList<>();
+		listCommandeClient.addAll(commandeClientDAO.read());
+		for (CommandeClient commandeClient : listCommandeClient) {
 			Vector vect = new Vector();
-			 vect.add(client.getId());
-			 vect.add(client.getName());
-			 vect.add(client.getFirstName());
-			 vect.add(client.getAdress()+" "+client.getZip()+" "+client.getCity());
-			 vect.add(client.getTel());
-			 vect.add(client.getEmail());
+			 vect.add(commandeClient.getId());
+			 vect.add(commandeClient.getWithdrawal_at());
+			 // chercher comment
+			 vect.add(commandeClient.getFk_client());
+			 vect.add(commandeClient.getNbrArticles());
+			 vect.add(commandeClient.getPrixTotal());
+			 vect.add(commandeClient.getTypePaiment());
 			 
 			 tab.addRow(vect);
 		}

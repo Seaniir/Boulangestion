@@ -70,6 +70,7 @@ public class ListeClients extends JPanel {
 		btnAccueil.setBounds(1270, 10, 160, 82);
 		panel.add(btnAccueil);
 		// Ajouter un client
+		
 		JButton btnNewClient = new JButton("Nouveau Client");
 		btnNewClient.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

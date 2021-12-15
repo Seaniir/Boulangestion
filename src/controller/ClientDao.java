@@ -15,8 +15,8 @@ public class ClientDao implements IDao<Client> {
 	ResultSet rs = null;
 	List<Client> listeClient = new ArrayList<>();
 	public static Client currentClient;
+	
 	public void inscription(Client client) {
-		
 		try {
 			PreparedStatement sql = connect.prepareStatement("INSERT INTO clients (nom,prenom,adresse,zip,ville,telephone,email) VALUES"
 					+"(?,?,?,?,?,?,?)");
