@@ -14,6 +14,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -24,8 +25,6 @@ import controller.ClientDao;
 import controller.IDao;
 import controller.PanelsManager;
 import model.Client;
-import view.CommandesClientView.ButtonEditor;
-import view.CommandesClientView.ButtonRenderer;
 
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
@@ -34,12 +33,14 @@ public class ListeClients extends JPanel {
 	
 	private JTable listingClients;
 	JButton btnModify = new JButton();
+	JButton btnDelete = new JButton();
 	JButton btnBrowsingHistory = new JButton();
 	
 	/**
 	 * Create the panel.
 	 */
 	public ListeClients() {
+		setBounds(0, 0, 1440, 900);
 		setBackground(new Color(255, 235, 205));
 		setLayout(null);
 		
@@ -69,6 +70,7 @@ public class ListeClients extends JPanel {
 		btnAccueil.setBounds(1270, 10, 160, 82);
 		panel.add(btnAccueil);
 		// Ajouter un client
+		
 		JButton btnNewClient = new JButton("Nouveau Client");
 		btnNewClient.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -83,10 +85,6 @@ public class ListeClients extends JPanel {
 		btnNewClient.setFont(new Font("Tahoma", Font.PLAIN, 25));
 		btnNewClient.setBounds(503, 914, 463, 43);
 		add(btnNewClient);
-		
-		/*JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(113, 231, 1217, 509);
-		add(scrollPane);*/
 		
 		// Table
 		JPanel listing = new JPanel();
@@ -113,13 +111,63 @@ public class ListeClients extends JPanel {
 		listingClients.getColumnModel().getColumn(4).setCellRenderer(centerRenderer);
 		listingClients.getColumnModel().getColumn(5).setCellRenderer(centerRenderer);
 		listingClients.getColumnModel().getColumn(6).setCellRenderer(centerRenderer);
+		
 		listingClients.getColumn("Modifier").setCellRenderer(new ButtonRenderer());
 		listingClients.getColumn("Modifier").setCellEditor(new ButtonEditor(new JCheckBox()));
 		listingClients.getColumn("Historique").setCellRenderer(new SecondButtonRenderer());
 		listingClients.getColumn("Historique").setCellEditor(new SecondButtonEditor(new JCheckBox()));
+		listingClients.getColumn("Supprimer").setCellRenderer(new ThirdButtonRenderer());
+		listingClients.getColumn("Supprimer").setCellEditor(new ThirdButtonEditor(new JCheckBox()));
+		
+		// Lors du clic sur le bouton modifier il se passe: 
+		btnModify.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int n = JOptionPane.showConfirmDialog(null, "Etes vous sur de modifier ?","Modification",JOptionPane.YES_NO_OPTION);
+				if (n == JOptionPane.YES_OPTION) {
+					NouveauClient.modify = true;
+					ClientDao clientDao = new ClientDao();
+					clientDao.findById((int)listingClients.getValueAt(listingClients.getSelectedRow(),0));
+					PanelsManager.contentPane.removeAll();
+					PanelsManager.contentPane.add(PanelsManager.switchToNouveauClientPanel());
+					PanelsManager.contentPane.repaint();
+					PanelsManager.contentPane.revalidate();
+				} else if (n == JOptionPane.NO_OPTION) {
+					
+				}
+					
+			}
+		});
+		
+		btnDelete.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int n = JOptionPane.showConfirmDialog(null, "Etes vous sur de supprimer ?","Suppression",JOptionPane.YES_NO_OPTION);
+				if (n == JOptionPane.YES_OPTION) {
+					ClientDao clientDao = new ClientDao();
+					clientDao.delete((int) listingClients.getValueAt(listingClients.getSelectedRow(), 0));
+					PanelsManager.contentPane.removeAll();
+					PanelsManager.contentPane.add(PanelsManager.switchToListeClientsPanel());
+					PanelsManager.contentPane.repaint();
+					PanelsManager.contentPane.revalidate();
+				} else if (n == JOptionPane.NO_OPTION) {
+					
+				}
+				
+			}
+		});
+		
+		btnBrowsingHistory.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+					PanelsManager.contentPane.removeAll();
+					PanelsManager.contentPane.add(PanelsManager.switchToCommandesClientPanel());
+					PanelsManager.contentPane.repaint();
+					PanelsManager.contentPane.revalidate();
+			}
+		});
 	}
+		// Remplir ma table avec la DB --- Si rajouter colonne ne pas oublier ICI
 		public DefaultTableModel liste() {
-			String [] col = {"N° Client","Nom","Prénom","Adresse", "Téléphone","Email", "Modifier","Historique"};
+			String [] col = {"N° Client","Nom","Prénom","Adresse", "Téléphone","Email", "Modifier","Historique","Supprimer"};
 			DefaultTableModel tab = new DefaultTableModel(null, col);
 			
 			ClientDao clientDao = new ClientDao();
@@ -135,11 +183,13 @@ public class ListeClients extends JPanel {
 				 vect.add(client.getEmail());
 				 
 				 tab.addRow(vect);
-		}
-		return tab;
-
+			}
+			return tab;
 		
-	}
+		}	
+	
+		
+	// Class pour les boutons dans le JTable.Comment faire plus propre ?  
 	class ButtonRenderer extends JButton implements TableCellRenderer{
 			public ButtonRenderer() {
 				setOpaque(true);
@@ -162,11 +212,6 @@ public class ListeClients extends JPanel {
 		{
 			label = (value == null) ? "Modify" : value.toString();
 			btnModify.setText(label);
-			NouveauClient.modify = true;
-			PanelsManager.contentPane.removeAll();
-			PanelsManager.contentPane.add(PanelsManager.switchToNouveauClientPanel());
-			PanelsManager.contentPane.repaint();
-			PanelsManager.contentPane.revalidate();
 			return btnModify;
 		}
 		public Object getCellEditorValue()
@@ -174,6 +219,7 @@ public class ListeClients extends JPanel {
 			return new String(label);
 		}
 	}
+	// Second bouton du tableau
 	class SecondButtonRenderer extends JButton implements TableCellRenderer{
 	    public SecondButtonRenderer() {
 	      setOpaque(true);
@@ -186,6 +232,35 @@ public class ListeClients extends JPanel {
 	}
 	class SecondButtonEditor extends DefaultCellEditor{
 	    public SecondButtonEditor(JCheckBox checkBox) {
+			super(checkBox);	
+		}
+		private String label;
+	    public Component getTableCellEditorComponent(JTable table, Object value,
+	    boolean isSelected, int row, int column){
+	      label = (value == null) ? "Historique" : value.toString();
+	      btnBrowsingHistory.setText(label);
+	      
+	      return btnBrowsingHistory;
+	    }
+	    public Object getCellEditorValue() 
+	    {
+	      return new String(label);
+	    }
+	}
+	
+	// Troisieme bouton du tableau
+	class ThirdButtonRenderer extends JButton implements TableCellRenderer{
+	    public ThirdButtonRenderer() {
+	      setOpaque(true);
+	    }
+	    public Component getTableCellRendererComponent(JTable table, Object value,
+	    boolean isSelected, boolean hasFocus, int row, int column) {
+	    	setText((value == null) ? "Supprimer" : value.toString());
+			return this;
+	    }
+	}
+	class ThirdButtonEditor extends DefaultCellEditor{
+	    public ThirdButtonEditor(JCheckBox checkBox) {
 			super(checkBox);
 			
 		}
@@ -193,13 +268,9 @@ public class ListeClients extends JPanel {
 	    
 	    public Component getTableCellEditorComponent(JTable table, Object value,
 	    boolean isSelected, int row, int column){
-	      label = (value == null) ? "Historique" : value.toString();
-	      btnBrowsingHistory.setText(label);
-	      PanelsManager.contentPane.removeAll();
-			PanelsManager.contentPane.add(PanelsManager.switchToCommandesClientPanel());
-			PanelsManager.contentPane.repaint();
-			PanelsManager.contentPane.revalidate();
-	      return btnBrowsingHistory;
+	      label = (value == null) ? "Supprimer" : value.toString();
+	      btnDelete.setText(label);
+	      return btnDelete;
 	    }
 	    public Object getCellEditorValue() 
 	    {

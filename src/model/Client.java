@@ -13,6 +13,7 @@ public class Client {
 	// Constructors
 
 	public Client(){};
+	
 	public Client(String name, String firstName, String adress, int zip, String city, String tel, String email) {
 		super();
 		this.name = name;
@@ -89,12 +90,4 @@ public class Client {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
-	// To String
-	@Override
-	public String toString() {
-		return "Client [name=" + name + ", firstName=" + firstName + ", adress=" + adress + ", zip="
-				+ zip + ", city=" + city + ", tel=" + tel + ", email=" + email + "]";
-	}
-	
 }

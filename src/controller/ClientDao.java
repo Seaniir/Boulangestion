@@ -14,8 +14,9 @@ public class ClientDao implements IDao<Client> {
 	Connection connect = controller.GetConnection.getConnection();	
 	ResultSet rs = null;
 	List<Client> listeClient = new ArrayList<>();
+	public static Client currentClient;
+	
 	public void inscription(Client client) {
-		
 		try {
 			PreparedStatement sql = connect.prepareStatement("INSERT INTO clients (nom,prenom,adresse,zip,ville,telephone,email) VALUES"
 					+"(?,?,?,?,?,?,?)");
@@ -61,7 +62,8 @@ public class ClientDao implements IDao<Client> {
 		
 		PreparedStatement sql;
         try {
-            sql = connect.prepareStatement("SELECT * FROM clients");
+            sql = connect.prepareStatement("SELECT * FROM clients WHERE isVisible=?");
+            sql.setInt(1, 1);
             rs = sql.executeQuery();
             while(rs.next()) {
                 Client client = new Client(rs.getInt("id"),rs.getString("nom"),rs.getString("prenom"),rs.getString("adresse"),rs.getInt("zip"),rs.getString("ville"),
@@ -89,6 +91,7 @@ public class ClientDao implements IDao<Client> {
 			sql.setString(5, client.getCity());
 			sql.setString(6, client.getTel());
 			sql.setString(7, client.getEmail());
+			sql.setInt(8, idClient);
 			sql.executeUpdate();
 		} catch (SQLException e) {
 			
@@ -99,13 +102,39 @@ public class ClientDao implements IDao<Client> {
 
 	@Override
 	public void delete(int idToDelete) {
-		// TODO Auto-generated method stub
-		
-	}
+		try {
+            PreparedStatement sql = connect.prepareStatement("UPDATE clients SET isVisible=? WHERE id=?");
+            sql.setInt(1, 0);
+            sql.setInt(2, idToDelete);
+            sql.executeUpdate();
+    
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
 	@Override
 	public Client findById(int id) {
-		return null;
+		
+		try {
+			PreparedStatement req = connect.prepareStatement("SELECT * FROM clients WHERE id=?");
+			req.setInt(1, id);
+			
+			ResultSet rs = req.executeQuery();
+			
+			while(rs.next()) {
+				currentClient = new Client(rs.getInt("id"),rs.getString("nom"),rs.getString("prenom"),rs.getString("adresse"),rs.getInt("zip"),rs.getString("ville"),
+				          rs.getString("telephone"),rs.getString("email"));
+				
+				
+			}
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+			
+		}
+		return currentClient;
 	}
+	
 
 }
