@@ -71,6 +71,7 @@ public class CommandeClient
         return produits;
     }
 
+
     public void setTypePaiment(String typePaiment) {
         this.typePaiment = typePaiment;
     }

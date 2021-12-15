@@ -1,7 +1,9 @@
 package view;
 
+import com.mysql.cj.conf.ConnectionUrlParser;
 import controller.CommandeClientDAO;
 import controller.PanelsManager;
+import model.Client;
 import model.CommandeClient;
 
 import javax.swing.*;
@@ -50,10 +52,14 @@ public class CommandesClientView extends JPanel {
 
 				int article_id = (int) table.getModel().getValueAt(id, 0);
 
-				removeAll();
-
-				repaint();
-				revalidate();
+				CommandeClientDAO commandeClientDAO = new CommandeClientDAO();
+				ConnectionUrlParser.Pair<CommandeClient, Client> pair = commandeClientDAO.findById((Integer) table.getValueAt(id, 0));
+				DetailsCommandesClient.currentCommande = pair.left;
+				DetailsCommandesClient.currentClient = pair.right;
+				PanelsManager.contentPane.removeAll();
+				PanelsManager.contentPane.add(PanelsManager.switchtoDetailsCommandesClients());
+				PanelsManager.contentPane.repaint();
+				PanelsManager.contentPane.revalidate();
 			}
 		});
 						

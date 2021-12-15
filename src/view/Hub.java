@@ -56,7 +56,7 @@ public class Hub extends JFrame {
 		contentPane.setLayout(new BorderLayout(0, 0));
 		PanelsManager.contentPane = contentPane;
 		//PanelsManager.contentPane.add(PanelsManager.switchToLoginPanel());
-		PanelsManager.contentPane.add(PanelsManager.switchToListeFournisseurs());
+		PanelsManager.contentPane.add(PanelsManager.switchToCommandesClientPanel());
 		setContentPane(PanelsManager.contentPane);
 	}
 }

@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.mysql.cj.conf.ConnectionUrlParser;
+import model.Client;
 import model.CommandeClient;
 
 public class CommandeClientDAO {
@@ -80,31 +82,47 @@ public class CommandeClientDAO {
     }
 
 
-    /*public List<Article> findById(int id) {
-        List<Article> listearticle = new ArrayList<>();
+    public ConnectionUrlParser.Pair<CommandeClient, Client> findById(int id) {
+        ConnectionUrlParser.Pair<CommandeClient, Client> pair = null;
         try {
-            PreparedStatement req = connect.prepareStatement("SELECT * FROM article WHERE id=?");
+            PreparedStatement req = connect.prepareStatement("SELECT * FROM commandesclients INNER JOIN clients ON clients.id = commandesclients.fk_client AND commandesclients.id = ?");
             req.setInt(1, id);
 
             ResultSet rs = req.executeQuery();
-
             while(rs.next()) {
-                Article article = new Article();
+                CommandeClient article = new CommandeClient();
+                Client client = new Client();
                 article.setId(rs.getInt("id"));
-                article.setTitre(rs.getString("titre"));
-                article.setResume(rs.getString("resume"));
-                article.setContenu(rs.getString("contenu"));
                 article.setCreated_at(rs.getDate("created_at"));
-                article.setAuteur(rs.getString("auteur"));
+                article.setWithdrawal_at(rs.getDate("withdrawal_at"));
+                article.setFk_client(rs.getInt("fk_client"));
+                article.setNbrArticles(rs.getInt("nbrArticles"));
+                article.setPrixTotal(rs.getFloat("prixTotal"));
+                article.setAccompte(rs.getBoolean("accompte"));
+                article.setStatus(rs.getString("status"));
+                article.setTypePaiment(rs.getString("typePaiment"));
+                article.setProduits(rs.getString("produits"));
+                client.setId(rs.getInt("clients.id"));
+                client.setName(rs.getString("nom"));
+                client.setFirstName(rs.getString("prenom"));
+                client.setAdress(rs.getString("adresse"));
+                client.setZip(rs.getInt("zip"));
+                client.setCity(rs.getString("ville"));
+                client.setTel(rs.getString("telephone"));
+                client.setEmail(rs.getString("email"));
 
-                listearticle.add(article);
+                pair = new ConnectionUrlParser.Pair<>(article, client);
             }
-            System.out.println(listearticle);
         }catch(Exception e) {
             e.printStackTrace();
             System.out.println("Insertion KO - KO - KO");
         }
-        return listearticle;
-    }*/
+        return pair;
+    }
+
+    public static ConnectionUrlParser.Pair<Integer, String> getTwo()
+    {
+        return new ConnectionUrlParser.Pair<Integer, String>(10, "GeeksforGeeks");
+    }
 
 }
