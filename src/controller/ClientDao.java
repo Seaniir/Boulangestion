@@ -62,7 +62,8 @@ public class ClientDao implements IDao<Client> {
 		
 		PreparedStatement sql;
         try {
-            sql = connect.prepareStatement("SELECT * FROM clients");
+            sql = connect.prepareStatement("SELECT * FROM clients WHERE isVisible=?");
+            sql.setInt(1, 1);
             rs = sql.executeQuery();
             while(rs.next()) {
                 Client client = new Client(rs.getInt("id"),rs.getString("nom"),rs.getString("prenom"),rs.getString("adresse"),rs.getInt("zip"),rs.getString("ville"),
@@ -101,9 +102,16 @@ public class ClientDao implements IDao<Client> {
 
 	@Override
 	public void delete(int idToDelete) {
-		// TODO Auto-generated method stub
-		
-	}
+		try {
+            PreparedStatement sql = connect.prepareStatement("UPDATE clients SET isVisible=? WHERE id=?");
+            sql.setInt(1, 0);
+            sql.setInt(2, idToDelete);
+            sql.executeUpdate();
+    
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
 	@Override
 	public Client findById(int id) {

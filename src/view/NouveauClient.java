@@ -27,10 +27,9 @@ public class NouveauClient extends JPanel {
 	private JTextField zipValue;
 	private JTextField cityValue;
 	private JTextField adressValue;
+	
 	public static boolean modify = false;
-	/**
-	 * Create the panel.
-	 */
+	
 	public NouveauClient() {
 		setBackground(new Color(255, 239, 213));
 		setLayout(null);
@@ -162,13 +161,14 @@ public class NouveauClient extends JPanel {
 		panel_1.add(adressValue);
 		
 		if (modify == true) {
+			// Pre-remplis les champs.
+			fillFields(ClientDao.currentClient);
 			
 			// Form to update a client.
 			JButton btnNewButton = new JButton("Modifier");
 			btnNewButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					ClientDao clientDaoModified = new ClientDao();
-					fillFields(ClientDao.currentClient);
 					String name_saisie = nameValue.getText();
 					String firstName_saisie = firstNameValue.getText();
 					String adress_saisie = adressValue.getText();
@@ -179,6 +179,21 @@ public class NouveauClient extends JPanel {
 					
 					Client nouveau = new Client(name_saisie,firstName_saisie,adress_saisie,zip_saisie,city_saisie,tel_saisie,email_saisie);
 					clientDaoModified.update(nouveau, ClientDao.currentClient.getId());
+					btnNewButton.setText("Valider");
+					nameValue.setText("");
+					firstNameValue.setText("");
+					adressValue.setText("");
+					zipValue.setText("");
+					cityValue.setText("");
+					telValue.setText("");
+					emailValue.setText("");
+					modify = false;
+					
+					PanelsManager.contentPane.removeAll();
+					PanelsManager.contentPane.add(PanelsManager.switchToListeClientsPanel());
+					PanelsManager.contentPane.repaint();
+					PanelsManager.contentPane.revalidate();
+					
 				}
 			});
 			btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 20));
@@ -205,6 +220,13 @@ public class NouveauClient extends JPanel {
 						ClientDao clientDao = new ClientDao();
 						
 						if (clientDao.mailAlreadyExists(email_saisie)) {
+							nameValue.setText("");
+							firstNameValue.setText("");
+							adressValue.setText("");
+							zipValue.setText("");
+							cityValue.setText("");
+							telValue.setText("");
+							emailValue.setText("");
 							clientDao.inscription(nouveau);
 						}else {
 							JOptionPane.showMessageDialog(null, "Mail existe deja","Error",JOptionPane.ERROR_MESSAGE);
@@ -248,7 +270,7 @@ public class NouveauClient extends JPanel {
 		btnAnnuler.setBounds(584, 576, 155, 30);
 		panel_1.add(btnAnnuler);
 	}
-	
+	// Method pour remplir les champs
 	public void fillFields(Client client) {
 		nameValue.setText(client.getName());
 		firstNameValue.setText(client.getFirstName());
