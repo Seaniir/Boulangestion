@@ -9,17 +9,12 @@ import javax.swing.SwingConstants;
 
 import controller.ClientDao;
 import controller.PanelsManager;
-import controller.UserDao;
 import model.Client;
 
 import java.awt.Font;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.regex.Pattern;
 
 import javax.swing.JTextField;
-import javax.swing.JTextArea;
-import javax.swing.JPasswordField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -160,11 +155,20 @@ public class NouveauClient extends JPanel {
 		cityValue.setBounds(512, 293, 227, 31);
 		panel_1.add(cityValue);
 		
+		adressValue = new JTextField();
+		adressValue.setBounds(168, 175, 571, 70);
+		panel_1.add(adressValue);
+		adressValue.setColumns(10);
+		panel_1.add(adressValue);
+		
 		if (modify == true) {
+			
 			// Form to update a client.
 			JButton btnNewButton = new JButton("Modifier");
 			btnNewButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
+					ClientDao clientDaoModified = new ClientDao();
+					fillFields(ClientDao.currentClient);
 					String name_saisie = nameValue.getText();
 					String firstName_saisie = firstNameValue.getText();
 					String adress_saisie = adressValue.getText();
@@ -172,27 +176,15 @@ public class NouveauClient extends JPanel {
 					String city_saisie = cityValue.getText();
 					String tel_saisie = telValue.getText();
 					String email_saisie = emailValue.getText();
+					
 					Client nouveau = new Client(name_saisie,firstName_saisie,adress_saisie,zip_saisie,city_saisie,tel_saisie,email_saisie);
-					if(!(Pattern.matches("^[a-zA-Z0-9_.-]+[@][a-zA-Z0-9-]+[.]+[a-zA-Z0-9]+$",email_saisie))) {
-						JOptionPane.showMessageDialog(null, "Mail invalide","Error",JOptionPane.ERROR_MESSAGE);
-					}else {
-						
-						ClientDao clientDao = new ClientDao();
-						
-						if (clientDao.mailAlreadyExists(email_saisie)) {
-							clientDao.inscription(nouveau);
-						}else {
-							JOptionPane.showMessageDialog(null, "Mail existe deja","Error",JOptionPane.ERROR_MESSAGE);
-							
-						}
-					}
+					clientDaoModified.update(nouveau, ClientDao.currentClient.getId());
 				}
 			});
 			btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 20));
 			btnNewButton.setBackground(new Color(255, 140, 0));
 			btnNewButton.setBounds(168, 571, 155, 30);
-			panel_1.add(btnNewButton);
-			
+			panel_1.add(btnNewButton);	
 		} else {
 			// Form to create a. 
 			JButton btnNewButton = new JButton("Valider");
@@ -221,10 +213,15 @@ public class NouveauClient extends JPanel {
 					}
 			}
 			});
+		
 		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		btnNewButton.setBackground(new Color(255, 140, 0));
 		btnNewButton.setBounds(168, 571, 155, 30);
 		panel_1.add(btnNewButton);
+		}
+		
+		
+		
 		
 		JButton btnAnnuler = new JButton("Annuler");
 		btnAnnuler.addActionListener(new ActionListener() {
@@ -238,7 +235,6 @@ public class NouveauClient extends JPanel {
 					cityValue.setText("");
 					telValue.setText("");
 					emailValue.setText("");
-					// Ou renvoyer sur la page precedente.
 				} else if (n == JOptionPane.NO_OPTION) {
 					
 				} else {
@@ -251,12 +247,16 @@ public class NouveauClient extends JPanel {
 		btnAnnuler.setBackground(Color.GRAY);
 		btnAnnuler.setBounds(584, 576, 155, 30);
 		panel_1.add(btnAnnuler);
-		
-		adressValue = new JTextField();
-		adressValue.setBounds(168, 175, 571, 70);
-		panel_1.add(adressValue);
-		adressValue.setColumns(10);
-		
+	}
+	
+	public void fillFields(Client client) {
+		nameValue.setText(client.getName());
+		firstNameValue.setText(client.getFirstName());
+		adressValue.setText(client.getAdress());
+		zipValue.setText(String.valueOf(client.getZip()));
+		cityValue.setText(client.getCity());
+		telValue.setText(client.getTel());
+		emailValue.setText(client.getEmail());	
 	}
 }
-}
+

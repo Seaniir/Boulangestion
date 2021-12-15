@@ -13,6 +13,7 @@ public class Client {
 	// Constructors
 
 	public Client(){};
+	
 	public Client(String name, String firstName, String adress, int zip, String city, String tel, String email) {
 		super();
 		this.name = name;

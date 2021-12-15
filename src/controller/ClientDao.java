@@ -14,7 +14,7 @@ public class ClientDao implements IDao<Client> {
 	Connection connect = controller.GetConnection.getConnection();	
 	ResultSet rs = null;
 	List<Client> listeClient = new ArrayList<>();
-	public static Client currentclient;
+	public static Client currentClient;
 	public void inscription(Client client) {
 		
 		try {
@@ -90,6 +90,7 @@ public class ClientDao implements IDao<Client> {
 			sql.setString(5, client.getCity());
 			sql.setString(6, client.getTel());
 			sql.setString(7, client.getEmail());
+			sql.setInt(8, idClient);
 			sql.executeUpdate();
 		} catch (SQLException e) {
 			
@@ -105,32 +106,26 @@ public class ClientDao implements IDao<Client> {
 	}
 
 	@Override
-	public List<Client> findById(int id) {
-		List<Client> listeClient = new ArrayList<>();
+	public Client findById(int id) {
+		
 		try {
 			PreparedStatement req = connect.prepareStatement("SELECT * FROM clients WHERE id=?");
 			req.setInt(1, id);
+			
 			ResultSet rs = req.executeQuery();
 			
 			while(rs.next()) {
-				Client client = new Client();
-				client.setId(rs.getInt("id"));
-				client.setName(rs.getString("titre"));
-				client.setFirstName(rs.getString("resume"));
-				client.setAdress(rs.getString("contenu"));
-				client.setZip(rs.getInt("created_at"));
-				client.setCity(rs.getString("auteur"));
-				client.setTel(rs.getString("auteur"));
-				client.setEmail(rs.getString("auteur"));
+				currentClient = new Client(rs.getInt("id"),rs.getString("nom"),rs.getString("prenom"),rs.getString("adresse"),rs.getInt("zip"),rs.getString("ville"),
+				          rs.getString("telephone"),rs.getString("email"));
 				
-				listeClient.add(client);
+				
 			}
-			System.out.println(listeClient);
+			
 		}catch(Exception e) {
 			e.printStackTrace();
-			System.out.println("Insertion KO - KO - KO");
+			
 		}
-		return listeClient;
+		return currentClient;
 	}
 	
 

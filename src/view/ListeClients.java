@@ -24,8 +24,6 @@ import controller.ClientDao;
 import controller.IDao;
 import controller.PanelsManager;
 import model.Client;
-import view.CommandesClientView.ButtonEditor;
-import view.CommandesClientView.ButtonRenderer;
 
 import javax.swing.JTable;
 import javax.swing.JScrollPane;
@@ -113,7 +111,21 @@ public class ListeClients extends JPanel {
 		listingClients.getColumn("Modifier").setCellEditor(new ButtonEditor(new JCheckBox()));
 		listingClients.getColumn("Historique").setCellRenderer(new SecondButtonRenderer());
 		listingClients.getColumn("Historique").setCellEditor(new SecondButtonEditor(new JCheckBox()));
+		
+		
+		btnModify.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				NouveauClient.modify = true;
+				ClientDao clientDao = new ClientDao();
+				clientDao.findById((int)listingClients.getValueAt(listingClients.getSelectedRow(),0));
+				PanelsManager.contentPane.removeAll();
+				PanelsManager.contentPane.add(PanelsManager.switchToNouveauClientPanel());
+				PanelsManager.contentPane.repaint();
+				PanelsManager.contentPane.revalidate();
+			}
+		});
 	}
+		// Remplir ma table avec la DB
 		public DefaultTableModel liste() {
 			String [] col = {"N° Client","Nom","Prénom","Adresse", "Téléphone","Email", "Modifier","Historique"};
 			DefaultTableModel tab = new DefaultTableModel(null, col);
@@ -131,11 +143,13 @@ public class ListeClients extends JPanel {
 				 vect.add(client.getEmail());
 				 
 				 tab.addRow(vect);
-		}
-		return tab;
-
+			}
+			return tab;
 		
-	}
+		}	
+	
+		
+	// Class pour les boutons dans le JTable. 
 	class ButtonRenderer extends JButton implements TableCellRenderer{
 			public ButtonRenderer() {
 				setOpaque(true);
@@ -158,13 +172,6 @@ public class ListeClients extends JPanel {
 		{
 			label = (value == null) ? "Modify" : value.toString();
 			btnModify.setText(label);
-			NouveauClient.modify = true;
-			ClientDao clientDao = new ClientDao();
-			clientDao.findById((int)listingClients.getValueAt(listingClients.getSelectedRow(),1));
-			PanelsManager.contentPane.removeAll();
-			PanelsManager.contentPane.add(PanelsManager.switchToNouveauClientPanel());
-			PanelsManager.contentPane.repaint();
-			PanelsManager.contentPane.revalidate();
 			return btnModify;
 		}
 		public Object getCellEditorValue()
