@@ -108,6 +108,8 @@ public class ListeFournisseurs extends JPanel {
 				//pop-up de confirmation: si oui va sur la modification du fournisseur, si non, ne fait rien
 				if (JOptionPane.showConfirmDialog(null, "Etes-vous sûr de vouloir modifier?", "Attention",
 				        JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+					FournisseurDao fournisseurDao = new FournisseurDao();
+					fournisseurDao.findById((int) listingFournisseurs.getValueAt(listingFournisseurs.getSelectedRow(), 0));
 					PanelsManager.contentPane.removeAll();
 					PanelsManager.contentPane.add(PanelsManager.switchToNewFournisseur());
 					PanelsManager.contentPane.repaint();

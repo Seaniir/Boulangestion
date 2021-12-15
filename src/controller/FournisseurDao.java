@@ -11,7 +11,7 @@ import model.Fournisseur;
 
 
 public class FournisseurDao implements IDao<Fournisseur>{
-	
+	public static Fournisseur currentFournisseur;
 	Connection connect = GetConnection.getConnection();
 	ResultSet rs = null;
 	List<Fournisseur> listeFournisseurs = new ArrayList<>();
@@ -65,8 +65,8 @@ public class FournisseurDao implements IDao<Fournisseur>{
 			sql.setString(6, fournisseur.getTel());
 			sql.setString(7, fournisseur.getEmail());
 			sql.setInt(8, idFournisseur);
-			
-			sql.executeUpdate();
+			System.out.println(sql);
+			//sql.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -96,14 +96,14 @@ public class FournisseurDao implements IDao<Fournisseur>{
 			ResultSet rs = req.executeQuery();
 			
 			while(rs.next()) {
-				Fournisseur fournisseur = new Fournisseur(rs.getInt("id"),rs.getString("societe"),rs.getString("correspondant"),rs.getString("adresse"),rs.getInt("cp"),rs.getString("ville"),rs.getString("tel"),rs.getString("email"));
-				return fournisseur;
+				currentFournisseur = new Fournisseur(rs.getInt("id"),rs.getString("societe"),rs.getString("correspondant"),rs.getString("adresse"),rs.getInt("cp"),rs.getString("ville"),rs.getString("tel"),rs.getString("email"));
+				
 			}
 		}catch(Exception e) {
 			e.printStackTrace();
 			
 		}
-		return null;
+		return currentFournisseur;
 	}
 
 	

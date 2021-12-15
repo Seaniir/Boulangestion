@@ -38,6 +38,7 @@ public class NewFournisseur extends JPanel {
 	private JTextField villeValue;
 	private JTextField telValue;
 	private JTextField emailValue;
+	private JButton btnValider;
 	public static boolean modify = false;
 	
 	/**
@@ -213,11 +214,12 @@ public class NewFournisseur extends JPanel {
 		emailValue.setBounds(277, 498, 540, 32);
 		formulaire.add(emailValue);
 		
-		JButton btnValider = new JButton("Valider");
+		
+		btnValider = new JButton("Valider");
+		if(modify = false) {
 		btnValider.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(modify = false) {
-					String societeSaisie = societeValue.getText();
+				String societeSaisie = societeValue.getText();
 				String correspSaisie = correspValue.getText();
 				String adresseSaisie = adressValue.getText();
 				int cpSaisie = Integer.valueOf(cpValue.getText());
@@ -231,12 +233,22 @@ public class NewFournisseur extends JPanel {
 				//ajoute le fournisseur à la bdd
 				fournisseurDao.create(nouveau);
 				clearFields();
-				}else {
-					
 				}
-				
-			}
-		});
+			});
+		}else {
+			btnValider.setText("Modifier");
+			FournisseurDao fournisseurDaoModified = new FournisseurDao();
+			fillFields(FournisseurDao.currentFournisseur);
+			String societeSaisie = societeValue.getText();
+			String correspSaisie = correspValue.getText();
+			String adresseSaisie = adressValue.getText();
+			int cpSaisie = Integer.valueOf(cpValue.getText());
+			String villeSaisie = villeValue.getText();
+			String telSaisie = telValue.getText();
+			String emailSaisie = emailValue.getText();
+			Fournisseur nouveau = new Fournisseur(societeSaisie, correspSaisie, adresseSaisie, cpSaisie, villeSaisie, telSaisie, emailSaisie);
+			fournisseurDaoModified.update(nouveau, FournisseurDao.currentFournisseur.getId());		
+		}
 		btnValider.setFont(new Font("Tahoma", Font.PLAIN, 24));
 		btnValider.setBackground(new Color(242, 193, 102));
 		btnValider.setBounds(197, 593, 191, 50);
@@ -267,6 +279,17 @@ public class NewFournisseur extends JPanel {
 		cpValue.setText(null);
 		villeValue.setText(null);
 		telValue.setText(null);
-		emailValue.setText(null);	
+		emailValue.setText(null);
+		btnValider.setText("Valider");
+	}
+	
+	public void fillFields(Fournisseur fournisseur) {
+		societeValue.setText(fournisseur.getSociete());
+		correspValue.setText(fournisseur.getCorrespondant());
+		adressValue.setText(fournisseur.getAdresse());
+		cpValue.setText(String.valueOf(fournisseur.getCodePostal()));
+		villeValue.setText(fournisseur.getVille());
+		telValue.setText(fournisseur.getTel());
+		emailValue.setText(fournisseur.getEmail());	
 	}
 }
