@@ -72,12 +72,12 @@ public class ListeFournisseurs extends JPanel {
 		
 		JPanel listing = new JPanel();
 		listing.setBackground(new Color(255, 255, 255));
-		listing.setBounds(59, 100, 1300, 624);
+		listing.setBounds(40, 100, 1360, 624);
 		add(listing);
 		listing.setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(0, 0, 1300, 624);
+		scrollPane.setBounds(0, 0, 1360, 624);
 		listing.add(scrollPane);
 		
 		listingFournisseurs = new JTable();
@@ -94,6 +94,7 @@ public class ListeFournisseurs extends JPanel {
 		listingFournisseurs.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
 		listingFournisseurs.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
 		listingFournisseurs.getColumnModel().getColumn(4).setCellRenderer(centerRenderer);
+		listingFournisseurs.getColumnModel().getColumn(5).setCellRenderer(centerRenderer);
 		listingFournisseurs.getColumn("Modifier").setCellRenderer(new ButtonRenderer());
 		listingFournisseurs.getColumn("Modifier").setCellEditor(new ButtonEditor(new JCheckBox()));
 		listingFournisseurs.getColumn("Historique").setCellRenderer(new SecondButtonRenderer());
@@ -110,11 +111,11 @@ public class ListeFournisseurs extends JPanel {
 				        JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 					FournisseurDao fournisseurDao = new FournisseurDao();
 					fournisseurDao.findById((int) listingFournisseurs.getValueAt(listingFournisseurs.getSelectedRow(), 0));
+					NewFournisseur.modify = true;
 					PanelsManager.contentPane.removeAll();
 					PanelsManager.contentPane.add(PanelsManager.switchToNewFournisseur());
 					PanelsManager.contentPane.repaint();
 					PanelsManager.contentPane.revalidate();
-					NewFournisseur.modify = true;
 				}
 			}
 	    });
@@ -137,8 +138,11 @@ public class ListeFournisseurs extends JPanel {
 	        	//pop-up de confirmation: si oui va sur la suppression du fournisseur dans ma liste, pas dans la bdd, si non, ne fait rien
 				if (JOptionPane.showConfirmDialog(null, "Etes-vous sûr de vouloir supprimer?", "Attention",
 				        JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+					FournisseurDao fournisseurDao = new FournisseurDao();
+					fournisseurDao.delete((int) listingFournisseurs.getValueAt(listingFournisseurs.getSelectedRow(), 0));
+					
 					PanelsManager.contentPane.removeAll();
-					PanelsManager.contentPane.add(PanelsManager.switchToNewFournisseur());
+					PanelsManager.contentPane.add(PanelsManager.switchToListeFournisseurs());
 					PanelsManager.contentPane.repaint();
 					PanelsManager.contentPane.revalidate();
 				}
@@ -164,7 +168,7 @@ public class ListeFournisseurs extends JPanel {
 	
 	//remplissage du tableau
 	public DefaultTableModel liste() {
-		String [] col = {"N° Fournisseur","Societe","Adresse","Telephone", "Email","Modifier", "Historique", "Supprimer"};
+		String [] col = {"N° Fournisseur","Societe","Correspondant","Adresse","Telephone", "Email","Modifier", "Historique", "Supprimer"};
 		DefaultTableModel tab = new DefaultTableModel(null, col);
 		
 		FournisseurDao fournisseurDao = new FournisseurDao();
@@ -174,6 +178,7 @@ public class ListeFournisseurs extends JPanel {
 			Vector vect = new Vector();
 			vect.add(fournisseur.getId());
 			 vect.add(fournisseur.getSociete());
+			 vect.add(fournisseur.getCorrespondant());
 			 vect.add(fournisseur.getAdresse()+" "+fournisseur.getCodePostal()+" "+fournisseur.getVille());
 			 vect.add(fournisseur.getTel());
 			 vect.add(fournisseur.getEmail());
