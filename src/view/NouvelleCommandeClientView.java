@@ -338,15 +338,18 @@ public class NouvelleCommandeClientView extends JPanel {
 				DateFormat inputFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE);
 				System.out.println(datePicker.getJFormattedTextField().getText());
 				int m = table.getRowCount(), n = table.getColumnCount();
-				ArrayList<ArrayList<Object>> matrix = new ArrayList<ArrayList<Object>>();
+				ArrayList<ArrayList<Produit>> matrix = new ArrayList<ArrayList<Produit>>();
 
 				for (int i = 0; i < m; i++) {
-					ArrayList<Object> row = new ArrayList<Object>();
-					for (int j = 0; j < n; j++) {
-						row.add(table.getValueAt(i, j));
-					}
+					ArrayList<Produit> row = new ArrayList<Produit>();
+						Produit produit = new Produit();
+						produit.setId(Integer.parseInt(table.getValueAt(i, 0).toString()));
+						produit.setLibelle((String) table.getValueAt(i, 1));
+						produit.setPrixUnitaire((Float) table.getValueAt(i, 2));
+						row.add(produit);
 					matrix.add(row);
 				}
+
 				System.out.println(matrix);
 				String json = new Gson().toJson(matrix);
 				System.out.println(json);

@@ -2,6 +2,8 @@ package view;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.reflect.TypeToken;
 import controller.ClientDao;
 import controller.CommandeClientDAO;
 import controller.PanelsManager;
@@ -18,6 +20,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.lang.reflect.Type;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -32,7 +35,7 @@ import java.util.List;
 public class DetailsCommandesClient extends JPanel {
 	static CommandeClient currentCommande = new CommandeClient();
 	static Client currentClient = new Client();
-	private JTable table;
+	private JTable table_1;
 	JButton button = new JButton();
 	JComboBox comboBox = new JComboBox();
 	JLabel prixTotal_label = new JLabel();
@@ -176,13 +179,8 @@ public class DetailsCommandesClient extends JPanel {
 		panel_2.add(nameLabel);
 
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 167, 1014, 452);
+		scrollPane.setBounds(10, 167, 1014, 526);
 		panel.add(scrollPane);
-
-		table = new JTable();
-		table.setRowSelectionAllowed(false);
-		table.setRowHeight(100);
-		scrollPane.setColumnHeaderView(table);
 
 		JPanel panel_3 = new JPanel();
 		panel_3.setBounds(573, 11, 857, 148);
@@ -245,10 +243,12 @@ public class DetailsCommandesClient extends JPanel {
 		panel_5.setLayout(null);
 
 		JRadioButton rdbtnNewRadioButton = new JRadioButton("Esp\u00E8ces");
+		rdbtnNewRadioButton.setEnabled(false);
 		rdbtnNewRadioButton.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		rdbtnNewRadioButton.setBounds(18, 22, 109, 23);
 
 		JRadioButton rdbtnNewRadioButton_1 = new JRadioButton("Carte banquaire");
+		rdbtnNewRadioButton_1.setEnabled(false);
 		rdbtnNewRadioButton_1.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		rdbtnNewRadioButton_1.setBounds(18, 48, 132, 23);
 
@@ -267,21 +267,27 @@ public class DetailsCommandesClient extends JPanel {
 		panel_5.add(rdbtnNewRadioButton);
 		panel_5.add(rdbtnNewRadioButton_1);
 
-		table = new JTable();
-		table.setRowSelectionAllowed(false);
-		scrollPane.setViewportView(table);
-		table.setRowHeight(100);
-		table.setModel(liste());
-		
-		JButton btnNewButton = new JButton("Ajouter un produit");
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				relisting();
-			}
-		});
-		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 30));
-		btnNewButton.setBounds(105, 630, 760, 77);
-		panel.add(btnNewButton);
+		table_1 = new JTable();
+		table_1.setEnabled(false);
+		table_1.setRowSelectionAllowed(false);
+		scrollPane.setViewportView(table_1);
+		table_1.setRowHeight(100);
+		table_1.setModel(liste());
+		float prixTotal = 0;
+		for(int i = 0 ; i < table_1.getRowCount() ; i++)
+		{
+			prixTotal += Float.parseFloat(table_1.getValueAt(i, 5).toString());
+			System.out.println(table_1.getValueAt(i, 5));
+		}
+		prixTotal_label.setText(String.valueOf(prixTotal));
+		if(currentCommande.getTypePaiment().equals("Espèces"))
+		{
+			rdbtnNewRadioButton.setSelected(true);
+		}
+		else if(currentCommande.getTypePaiment().equals("Carte banquaire"))
+		{
+			rdbtnNewRadioButton_1.setSelected(true);
+		}
 		nameLabel.setText(currentClient.getName());
 		prenomLabel.setText(currentClient.getFirstName());
 		adresseLabel.setText(currentClient.getAdress());
@@ -297,65 +303,12 @@ public class DetailsCommandesClient extends JPanel {
 		p.put("text.year", "Year");
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 		centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-		table.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
-		table.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(comboBox));
-		table.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
-		table.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
-		table.getColumnModel().getColumn(4).setCellRenderer(centerRenderer);
-		table.getColumnModel().getColumn(5).setCellRenderer(centerRenderer);
-		table.addPropertyChangeListener("tableCellEditor", new PropertyChangeListener() {
-			@Override
-			public void propertyChange(PropertyChangeEvent evt) {
-				if (evt.getNewValue() == null) {
-					int row = table.getSelectedRow();
-					int column = table.getSelectedColumn();
-					System.out.println(table.getColumnName(column));
-					if (table.getColumnName(column).equals("Quantité"))
-					{
-						table.setValueAt(Float.parseFloat(table.getValueAt(row, 0).toString()) * Float.parseFloat(table.getValueAt(row, 2).toString()), row, 3);
-						table.setValueAt(Float.parseFloat(table.getValueAt(row, 0).toString()) * (Float.parseFloat(table.getValueAt(row, 2).toString()) * 2), row, 4);
-						table.setValueAt(Float.parseFloat(table.getValueAt(row, 0).toString()) * (Float.parseFloat(table.getValueAt(row, 2).toString()) * 2), row, 5);
-						float prixTotal = 0;
-						for (int i = 0 ; i < table.getRowCount() ; i++)
-						{
-							prixTotal += Float.parseFloat(table.getValueAt(i, 5).toString());
-						}
-						prixTotal_label.setText(Float.toString(prixTotal));
-					}
-				} else {
-					// editing started
-				}
-			}
-		});
-		comboBox.addItemListener(new ItemListener() {
-			@Override
-			public void itemStateChanged(ItemEvent e) {
-				if(e.getStateChange() == ItemEvent.SELECTED) { // Check if the value got selected, ignore if it has been deselected
-					System.out.println(e.getItem().toString());
-					ProduitDAO produitDAO = new ProduitDAO();
-					List<Produit> listProduits = new ArrayList<>();
-					listProduits.addAll(produitDAO.read());
-					int row = table.getSelectedRow();
-					System.out.println(row);
-					for (Produit article : listProduits) {
-						System.out.println(article.getLibelle());
-						System.out.println(e.getItem().toString());
-							if(article.getLibelle().equals(e.getItem().toString())) {
-								table.setValueAt(article.getPrixUnitaire(), row, 2);
-								table.setValueAt(Float.parseFloat(table.getValueAt(row, 0).toString()) * Float.parseFloat(table.getValueAt(row, 2).toString()), row, 3);
-								table.setValueAt(Float.parseFloat(table.getValueAt(row, 0).toString()) * (Float.parseFloat(table.getValueAt(row, 2).toString()) * 2), row, 4);
-								table.setValueAt(Float.parseFloat(table.getValueAt(row, 0).toString()) * (Float.parseFloat(table.getValueAt(row, 2).toString()) * 2), row, 5);
-								float prixTotal = 0;
-								for (int i = 0 ; i < table.getRowCount() ; i++)
-								{
-									prixTotal += Float.parseFloat(table.getValueAt(i, 5).toString());
-								}
-								prixTotal_label.setText(Float.toString(prixTotal));
-							}
-					}
-				}
-			}
-		});
+		table_1.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
+		table_1.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(comboBox));
+		table_1.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
+		table_1.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
+		table_1.getColumnModel().getColumn(4).setCellRenderer(centerRenderer);
+		table_1.getColumnModel().getColumn(5).setCellRenderer(centerRenderer);
 	}
 
 	public DefaultTableModel liste() {
@@ -368,40 +321,22 @@ public class DetailsCommandesClient extends JPanel {
 		for (Produit article : listProduits) {
 			comboBox.addItem(article.getLibelle());
 		}
-		System.out.println(currentCommande.getProduits());
-		List<String> myList = new ArrayList<String>(Arrays.asList(currentCommande.getProduits()));
-		System.out.println(myList);
-		Vector vect = new Vector();
-		for (int i = 0 ; i < myList.size() ; i++) {
-			vect.add(myList.get(0));
-			vect.add(listProduits.get(0).getLibelle());
-			vect.add(listProduits.get(0).getPrixUnitaire());
-			vect.add(0);
-			vect.add(0);
-			vect.add(0);
+		Gson gson = new Gson();
+		Type type = new TypeToken<ArrayList<ArrayList<Produit>>>(){}.getType();
+		ArrayList<ArrayList<Produit>> contactList = gson.fromJson(currentCommande.getProduits(), type);
+		for (ArrayList<Produit> produit : contactList){
+			Vector vect = new Vector();
+			vect.add(produit.get(0).getId());
+			vect.add(produit.get(0).getLibelle());
+			vect.add(produit.get(0).getPrixUnitaire());
+			vect.add(produit.get(0).getPrixUnitaire() * 2);
+			vect.add(produit.get(0).getPrixUnitaire() * 2);
+			vect.add(produit.get(0).getPrixUnitaire() * 2 * produit.get(0).getId());
 			tab.addRow(vect);
-			prixTotal_label.setText(Float.toString(0));
 		}
 
 		return tab;
 
-	}
-
-	public void relisting()
-	{
-		DefaultTableModel model = (DefaultTableModel) table.getModel();
-		ProduitDAO produitDAO = new ProduitDAO();
-		List<Produit> listProduits = new ArrayList<>();
-		listProduits.addAll(produitDAO.read());
-		Vector vect = new Vector();
-		vect.add(0);
-		vect.add(listProduits.get(0).getLibelle());
-		vect.add(listProduits.get(0).getPrixUnitaire());
-		vect.add(0);
-		vect.add(0);
-		vect.add(0);
-		model.addRow(vect);
-		table.setModel(model);
 	}
 
 	public class DateLabelFormatter extends JFormattedTextField.AbstractFormatter {
