@@ -318,7 +318,7 @@ public class AccueilMenu extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				PanelsManager.contentPane.removeAll();
-				PanelsManager.contentPane.add(PanelsManager.switchToNewFournisseur());
+				PanelsManager.contentPane.add(PanelsManager.switchToListeFournisseurs());
 				PanelsManager.contentPane.repaint();
 				PanelsManager.contentPane.revalidate();
 			}

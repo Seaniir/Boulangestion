@@ -11,7 +11,7 @@ import model.Fournisseur;
 
 
 public class FournisseurDao implements IDao<Fournisseur>{
-	
+	public static Fournisseur currentFournisseur;
 	Connection connect = GetConnection.getConnection();
 	ResultSet rs = null;
 	List<Fournisseur> listeFournisseurs = new ArrayList<>();
@@ -39,11 +39,12 @@ public class FournisseurDao implements IDao<Fournisseur>{
 	public List<Fournisseur> read() {
 		PreparedStatement sql2;
 		try {
-			sql2 = connect.prepareStatement("SELECT * FROM fournisseur");
+			sql2 = connect.prepareStatement("SELECT * FROM fournisseur WHERE isVisible=?");
+			sql2.setInt(1, 1);
 			rs = sql2.executeQuery();
 			
 			while(rs.next()) {
-				Fournisseur fournisseur = new Fournisseur(rs.getInt("id"),rs.getString("societe"),rs.getString("adresse"), rs.getInt("cp"), rs.getString("ville"),rs.getString("tel"), rs.getString("email"));
+				Fournisseur fournisseur = new Fournisseur(rs.getInt("id"),rs.getString("societe"),rs.getString("correspondant"),rs.getString("adresse"), rs.getInt("cp"), rs.getString("ville"),rs.getString("tel"), rs.getString("email"));
 				listeFournisseurs.add(fournisseur);
 			}
 			
@@ -76,14 +77,14 @@ public class FournisseurDao implements IDao<Fournisseur>{
 	@Override
 	public void delete(int idToDelete) {
 		try {
-			PreparedStatement sql = connect.prepareStatement("DELETE FROM fournisseur WHERE id=?");
-			sql.setInt(1, idToDelete);
+			PreparedStatement sql = connect.prepareStatement("UPDATE fournisseur SET isVisible=? WHERE id=?");
+			sql.setInt(1, 0);
+			sql.setInt(2, idToDelete);
 			sql.executeUpdate();
 	
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
 	}
 
 	@Override
@@ -96,14 +97,14 @@ public class FournisseurDao implements IDao<Fournisseur>{
 			ResultSet rs = req.executeQuery();
 			
 			while(rs.next()) {
-				Fournisseur fournisseur = new Fournisseur(rs.getInt("id"),rs.getString("societe"),rs.getString("correspondant"),rs.getString("adresse"),rs.getInt("cp"),rs.getString("ville"),rs.getString("tel"),rs.getString("email"));
-				return fournisseur;
+				currentFournisseur = new Fournisseur(rs.getInt("id"),rs.getString("societe"),rs.getString("correspondant"),rs.getString("adresse"),rs.getInt("cp"),rs.getString("ville"),rs.getString("tel"),rs.getString("email"));
+				
 			}
 		}catch(Exception e) {
 			e.printStackTrace();
 			
 		}
-		return null;
+		return currentFournisseur;
 	}
 
 	

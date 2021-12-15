@@ -38,6 +38,7 @@ public class NewFournisseur extends JPanel {
 	private JTextField villeValue;
 	private JTextField telValue;
 	private JTextField emailValue;
+	private JButton btnValider;
 	public static boolean modify = false;
 	
 	/**
@@ -213,30 +214,60 @@ public class NewFournisseur extends JPanel {
 		emailValue.setBounds(277, 498, 540, 32);
 		formulaire.add(emailValue);
 		
-		JButton btnValider = new JButton("Valider");
-		btnValider.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if(modify = false) {
+		btnValider = new JButton("Valider");
+		if(modify == false) {
+			btnValider.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					//récupération des données saisies
 					String societeSaisie = societeValue.getText();
-				String correspSaisie = correspValue.getText();
-				String adresseSaisie = adressValue.getText();
-				int cpSaisie = Integer.valueOf(cpValue.getText());
-				String villeSaisie = villeValue.getText();
-				String telSaisie = telValue.getText();
-				String emailSaisie = emailValue.getText();
-				
-				Fournisseur nouveau = new Fournisseur(societeSaisie, correspSaisie, adresseSaisie, cpSaisie, villeSaisie, telSaisie, emailSaisie);
-				
-				FournisseurDao fournisseurDao = new FournisseurDao();
-				//ajoute le fournisseur à la bdd
-				fournisseurDao.create(nouveau);
-				clearFields();
-				}else {
+					String correspSaisie = correspValue.getText();
+					String adresseSaisie = adressValue.getText();
+					int cpSaisie = Integer.valueOf(cpValue.getText());
+					String villeSaisie = villeValue.getText();
+					String telSaisie = telValue.getText();
+					String emailSaisie = emailValue.getText();
 					
+					Fournisseur nouveau = new Fournisseur(societeSaisie, correspSaisie, adresseSaisie, cpSaisie, villeSaisie, telSaisie, emailSaisie);
+					
+					FournisseurDao fournisseurDao = new FournisseurDao();
+					//ajoute le fournisseur à la bdd
+					fournisseurDao.create(nouveau);
+					
+					clearFields();
 				}
-				
-			}
-		});
+			});
+		}else {
+			//modification du nom du boutton
+			btnValider.setText("Modifier");
+			//remplissage des champs avec les données du current Fournisseur de la ligne cliquée
+			fillFields(FournisseurDao.currentFournisseur);
+			
+			btnValider.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					String societeSaisie = societeValue.getText();
+					String correspSaisie = correspValue.getText();
+					String adresseSaisie = adressValue.getText();
+					int cpSaisie = Integer.valueOf(cpValue.getText());
+					String villeSaisie = villeValue.getText();
+					String telSaisie = telValue.getText();
+					String emailSaisie = emailValue.getText();
+					
+					Fournisseur nouveau = new Fournisseur(societeSaisie, correspSaisie, adresseSaisie, cpSaisie, villeSaisie, telSaisie, emailSaisie);
+					FournisseurDao fournisseurDaoModified = new FournisseurDao();
+					
+					//modifie le fournisseur dans la bdd
+					fournisseurDaoModified.update(nouveau, FournisseurDao.currentFournisseur.getId());
+					
+					clearFields();
+					modify = false;
+					//retour à la liste après la modif
+					PanelsManager.contentPane.removeAll();
+					PanelsManager.contentPane.add(PanelsManager.switchToListeFournisseurs());
+					PanelsManager.contentPane.repaint();
+					PanelsManager.contentPane.revalidate();
+				}
+			});
+		}
 		btnValider.setFont(new Font("Tahoma", Font.PLAIN, 24));
 		btnValider.setBackground(new Color(242, 193, 102));
 		btnValider.setBounds(197, 593, 191, 50);
@@ -267,6 +298,17 @@ public class NewFournisseur extends JPanel {
 		cpValue.setText(null);
 		villeValue.setText(null);
 		telValue.setText(null);
-		emailValue.setText(null);	
+		emailValue.setText(null);
+		btnValider.setText("Valider");
+	}
+	
+	public void fillFields(Fournisseur fournisseur) {
+		societeValue.setText(fournisseur.getSociete());
+		correspValue.setText(fournisseur.getCorrespondant());
+		adressValue.setText(fournisseur.getAdresse());
+		cpValue.setText(String.valueOf(fournisseur.getCodePostal()));
+		villeValue.setText(fournisseur.getVille());
+		telValue.setText(fournisseur.getTel());
+		emailValue.setText(fournisseur.getEmail());	
 	}
 }

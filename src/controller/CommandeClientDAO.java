@@ -36,12 +36,9 @@ public class CommandeClientDAO {
 
             req.executeUpdate();
             message = true;
-            System.out.println("Insertion OK");
 
         }catch(Exception e) {
             e.printStackTrace();
-            System.out.println("Insertion KO - KO - KO");
-
         }
         return message;
 
@@ -77,7 +74,6 @@ public class CommandeClientDAO {
             PreparedStatement req = connect.prepareStatement("SELECT * FROM commandesclients");
 
             ResultSet rs = req.executeQuery();
-            //System.out.println(req);
 
             while(rs.next()) {
                 java.util.Date utilDate = new java.util.Date(rs.getDate("created_at").getTime());
@@ -94,10 +90,8 @@ public class CommandeClientDAO {
 
                 commandeClient.add(article);
             }
-            //System.out.println("-------------------"+listeArticle);
         }catch(Exception e) {
             e.printStackTrace();
-            System.out.println("Insertion KO - KO - KO");
         }
         return commandeClient;
     }
