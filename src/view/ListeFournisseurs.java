@@ -141,6 +141,7 @@ public class ListeFournisseurs extends JPanel {
 					FournisseurDao fournisseurDao = new FournisseurDao();
 					fournisseurDao.delete((int) listingFournisseurs.getValueAt(listingFournisseurs.getSelectedRow(), 0));
 					
+					//rafraichi la page
 					PanelsManager.contentPane.removeAll();
 					PanelsManager.contentPane.add(PanelsManager.switchToListeFournisseurs());
 					PanelsManager.contentPane.repaint();

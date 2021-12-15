@@ -85,7 +85,6 @@ public class FournisseurDao implements IDao<Fournisseur>{
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
 	}
 
 	@Override

@@ -259,13 +259,12 @@ public class NewFournisseur extends JPanel {
 					fournisseurDaoModified.update(nouveau, FournisseurDao.currentFournisseur.getId());
 					
 					clearFields();
-					
+					modify = false;
 					//retour à la liste après la modif
 					PanelsManager.contentPane.removeAll();
 					PanelsManager.contentPane.add(PanelsManager.switchToListeFournisseurs());
 					PanelsManager.contentPane.repaint();
 					PanelsManager.contentPane.revalidate();
-					
 				}
 			});
 		}
