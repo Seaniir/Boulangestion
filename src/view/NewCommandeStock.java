@@ -29,27 +29,6 @@ public class NewCommandeStock extends JPanel {
 		add(menu);
 		menu.setLayout(null);
 		
-		JButton btnHistorique = new JButton("");
-		btnHistorique.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				PanelsManager.contentPane.removeAll();
-				PanelsManager.contentPane.add(PanelsManager.switchtoCommandeStockView());
-				PanelsManager.contentPane.repaint();
-				PanelsManager.contentPane.revalidate();
-				//modify = false;
-			}
-		});
-		btnHistorique.setIcon(new ImageIcon("C:\\Users\\fredb\\AFPA\\workspace-java\\Boulangestion\\projetBoulang\\history.png"));
-		btnHistorique.setBounds(122, 11, 40, 40);
-		menu.add(btnHistorique);
-		
-		JLabel lblHistorique = new JLabel("Historique");
-		lblHistorique.setHorizontalAlignment(SwingConstants.CENTER);
-		lblHistorique.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		lblHistorique.setBounds(98, 62, 88, 18);
-		menu.add(lblHistorique);
-		
 		JButton btnRetour = new JButton("");
 		btnRetour.addMouseListener(new MouseAdapter() {
 			@Override

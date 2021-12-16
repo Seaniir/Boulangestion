@@ -112,5 +112,7 @@ public class CommandeStockDao implements IDao<CommandeStock>{
 	            e.printStackTrace();
 	        }
 	        return pair;
-	 }      
+	 }
+	
+	//sort by id à faire
 }
