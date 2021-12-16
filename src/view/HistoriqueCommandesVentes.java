@@ -18,6 +18,10 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
+import com.mysql.cj.conf.ConnectionUrlParser;
+import com.mysql.cj.conf.ConnectionUrlParser.Pair;
+
+import controller.ClientDao;
 import controller.CommandeClientDAO;
 import controller.HistoriqueCommandesVentesDao;
 import controller.PanelsManager;
@@ -106,19 +110,22 @@ public class HistoriqueCommandesVentes extends JPanel {
 		
 		HistoriqueCommandesVentesDao hcv = new HistoriqueCommandesVentesDao();
 		Client c = new Client();
+		ClientDao x = new ClientDao();
 		List<CommandeClient> listHcv = new ArrayList<>();
-		listHcv.addAll( hcv.read());
-		for (CommandeClient commandeClient : listHcv) {
+		ConnectionUrlParser.Pair<CommandeClient, Client> pair = hcv.read();
+		
 			 Vector vect = new Vector();
-			 vect.add(commandeClient.getId());
-			 vect.add(commandeClient.getWithdrawal_at());
-			 vect.add(c.getFirstName()+c.getName());
-			 vect.add(commandeClient.getNbrArticles());
-			 vect.add(commandeClient.getPrixTotal());
-			 vect.add(commandeClient.getTypePaiment());
-			 System.out.println(c.getFirstName()+c.getName());
+			 vect.add(pair.left.getId());
+			 vect.add(pair.left.getWithdrawal_at());
+			 vect.add(pair.right.getFirstName()+pair.right.getName());
+			 vect.add(pair.left.getNbrArticles());
+			 vect.add(pair.left.getPrixTotal());
+			 vect.add(pair.left.getTypePaiment());
+			 System.out.println(pair.right.getFirstName()+pair.right.getName());
+			 System.out.println(pair.left.getId()+pair.right.getName());
+			 
 			 tab.addRow(vect);
-		}
+		
 		return tab;
 	
 	}	
