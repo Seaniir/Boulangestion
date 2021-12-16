@@ -140,14 +140,8 @@ public class CommandeClientDAO {
             }
         }catch(Exception e) {
             e.printStackTrace();
-            System.out.println("Insertion KO - KO - KO");
         }
         return pair;
-    }
-
-    public static ConnectionUrlParser.Pair<Integer, String> getTwo()
-    {
-        return new ConnectionUrlParser.Pair<Integer, String>(10, "GeeksforGeeks");
     }
 
 }

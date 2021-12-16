@@ -1,14 +1,17 @@
 package controller;
 
 import java.sql.Connection;
-import java.sql.Date;
+//import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.mysql.cj.conf.ConnectionUrlParser;
+
 import model.CommandeStock;
+import model.Fournisseur;
 
 public class CommandeStockDao implements IDao<CommandeStock>{
 
@@ -43,8 +46,8 @@ public class CommandeStockDao implements IDao<CommandeStock>{
             ResultSet rs = req.executeQuery();
 
             while(rs.next()) {
-                java.util.Date utilDate = new java.util.Date(rs.getDate("dateReception").getTime());
-                CommandeStock cmdStock = new CommandeStock(rs.getInt("id"),(Date) utilDate,rs.getInt("fk_idfournisseur"),rs.getInt("nbrArticles"),rs.getFloat("prixTotal"));
+            	java.sql.Date sqlDate = new java.sql.Date(rs.getDate("dateReception").getTime());
+                CommandeStock cmdStock = new CommandeStock(rs.getInt("id"),sqlDate,rs.getInt("fk_idfournisseur"),rs.getInt("nbrArticles"),rs.getFloat("prixTotal"));
                 
                 commandeStock.add(cmdStock);
             }
@@ -56,14 +59,33 @@ public class CommandeStockDao implements IDao<CommandeStock>{
 	}
 
 	@Override
-	public void update(CommandeStock object, int idObject) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void update(CommandeStock cmdStock, int idCmdStock) {
+		//java.sql.Date sqlDate = new java.sql.Date(cmdStock.getDateReception().getTime());
+        try {
+            PreparedStatement sql = connect.prepareStatement("UPDATE commandesstock SET dateReception=NOW(), fk_idfournisseur=?, nbrArticles=?, prixTotal=?, produits=? WHERE commandesstock.id=?");
+            sql.setInt(1, cmdStock.getFk_idfournisseur());
+            sql.setInt(2, cmdStock.getNbrArticles());
+            sql.setFloat(3, cmdStock.getPrixTotal());
+            sql.setString(4, cmdStock.getProduits());
+            sql.setInt(5, idCmdStock);
+            sql.executeUpdate();
+        } catch (SQLException e) {
+
+            e.printStackTrace();
+        }
+
+    }
 
 	@Override
 	public void delete(int idToDelete) {
-		// TODO Auto-generated method stub
+		try {
+            PreparedStatement sql = connect.prepareStatement("DELETE FROM commandesstock WHERE id=?");
+            sql.setInt(1, idToDelete);
+            sql.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 		
 	}
 
@@ -73,5 +95,22 @@ public class CommandeStockDao implements IDao<CommandeStock>{
 		return null;
 	}
 	
-	
+	public ConnectionUrlParser.Pair<CommandeStock, Fournisseur> findByIdPair(int id) {
+	        ConnectionUrlParser.Pair<CommandeStock, Fournisseur> pair = null;
+	        try {
+	            PreparedStatement req = connect.prepareStatement("SELECT * FROM commandesstock INNER JOIN fournisseur ON fournisseur.id=commandesstock.fk_idfournisseur AND commandesstock.id=?");
+	            req.setInt(1, id);
+
+	            ResultSet rs = req.executeQuery();
+	            while(rs.next()) {
+	                CommandeStock cmdStock = new CommandeStock(rs.getInt("id"),rs.getDate("dateReception"),rs.getInt("fk_idfournisseur"),rs.getInt("nbrArticles"),rs.getFloat("prixTotal"),rs.getString("produits"));
+	                Fournisseur fournisseur = new Fournisseur(rs.getInt("fournisseur.id"),rs.getString("societe"),rs.getString("adresse"),rs.getInt("cp"),rs.getString("ville"),rs.getString("tel"),rs.getString("email"));
+
+	                pair = new ConnectionUrlParser.Pair<>(cmdStock, fournisseur);
+	            }
+	        }catch(Exception e) {
+	            e.printStackTrace();
+	        }
+	        return pair;
+	 }      
 }
