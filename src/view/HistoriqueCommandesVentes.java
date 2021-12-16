@@ -19,8 +19,9 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import controller.CommandeClientDAO;
-import controller.HistoriqueVentesCommandesDao;
+import controller.HistoriqueCommandesVentesDao;
 import controller.PanelsManager;
+import model.Client;
 import model.CommandeClient;
 
 import javax.swing.JTable;
@@ -92,23 +93,30 @@ public class HistoriqueCommandesVentes extends JPanel {
 	}
 	
 	public DefaultTableModel liste() {
-		String [] col = {"N° commande/vente","Date","Client", "Nbr articles","Montant réglé", "Paiement"};
+		String [] col = {
+				"N° commande/vente",
+				"Date",
+				"Client",
+				"Nbr articles",
+				"Montant réglé",
+				"Paiement"
+		};
 		DefaultTableModel tab = new DefaultTableModel(null, col);
 		
 		
-		CommandeClientDAO commandeClientDAO = new CommandeClientDAO();
-		List<CommandeClient> listCommandeClient = new ArrayList<>();
-		listCommandeClient.addAll(commandeClientDAO.read());
-		for (CommandeClient commandeClient : listCommandeClient) {
-			Vector vect = new Vector();
+		HistoriqueCommandesVentesDao hcv = new HistoriqueCommandesVentesDao();
+		Client c = new Client();
+		List<CommandeClient> listHcv = new ArrayList<>();
+		listHcv.addAll( hcv.read());
+		for (CommandeClient commandeClient : listHcv) {
+			 Vector vect = new Vector();
 			 vect.add(commandeClient.getId());
 			 vect.add(commandeClient.getWithdrawal_at());
-			 // chercher comment
-			 vect.add(commandeClient.getFk_client());
+			 vect.add(c.getFirstName()+c.getName());
 			 vect.add(commandeClient.getNbrArticles());
 			 vect.add(commandeClient.getPrixTotal());
 			 vect.add(commandeClient.getTypePaiment());
-			 
+			 System.out.println(c.getFirstName()+c.getName());
 			 tab.addRow(vect);
 		}
 		return tab;
