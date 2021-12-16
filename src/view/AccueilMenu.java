@@ -302,7 +302,7 @@ public class AccueilMenu extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				PanelsManager.contentPane.removeAll();
-				PanelsManager.contentPane.add(PanelsManager.switchToLambdaPanel());
+				PanelsManager.contentPane.add(PanelsManager.switchtoProduitsViewPanel());
 				PanelsManager.contentPane.repaint();
 				PanelsManager.contentPane.revalidate();
 			}
