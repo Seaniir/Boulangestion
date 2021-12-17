@@ -66,12 +66,25 @@ public class CommandeClientDAO {
 
     }
 
+    public void archive(int idCommandeClient) {
+        try {
+            PreparedStatement sql = connect.prepareStatement("UPDATE commandesclients SET status=? WHERE commandesclients.id=?");
+            sql.setString(1, "Terminé");
+            sql.setInt(2, idCommandeClient);
+            sql.executeUpdate();
+        } catch (SQLException e) {
+
+            e.printStackTrace();
+        }
+
+    }
+
     //Affichage des articles
     public List<CommandeClient> read() {
         List<CommandeClient> commandeClient = new ArrayList<>();
 
         try {
-            PreparedStatement req = connect.prepareStatement("SELECT * FROM commandesclients");
+            PreparedStatement req = connect.prepareStatement("SELECT * FROM commandesclients WHERE commandesclients.status='En cours'");
 
             ResultSet rs = req.executeQuery();
 
