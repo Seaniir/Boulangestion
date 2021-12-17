@@ -117,20 +117,22 @@ public class HistoriqueCommandesVentes extends JPanel {
 		List<Client> c = new ArrayList<>();
 		
 		ConnectionUrlParser.Pair<ArrayList<CommandeClient>, ArrayList<Client>> pair = hcv.read();
+		int i = 0;
 		for (CommandeClient cx : pair.left) {
 			System.out.println(cx.getPrixTotal());
 			System.out.println("Hello dans la boucle");
 			Vector vect = new Vector();
-			vect.add(cC.pair.left.getId());
-			vect.add(pair.left.getWithdrawal_at());
-			vect.add(pair.right.getFirstName()+" "+pair.right.getName());
-			vect.add(pair.left.getNbrArticles());
-			vect.add(pair.left.getPrixTotal());
-			vect.add(pair.left.getTypePaiment());
+			vect.add(pair.left.get(i).getId());
+			vect.add(pair.left.get(i).getWithdrawal_at());
+			vect.add(pair.right.get(i).getFirstName()+" "+pair.right.get(i).getName());
+			vect.add(pair.left.get(i).getNbrArticles());
+			vect.add(pair.left.get(i).getPrixTotal());
+			vect.add(pair.left.get(i).getTypePaiment());
 			//System.out.println(pair.right.getFirstName()+pair.right.getName());
 			//System.out.println(pair);
 			//System.out.println(pair.left.getId()+pair.right.getName());
 			tab.addRow(vect);
+			i++;
 		}
 		
 			
