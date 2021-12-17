@@ -8,31 +8,42 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.lang.reflect.Type;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
-import java.sql.Date;
+import java.util.Vector;
+import java.util.Date;
 
+import javax.swing.DefaultCellEditor;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import controller.CommandeStockDao;
 import controller.FournisseurDao;
 import controller.PanelsManager;
-
+import controller.ProduitDAO;
 import model.CommandeStock;
 import model.Fournisseur;
 import model.Produit;
@@ -44,6 +55,7 @@ public class NewCommandeStock extends JPanel {
 	static CommandeStock currentCmdStock = new CommandeStock();
 	private JTable cmd;
 	private JLabel prixTotal_label;
+	JComboBox comboBox = new JComboBox();
 	ArrayList<Integer> idList = new ArrayList<Integer>();
 	/**
 	 * Create the panel.
@@ -240,12 +252,6 @@ public class NewCommandeStock extends JPanel {
 		prixTotal_label.setFont(new Font("Tahoma", Font.PLAIN, 30));
 		prixTotal_label.setBounds(38, 11, 125, 77);
 		totalPanel.add(prixTotal_label);
-		float prixTotal = 0;
-		for (int i = 0; i < cmd.getRowCount(); i++) {
-			prixTotal += Float.parseFloat(cmd.getValueAt(i, 4).toString());
-			System.out.println(cmd.getValueAt(i, 4));
-		}
-		prixTotal_label.setText(String.valueOf(prixTotal));
 		
 		cmd = new JTable();
 		cmd.setBackground(new Color(255, 255, 255));
@@ -293,12 +299,12 @@ public class NewCommandeStock extends JPanel {
 				}
 
 				String json = new Gson().toJson(matrix);
-				System.out.println(json);
-				Date newDate = Date.valueOf(LocalDateTime.now());
+				
+				Date newDate = Date.from(now.atZone(ZoneId.systemDefault()).toInstant());
 				if (modify)
-					commandeStockDao.update(new CommandeStock(currentCmdStock.getId(),now, currentFournisseur.getId(), cmd.getRowCount(), Float.parseFloat(prixTotal_label.getText()), json), currentCmdStock.getId());
+					commandeStockDao.update(new CommandeStock(currentCmdStock.getId(),newDate, currentFournisseur.getId(), cmd.getRowCount(), Float.parseFloat(prixTotal_label.getText()), json), currentCmdStock.getId());
 				else
-					commandeStockDao.create(new CommandeStock(currentCmdStock.getId(),now, currentFournisseur.getId(), cmd.getRowCount(), Float.parseFloat(prixTotal_label.getText()), json));
+					commandeStockDao.create(new CommandeStock(currentCmdStock.getId(),newDate, currentFournisseur.getId(), cmd.getRowCount(), Float.parseFloat(prixTotal_label.getText()), json));
 			}
 		});
 		btnValider.setBackground(Color.ORANGE);
@@ -310,5 +316,145 @@ public class NewCommandeStock extends JPanel {
 		btnAnnuler.setFont(new Font("Tahoma", Font.PLAIN, 25));
 		btnAnnuler.setBounds(1102, 630, 249, 56);
 		corps.add(btnAnnuler);
+		
+		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+		centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+		cmd.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
+		cmd.getColumnModel().getColumn(1).setCellEditor(new DefaultCellEditor(comboBox));
+		cmd.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
+		cmd.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
+		cmd.getColumnModel().getColumn(4).setCellRenderer(centerRenderer);
+		cmd.getColumnModel().getColumn(5).setCellRenderer(centerRenderer);
+		cmd.addPropertyChangeListener("tableCellEditor", new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				if (evt.getNewValue() == null) {
+					int row = cmd.getSelectedRow();
+					int column = cmd.getSelectedColumn();
+					if (cmd.getColumnName(column).equals("Quantité")) {
+						cmd.setValueAt(Float.parseFloat(cmd.getValueAt(row, 0).toString()) * (Float.parseFloat(cmd.getValueAt(row, 2).toString())), row, 3);
+						cmd.setValueAt(Float.parseFloat(cmd.getValueAt(row, 0).toString()) * (Float.parseFloat(cmd.getValueAt(row, 4).toString())), row, 5);
+						float prixTotal = 0;
+						for (int i = 0; i < cmd.getRowCount(); i++) {
+							prixTotal += Float.parseFloat(cmd.getValueAt(i, 5).toString());
+						}
+						prixTotal_label.setText(Float.toString(prixTotal));
+					}
+				} else {
+					// editing started
+				}
+			}
+		});
+		comboBox.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				if (e.getStateChange() == ItemEvent.SELECTED) { // Check if the value got selected, ignore if it has been deselected
+					ProduitDAO produitDAO = new ProduitDAO();
+					List < Produit > listProduits = new ArrayList < > ();
+					listProduits.addAll(produitDAO.read());
+					int row = cmd.getSelectedRow();
+					for (Produit article: listProduits) {
+						if (article.getLibelle().equals(e.getItem())) {
+							idList.add(article.getId());
+							cmd.setValueAt(article.getPrixHT(),row, 2);
+							cmd.setValueAt(article.getPrixTTC(),row, 4);
+							float prixTotal = 0;
+							for (int i = 0; i < cmd.getRowCount(); i++) {
+								prixTotal += Float.parseFloat(cmd.getValueAt(i, 5).toString());
+							}
+							prixTotal_label.setText(Float.toString(prixTotal));
+						}
+					}
+				}
+			}
+		});
+		float prixTotal = 0;
+		for (int i = 0; i < cmd.getRowCount(); i++) {
+			prixTotal += Float.parseFloat(cmd.getValueAt(i, 4).toString());
+		}
+		prixTotal_label.setText(String.valueOf(prixTotal));
+	}
+	public DefaultTableModel liste() {
+		String[] col = {
+				"Quantité",
+				"Libellé",
+				"Prix Unitaire HT",
+				"Prix total HT",
+				"Prix Unitaire TTC",
+				"Prix total TTC"
+		};
+		DefaultTableModel tab = new DefaultTableModel(null, col);
+
+		ProduitDAO produitDAO = new ProduitDAO();
+		List < Produit > listProduits = new ArrayList < > ();
+		listProduits.addAll(produitDAO.read());
+		for (Produit article: listProduits) {
+			comboBox.addItem(article.getLibelle());
+		}
+		if (modify) {
+			Gson gson = new Gson();
+			Type type = new TypeToken < ArrayList < ArrayList < Produit >>> () {}.getType();
+			ArrayList < ArrayList < Produit >> contactList = gson.fromJson(currentCmdStock.getProduits(), type);
+			for (ArrayList < Produit > produit: contactList) {
+				Vector vect = new Vector();
+				vect.add(produit.get(0).getQuantite());
+				vect.add(produit.get(0).getLibelle());
+				vect.add(produit.get(0).getPrixHT());
+				vect.add(produit.get(0).getPrixTTC() * produit.get(0).getQuantite());
+				vect.add(produit.get(0).getPrixTTC());
+				vect.add(produit.get(0).getPrixTTC() * produit.get(0).getQuantite());
+				tab.addRow(vect);
+			}
+		} else {
+			Vector vect = new Vector();
+			idList.add(listProduits.get(0).getId());
+			vect.add(0);
+			vect.add(listProduits.get(0).getLibelle());
+			vect.add(listProduits.get(0).getPrixHT());
+			vect.add(0);
+			vect.add(listProduits.get(0).getPrixTTC());
+			vect.add(0);
+			tab.addRow(vect);
+			prixTotal_label.setText(Float.toString(0));
+		}
+		return tab;
+	}
+
+	public void relisting() {
+		DefaultTableModel model = (DefaultTableModel) cmd.getModel();
+		ProduitDAO produitDAO = new ProduitDAO();
+		List < Produit > listProduits = new ArrayList < > ();
+		listProduits.addAll(produitDAO.read());
+		Vector vect = new Vector();
+		vect.add(0);
+		vect.add(listProduits.get(0).getLibelle());
+		vect.add(listProduits.get(0).getPrixHT());
+		vect.add(0);
+		vect.add(listProduits.get(0).getPrixTTC());
+		vect.add(0);
+		model.addRow(vect);
+		cmd.setModel(model);
+	}
+
+	public class DateLabelFormatter extends JFormattedTextField.AbstractFormatter {
+
+		private String datePattern = "dd/MM/yyy";
+		private SimpleDateFormat dateFormatter = new SimpleDateFormat(datePattern);
+
+		@Override
+		public Object stringToValue(String text) throws ParseException {
+			return dateFormatter.parseObject(text);
+		}
+
+		@Override
+		public String valueToString(Object value) throws ParseException {
+			if (value != null) {
+				Calendar cal = (Calendar) value;
+				return dateFormatter.format(cal.getTime());
+			}
+
+			return "";
+		}
+
 	}
 }

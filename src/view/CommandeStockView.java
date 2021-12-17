@@ -26,6 +26,9 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 
+import com.mysql.cj.conf.ConnectionUrlParser;
+import com.mysql.cj.conf.ConnectionUrlParser.Pair;
+
 import controller.CommandeStockDao;
 import controller.FournisseurDao;
 import controller.PanelsManager;
@@ -124,7 +127,6 @@ public class CommandeStockView extends JPanel {
 		listingCmdStock.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
 		listingCmdStock.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
 		listingCmdStock.getColumnModel().getColumn(4).setCellRenderer(centerRenderer);
-		listingCmdStock.getColumnModel().getColumn(5).setCellRenderer(centerRenderer);
 		listingCmdStock.getColumn("Modifier").setCellRenderer(new ButtonRenderer());
 		listingCmdStock.getColumn("Modifier").setCellEditor(new ButtonEditor(new JCheckBox()));
 		listingCmdStock.getColumn("Annuler").setCellRenderer(new SecondButtonRenderer());
@@ -189,25 +191,26 @@ public class CommandeStockView extends JPanel {
 
 	//remplissage du tableau
 	public DefaultTableModel liste() {
-		String [] col = {"N° Commande","Reçue le","Fournisseur","Nbr Articles","Prix total HT","Prix total TTC","Modifier", "Annuler"};
+		String [] col = {"N° Commande","Reçue le","Fournisseur","Nbr Articles","Prix total TTC","Modifier", "Annuler"};
 		DefaultTableModel tab = new DefaultTableModel(null, col);
 		
 		CommandeStockDao cmdStockDao = new CommandeStockDao();
-		List<CommandeStock> cmdStock = new ArrayList<>();
-		cmdStock.addAll(cmdStockDao.read());
-		for (CommandeStock commande : cmdStock) {
+		List<CommandeStock> commandes = new ArrayList<>();
+		List<Fournisseur> fournisseurs = new ArrayList<>();
+		ConnectionUrlParser.Pair<ArrayList<CommandeStock>, ArrayList<Fournisseur>> pair = cmdStockDao.readPair();
+		int i=0;
+		for (CommandeStock commande : pair.left) {
 			Vector vect = new Vector();
 			DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-			Date dateObj = commande.getDateReception();
+			Date dateObj = pair.left.get(i).getDateReception();
 			String recuLe = df.format(dateObj);
-			vect.add(commande.getId());
+			vect.add(pair.left.get(i).getId());
 			vect.add(recuLe);
-			vect.add(commande.getFk_idfournisseur());
-			vect.add(commande.getNbrArticles());
-			vect.add(commande.getPrixTotal());
-			
-			 
+			vect.add(pair.right.get(i).getSociete());
+			vect.add(pair.left.get(i).getNbrArticles());
+			vect.add(pair.left.get(i).getPrixTotal());
 			tab.addRow(vect);
+			i++;
 		}
 		return tab;
 	}

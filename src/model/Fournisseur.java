@@ -14,6 +14,11 @@ public class Fournisseur {
 		// TODO Auto-generated constructor stub
 	}
 	
+	public Fournisseur(String societe) {
+		super();
+		this.societe = societe;
+	}
+
 	public Fournisseur(String societe, String correspondant, String adresse, int codePostal, String ville, String tel,
 			String email) {
 		super();

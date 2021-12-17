@@ -1,7 +1,6 @@
 package controller;
 
 import java.sql.Connection;
-//import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -21,7 +20,7 @@ public class CommandeStockDao implements IDao<CommandeStock>{
 	public void create(CommandeStock cmdStock) {
 		PreparedStatement req;
 		try {
-			req = connect.prepareStatement("INSERT INTO commandesstocks"
+			req = connect.prepareStatement("INSERT INTO commandesstock"
 			        + "(dateReception, fk_idfournisseur, nbrArticles, prixTotal, produits) VALUES (NOW(),?,?,?,?) ");
 			req.setInt(1, cmdStock.getFk_idfournisseur());
 	        req.setInt(2, cmdStock.getNbrArticles());
@@ -46,7 +45,7 @@ public class CommandeStockDao implements IDao<CommandeStock>{
             ResultSet rs = req.executeQuery();
 
             while(rs.next()) {
-            	java.sql.Date sqlDate = new java.sql.Date(rs.getDate("dateReception").getTime());
+            	java.util.Date sqlDate = new java.sql.Date(rs.getDate("dateReception").getTime());
                 CommandeStock cmdStock = new CommandeStock(rs.getInt("id"),sqlDate,rs.getInt("fk_idfournisseur"),rs.getInt("nbrArticles"),rs.getFloat("prixTotal"));
                 
                 commandeStock.add(cmdStock);
@@ -58,6 +57,26 @@ public class CommandeStockDao implements IDao<CommandeStock>{
     
 	}
 
+	public ConnectionUrlParser.Pair<ArrayList<CommandeStock>, ArrayList<Fournisseur>> readPair() {
+		
+		ConnectionUrlParser.Pair<ArrayList<CommandeStock>, ArrayList<Fournisseur>> pair = new ConnectionUrlParser.Pair<ArrayList<CommandeStock>, ArrayList<Fournisseur>>(new ArrayList<CommandeStock>(), new ArrayList<Fournisseur>());
+        try {
+            PreparedStatement req = connect.prepareStatement("SELECT * FROM commandesstock INNER JOIN fournisseur ON fournisseur.id=commandesstock.fk_idfournisseur AND commandesstock.isVisible=?");
+            req.setInt(1, 1);
+            ResultSet rs = req.executeQuery();
+            while(rs.next()) {
+            	//java.util.Date sqlDate = new java.sql.Date(rs.getDate("dateReception").getTime());
+                CommandeStock cmdStock = new CommandeStock(rs.getInt("id"),rs.getDate("dateReception"),rs.getInt("fk_idfournisseur"),rs.getInt("nbrArticles"),rs.getFloat("prixTotal"),rs.getString("produits"));
+                Fournisseur fournisseur = new Fournisseur(rs.getString("societe"));
+
+                pair.left.add(cmdStock);
+                pair.right.add(fournisseur);
+            }
+        }catch(Exception e) {
+            e.printStackTrace();
+        }
+        return pair;
+ }
 	@Override
 	public void update(CommandeStock cmdStock, int idCmdStock) {
 		//java.sql.Date sqlDate = new java.sql.Date(cmdStock.getDateReception().getTime());
