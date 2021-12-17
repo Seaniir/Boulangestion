@@ -97,6 +97,7 @@ public class CommandeClientDAO {
                 article.setWithdrawal_at(withDate);
                 article.setFk_client(rs.getInt("fk_client"));
                 article.setNbrArticles(rs.getInt("nbrArticles"));
+                article.setTypePaiment(rs.getString("typePaiment"));
                 article.setPrixTotal(rs.getFloat("prixTotal"));
                 article.setAccompte(rs.getBoolean("accompte"));
                 article.setStatus(rs.getString("status"));

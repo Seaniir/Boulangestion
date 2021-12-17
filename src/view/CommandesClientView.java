@@ -51,9 +51,6 @@ public class CommandesClientView extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				int id = table.getSelectedRow();
-
-				int article_id = (int) table.getModel().getValueAt(id, 0);
-
 				CommandeClientDAO commandeClientDAO = new CommandeClientDAO();
 				ConnectionUrlParser.Pair < CommandeClient, Client > pair = commandeClientDAO.findById((Integer) table.getValueAt(id, 0));
 				DetailsCommandesClient.currentCommande = pair.left;

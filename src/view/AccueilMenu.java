@@ -232,6 +232,10 @@ public class AccueilMenu extends JPanel {
 		btnClotureCaisse.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				PanelsManager.contentPane.removeAll();
+				PanelsManager.contentPane.add(PanelsManager.switchToClotureCaissePanel());
+				PanelsManager.contentPane.repaint();
+				PanelsManager.contentPane.revalidate();
 			}
 		});
 		btnClotureCaisse.setFont(new Font("Tahoma", Font.PLAIN, 18));

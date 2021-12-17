@@ -354,7 +354,7 @@ public class NouvelleCommandeClientView extends JPanel {
 				CommandeClientDAO commandeClientDAO = new CommandeClientDAO();
 				String typePaiment = "";
 				if (rdbtnNewRadioButton.isSelected()) {
-					typePaiment = "Espèces";
+					typePaiment = "Especes";
 				} else if (rdbtnNewRadioButton_1.isSelected()) {
 					typePaiment = "Carte banquaire";
 				}

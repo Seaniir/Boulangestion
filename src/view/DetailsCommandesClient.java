@@ -277,7 +277,7 @@ public class DetailsCommandesClient extends JPanel {
 			prixTotal += Float.parseFloat(table_1.getValueAt(i, 5).toString());
 		}
 		prixTotal_label.setText(String.valueOf(prixTotal));
-		if (currentCommande.getTypePaiment().equals("Espèces")) {
+		if (currentCommande.getTypePaiment().equals("Especes")) {
 			rdbtnNewRadioButton.setSelected(true);
 		} else if (currentCommande.getTypePaiment().equals("Carte banquaire")) {
 			rdbtnNewRadioButton_1.setSelected(true);
@@ -324,8 +324,8 @@ public class DetailsCommandesClient extends JPanel {
 		}
 		Gson gson = new Gson();
 		Type type = new TypeToken < ArrayList < ArrayList < Produit >>> () {}.getType();
-		ArrayList < ArrayList < Produit >> contactList = gson.fromJson(currentCommande.getProduits(), type);
-		for (ArrayList < Produit > produit: contactList) {
+		ArrayList < ArrayList < Produit >> productsList = gson.fromJson(currentCommande.getProduits(), type);
+		for (ArrayList < Produit > produit: productsList) {
 			Vector vect = new Vector();
 			vect.add(produit.get(0).getQuantite());
 			vect.add(produit.get(0).getLibelle());
