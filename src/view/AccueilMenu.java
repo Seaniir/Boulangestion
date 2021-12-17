@@ -188,6 +188,10 @@ public class AccueilMenu extends JPanel {
 		btnDevis.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				PanelsManager.contentPane.removeAll();
+				PanelsManager.contentPane.add(PanelsManager.switchtoListeDevisPanel());
+				PanelsManager.contentPane.repaint();
+				PanelsManager.contentPane.revalidate();
 			}
 		});
 		btnDevis.setFont(new Font("Tahoma", Font.PLAIN, 18));
