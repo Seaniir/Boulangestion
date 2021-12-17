@@ -207,7 +207,6 @@ public class NouvelleCommandeClientView extends JPanel {
 							currentClient.setName(client.getName());
 							currentClient.setEmail(client.getEmail());
 							currentClient.setFirstName(client.getFirstName());
-							currentClient.setTel(client.getTel());
 							currentClient.setId(client.getId());
 							currentClient.setAdress(client.getAdress());
 							currentClient.setCity(client.getCity());

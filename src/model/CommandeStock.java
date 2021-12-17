@@ -1,6 +1,6 @@
 package model;
 
-import java.sql.Date;
+import java.util.Date;
 
 public class CommandeStock {
 	private int id;
@@ -9,6 +9,10 @@ public class CommandeStock {
     private int nbrArticles;
     private float prixTotal;
     private String produits;
+    
+    public CommandeStock() {
+		// TODO Auto-generated constructor stub
+	}
     
 	public CommandeStock(int id, Date dateReception, int fk_idfournisseur, int nbrArticles, float prixTotal) {
 		super();
