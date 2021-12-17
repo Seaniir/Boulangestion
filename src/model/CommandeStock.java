@@ -10,6 +10,10 @@ public class CommandeStock {
     private float prixTotal;
     private String produits;
     
+    public CommandeStock() {
+		// TODO Auto-generated constructor stub
+	}
+    
 	public CommandeStock(int id, Date dateReception, int fk_idfournisseur, int nbrArticles, float prixTotal) {
 		super();
 		this.id = id;
