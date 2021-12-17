@@ -27,6 +27,7 @@ public class CommandesClientView extends JPanel {
 	private JTable table;
 	JButton btnModifier = new JButton();
 	JButton btnAnnuler = new JButton();
+	JButton btnArchiver = new JButton();
 	/**
 	 * Create the panel.
 	 */
@@ -50,9 +51,6 @@ public class CommandesClientView extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				int id = table.getSelectedRow();
-
-				int article_id = (int) table.getModel().getValueAt(id, 0);
-
 				CommandeClientDAO commandeClientDAO = new CommandeClientDAO();
 				ConnectionUrlParser.Pair < CommandeClient, Client > pair = commandeClientDAO.findById((Integer) table.getValueAt(id, 0));
 				DetailsCommandesClient.currentCommande = pair.left;
@@ -119,6 +117,23 @@ public class CommandesClientView extends JPanel {
 					}
 				}
 		);
+		btnArchiver.addActionListener(
+				new ActionListener() {
+					public void actionPerformed(ActionEvent event) {
+						int n = JOptionPane.showConfirmDialog(null, "Voulez-vous archiver cette commande ?", "Archiver", JOptionPane.YES_NO_OPTION);
+						if (n == JOptionPane.YES_OPTION) {
+							CommandeClientDAO commandeClientDAO = new CommandeClientDAO();
+							commandeClientDAO.archive((int) table.getValueAt(table.getSelectedRow(), 0));
+							PanelsManager.contentPane.removeAll();
+							PanelsManager.contentPane.add(PanelsManager.switchToCommandesClientPanel());
+							PanelsManager.contentPane.revalidate();
+							PanelsManager.contentPane.repaint();
+						} else {
+
+						}
+					}
+				}
+		);
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 		centerRenderer.setHorizontalAlignment(JLabel.CENTER);
 		table.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
@@ -133,6 +148,8 @@ public class CommandesClientView extends JPanel {
 		table.getColumn("Modifier").setCellEditor(new ButtonEditor(new JCheckBox()));
 		table.getColumn("Annuler").setCellRenderer(new SecondButtonRenderer());
 		table.getColumn("Annuler").setCellEditor(new SecondButtonEditor(new JCheckBox()));
+		table.getColumn("Archiver").setCellRenderer(new ThirdButtonRenderer());
+		table.getColumn("Archiver").setCellEditor(new ThirdButtonEditor(new JCheckBox()));
 		JPanel panel_1 = new JPanel();
 		panel_1.setBackground(new Color(255, 255, 255));
 		panel_1.setBounds(0, 0, 1440, 99);
@@ -190,6 +207,7 @@ public class CommandesClientView extends JPanel {
 				"Prix Total",
 				"Accompte",
 				"Status",
+				"Archiver",
 				"Modifier",
 				"Annuler"
 		};
@@ -274,4 +292,33 @@ public class CommandesClientView extends JPanel {
 			return new String(label);
 		}
 	}
+
+	class ThirdButtonRenderer extends JButton implements TableCellRenderer {
+		public ThirdButtonRenderer() {
+			setOpaque(true);
+		}
+		public Component getTableCellRendererComponent(JTable table, Object value,
+													   boolean isSelected, boolean hasFocus, int row, int column) {
+			setText((value == null) ? "Archiver" : value.toString());
+			return this;
+		}
+	}
+
+	class ThirdButtonEditor extends DefaultCellEditor {
+		private String label;
+
+		public ThirdButtonEditor(JCheckBox checkBox) {
+			super(checkBox);
+		}
+		public Component getTableCellEditorComponent(JTable table, Object value,
+													 boolean isSelected, int row, int column) {
+			label = (value == null) ? "Archiver" : value.toString();
+			btnArchiver.setText(label);
+			return btnArchiver;
+		}
+		public Object getCellEditorValue() {
+			return new String(label);
+		}
+	}
+
 }

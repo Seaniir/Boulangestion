@@ -1,11 +1,13 @@
 package controller;
 
+import model.Client;
 import model.CommandeClient;
 import model.Produit;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,6 +42,24 @@ public class ProduitDAO {
 
     }
 
+    public void update(Produit produit, int idProduit) {
+        try {
+            PreparedStatement sql = connect.prepareStatement("UPDATE produits SET libelle=?, fabricant=?, poids=?, quantite=?, prixHT=?, prixTTC=? WHERE produits.id=?");
+            sql.setString(1, produit.getLibelle());
+            sql.setString(2, produit.getFabricant());
+            sql.setFloat(3, produit.getPoids());
+            sql.setInt(4, produit.getQuantite());
+            sql.setFloat(5, produit.getPrixHT());
+            sql.setFloat(6, produit.getPrixTTC());
+            sql.setInt(7, idProduit);
+            sql.executeUpdate();
+        } catch (SQLException e) {
+
+            e.printStackTrace();
+        }
+
+    }
+
     public List<Produit> read() {
         List<Produit> produits = new ArrayList<>();
 
@@ -67,5 +87,16 @@ public class ProduitDAO {
             System.out.println("Insertion KO - KO - KO");
         }
         return produits;
+    }
+
+    public void delete(int idToDelete) {
+        try {
+            PreparedStatement sql = connect.prepareStatement("DELETE FROM produits WHERE id=?");
+            sql.setInt(1, idToDelete);
+            sql.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
