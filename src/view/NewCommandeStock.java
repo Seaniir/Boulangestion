@@ -2,12 +2,21 @@ package view;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
+import java.sql.Date;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -15,19 +24,27 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.SwingConstants;
 
-import controller.ClientDao;
+import com.google.gson.Gson;
+
+import controller.CommandeStockDao;
 import controller.FournisseurDao;
 import controller.PanelsManager;
-import model.Client;
+
 import model.CommandeStock;
 import model.Fournisseur;
+import model.Produit;
+
 
 public class NewCommandeStock extends JPanel {
 	static public boolean modify = false;
 	static Fournisseur currentFournisseur = new Fournisseur();
 	static CommandeStock currentCmdStock = new CommandeStock();
+	private JTable cmd;
+	private JLabel prixTotal_label;
+	ArrayList<Integer> idList = new ArrayList<Integer>();
 	/**
 	 * Create the panel.
 	 */
@@ -91,7 +108,7 @@ public class NewCommandeStock extends JPanel {
 		
 		JLabel lblFournisseur = new JLabel("Fournisseur");
 		lblFournisseur.setForeground(Color.BLACK);
-		lblFournisseur.setBounds(10, 11, 66, 22);
+		lblFournisseur.setBounds(10, 11, 80, 22);
 		corps.add(lblFournisseur);
 		lblFournisseur.setBackground(new Color(254, 245, 232));
 		lblFournisseur.setHorizontalAlignment(SwingConstants.CENTER);
@@ -103,7 +120,7 @@ public class NewCommandeStock extends JPanel {
 		infosFournisseur.setLayout(null);
 		
 		JLabel lblSociete = new JLabel("Société :");
-		lblSociete.setBounds(11, 26, 46, 14);
+		lblSociete.setBounds(11, 26, 57, 14);
 		infosFournisseur.add(lblSociete);
 
 		JLabel lblAdress = new JLabel("Adresse :");
@@ -134,14 +151,14 @@ public class NewCommandeStock extends JPanel {
 				infoSociete.addItem(fournisseur.getSociete());
 			}
 		}
-		infoSociete.setBounds(56, 22, 118, 22);
+		infoSociete.setBounds(90, 22, 290, 22);
 		
 		JLabel adresseLabel = new JLabel("");
 		adresseLabel.setBounds(90, 55, 416, 33);
 		infosFournisseur.add(adresseLabel);
 
 		JLabel phoneLabel = new JLabel("");
-		phoneLabel.setBounds(90, 95, 163, 21);
+		phoneLabel.setBounds(90, 99, 163, 21);
 		infosFournisseur.add(phoneLabel);
 
 		JLabel mailLabel = new JLabel("");
@@ -149,7 +166,7 @@ public class NewCommandeStock extends JPanel {
 		infosFournisseur.add(mailLabel);
 
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 167, 1014, 452);
+		scrollPane.setBounds(10, 188, 1014, 436);
 		corps.add(scrollPane);
 
 		infoSociete.addItemListener(new ItemListener() {
@@ -158,23 +175,140 @@ public class NewCommandeStock extends JPanel {
 				if (e.getStateChange() == ItemEvent.SELECTED) { // Check if the value got selected, ignore if it has been deselected
 					for (Fournisseur fournisseur: listSociete) {
 						if (fournisseur.getSociete().equals(e.getItem().toString())) {
-							currentFournisseur.setName(client.getName());
-							currentFournisseur.setEmail(client.getEmail());
-							currentFournisseur.setFirstName(client.getFirstName());
-							currentFournisseur.setTel(client.getTel());
-							currentFournisseur.setId(client.getId());
-							currentFournisseur.setTel(client.getTel());
-							currentFournisseur.setAdress(client.getAdress());
-							currentFournisseur.setCity(client.getCity());
-							currentFournisseur.setZip(client.getZip());
-							adresseLabel.setText(fournisseur.getAdress());
+							currentFournisseur.setId(fournisseur.getId());
+							currentFournisseur.setSociete(fournisseur.getSociete());
+							currentFournisseur.setCorrespondant(fournisseur.getCorrespondant());
+							currentFournisseur.setAdresse(fournisseur.getAdresse());
+							currentFournisseur.setCodePostal(fournisseur.getCodePostal());
+							currentFournisseur.setVille(fournisseur.getVille());
+							currentFournisseur.setTel(fournisseur.getTel());
+							currentFournisseur.setEmail(fournisseur.getEmail());
+							adresseLabel.setText(fournisseur.getAdresse()+" "+fournisseur.getCodePostal()+" "+fournisseur.getVille());
 							phoneLabel.setText(fournisseur.getTel());
-							mailLabel.setText(fournisseur.getFirstName());
+							mailLabel.setText(fournisseur.getEmail());
 						}
 					}
 				}
 			}
 		});
 		infosFournisseur.add(infoSociete);
+		
+		JPanel datePanel = new JPanel();
+		datePanel.setBackground(new Color(255, 255, 255));
+		datePanel.setBounds(723, 11, 693, 165);
+		corps.add(datePanel);
+		datePanel.setLayout(null);
+
+		JLabel lblDateReception = new JLabel("Date de réception :");
+		lblDateReception.setFont(new Font("Tahoma", Font.PLAIN, 22));
+		lblDateReception.setBounds(10, 11, 189, 37);
+		datePanel.add(lblDateReception);
+		
+		JLabel lblNumCmd = new JLabel("Commande n ° :");
+		lblNumCmd.setFont(new Font("Tahoma", Font.PLAIN, 22));
+		lblNumCmd.setBounds(178, 117, 189, 37);
+		datePanel.add(lblNumCmd);
+		
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		LocalDateTime now = LocalDateTime.now();
+		String created_at = dtf.format(now);
+		JLabel created_at_label = new JLabel(created_at);
+		created_at_label.setHorizontalAlignment(SwingConstants.CENTER);
+		created_at_label.setFont(new Font("Tahoma", Font.PLAIN, 22));
+		created_at_label.setBounds(271, 11, 189, 37);
+		datePanel.add(created_at_label);
+		
+		JLabel id_commande_label = new JLabel("");
+		id_commande_label.setHorizontalAlignment(SwingConstants.CENTER);
+		id_commande_label.setFont(new Font("Tahoma", Font.PLAIN, 22));
+		id_commande_label.setBounds(349, 117, 99, 37);
+		datePanel.add(id_commande_label);
+		
+		JLabel lblTotal = new JLabel("Total :");
+		lblTotal.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblTotal.setBounds(1199, 196, 116, 35);
+		corps.add(lblTotal);
+		
+		JPanel totalPanel = new JPanel();
+		totalPanel.setBackground(new Color(255, 255, 255));
+		totalPanel.setBounds(1128, 238, 208, 99);
+		corps.add(totalPanel);
+		totalPanel.setLayout(null);
+		
+		prixTotal_label = new JLabel("");
+		prixTotal_label.setHorizontalAlignment(SwingConstants.CENTER);
+		prixTotal_label.setFont(new Font("Tahoma", Font.PLAIN, 30));
+		prixTotal_label.setBounds(38, 11, 125, 77);
+		totalPanel.add(prixTotal_label);
+		float prixTotal = 0;
+		for (int i = 0; i < cmd.getRowCount(); i++) {
+			prixTotal += Float.parseFloat(cmd.getValueAt(i, 4).toString());
+			System.out.println(cmd.getValueAt(i, 4));
+		}
+		prixTotal_label.setText(String.valueOf(prixTotal));
+		
+		cmd = new JTable();
+		cmd.setBackground(new Color(255, 255, 255));
+		cmd.setRowSelectionAllowed(false);
+		scrollPane.setViewportView(cmd);
+		cmd.setRowHeight(100);
+		cmd.setModel(liste());
+		
+		JButton btnAddProduit = new JButton("Ajouter un produit");
+		btnAddProduit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				relisting();
+			}
+		});
+		btnAddProduit.setFont(new Font("Tahoma", Font.PLAIN, 30));
+		btnAddProduit.setBounds(106, 675, 760, 77);
+		corps.add(btnAddProduit);
+		
+		JButton btnValider = new JButton();
+		if (modify) {
+			btnValider.setText("Modifier");
+		} else {
+			btnValider.setText("Valider");
+		}
+		btnValider.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				CommandeStockDao commandeStockDao = new CommandeStockDao();
+
+				DateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE);
+				DateFormat inputFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE);
+				int m = cmd.getRowCount(), n = cmd.getColumnCount();
+				ArrayList < ArrayList < Produit >> matrix = new ArrayList < ArrayList < Produit >> ();
+
+				for (int i = 0; i < m; i++) {
+					ArrayList < Produit > row = new ArrayList < Produit > ();
+					Produit produit = new Produit();
+					produit.setId(idList.get(i));
+					produit.setQuantite(Integer.parseInt(cmd.getValueAt(i, 0).toString()));
+					produit.setLibelle((String) cmd.getValueAt(i, 1));
+					produit.setPrixHT(Float.parseFloat(cmd.getValueAt(i, 2).toString()));
+					produit.setPrixTTC(Float.parseFloat(cmd.getValueAt(i, 4).toString()));
+					
+					row.add(produit);
+					matrix.add(row);
+				}
+
+				String json = new Gson().toJson(matrix);
+				System.out.println(json);
+				Date newDate = Date.valueOf(LocalDateTime.now());
+				if (modify)
+					commandeStockDao.update(new CommandeStock(currentCmdStock.getId(),now, currentFournisseur.getId(), cmd.getRowCount(), Float.parseFloat(prixTotal_label.getText()), json), currentCmdStock.getId());
+				else
+					commandeStockDao.create(new CommandeStock(currentCmdStock.getId(),now, currentFournisseur.getId(), cmd.getRowCount(), Float.parseFloat(prixTotal_label.getText()), json));
+			}
+		});
+		btnValider.setBackground(Color.ORANGE);
+		btnValider.setFont(new Font("Tahoma", Font.PLAIN, 25));
+		btnValider.setBounds(1102, 557, 249, 56);
+		corps.add(btnValider);
+		
+		JButton btnAnnuler = new JButton("Annuler");
+		btnAnnuler.setFont(new Font("Tahoma", Font.PLAIN, 25));
+		btnAnnuler.setBounds(1102, 630, 249, 56);
+		corps.add(btnAnnuler);
 	}
 }
