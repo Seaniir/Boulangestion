@@ -11,6 +11,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
@@ -79,15 +80,15 @@ public class HistoriqueCommandesVentes extends JPanel {
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(0, 0, 912, 706);
 		listing.add(scrollPane);
-		HistoriqueCommandesVentesDao hcv = new HistoriqueCommandesVentesDao();
-		CommandeClient c = new CommandeClient();
-		ConnectionUrlParser.Pair<CommandeClient, Client> pair = hcv.read(c.getId());
-		System.out.println(pair);
-		/*listingHistorique = new JTable();
+		/*HistoriqueCommandesVentesDao hcv = new HistoriqueCommandesVentesDao();
+		ConnectionUrlParser.Pair<CommandeClient, Client> pair = hcv.read();
+		System.out.println(pair);*/
+		// La mise en forme du tableau 
+		listingHistorique = new JTable();
 		listingHistorique.setRowSelectionAllowed(false);
 		scrollPane.setViewportView(listingHistorique);
 		listingHistorique.setRowHeight(100);
-		//listingHistorique.setModel(liste());
+		listingHistorique.setModel(liste());
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 		centerRenderer.setHorizontalAlignment(JLabel.CENTER);
 		listingHistorique.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
@@ -95,10 +96,10 @@ public class HistoriqueCommandesVentes extends JPanel {
 		listingHistorique.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
 		listingHistorique.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
 		listingHistorique.getColumnModel().getColumn(4).setCellRenderer(centerRenderer);
-		listingHistorique.getColumnModel().getColumn(5).setCellRenderer(centerRenderer);*/
+		listingHistorique.getColumnModel().getColumn(5).setCellRenderer(centerRenderer);
 	}
-	
-	/*public DefaultTableModel liste() {
+		// Les intitulés des colonnes du tableau
+	public DefaultTableModel liste() {
 		String [] col = {
 				"N° commande/vente",
 				"Date",
@@ -109,26 +110,35 @@ public class HistoriqueCommandesVentes extends JPanel {
 		};
 		DefaultTableModel tab = new DefaultTableModel(null, col);
 		
-		
+		// Les données du tableau 
+		System.out.println("Hello dans le tableau");
 		HistoriqueCommandesVentesDao hcv = new HistoriqueCommandesVentesDao();
-		Client c = new Client();
-		ClientDao x = new ClientDao();
-		List<CommandeClient> listHcv = new ArrayList<>();
-		ConnectionUrlParser.Pair<CommandeClient, Client> pair = hcv.read(int id);
+		List<CommandeClient> cC = new ArrayList<>();
+		List<Client> c = new ArrayList<>();
 		
-			 Vector vect = new Vector();
-			 vect.add(pair.left.getId());
-			 vect.add(pair.left.getWithdrawal_at());
-			 vect.add(pair.right.getFirstName()+" "+pair.right.getName());
-			 vect.add(pair.left.getNbrArticles());
-			 vect.add(pair.left.getPrixTotal());
-			 vect.add(pair.left.getTypePaiment());
-			 System.out.println(pair.right.getFirstName()+pair.right.getName());
-			 //System.out.println(pair.left.getId()+pair.right.getName());
-			 
-			 tab.addRow(vect);
+		ConnectionUrlParser.Pair<ArrayList<CommandeClient>, ArrayList<Client>> pair = hcv.read();
+		for (CommandeClient cx : pair.left) {
+			System.out.println(cx.getPrixTotal());
+			System.out.println("Hello dans la boucle");
+			Vector vect = new Vector();
+			vect.add(cC.pair.left.getId());
+			vect.add(pair.left.getWithdrawal_at());
+			vect.add(pair.right.getFirstName()+" "+pair.right.getName());
+			vect.add(pair.left.getNbrArticles());
+			vect.add(pair.left.getPrixTotal());
+			vect.add(pair.left.getTypePaiment());
+			//System.out.println(pair.right.getFirstName()+pair.right.getName());
+			//System.out.println(pair);
+			//System.out.println(pair.left.getId()+pair.right.getName());
+			tab.addRow(vect);
+		}
 		
+			
+			
+		
+		
+		
+		 
 		return tab;
-	
-	}	*/
+	}	
 }

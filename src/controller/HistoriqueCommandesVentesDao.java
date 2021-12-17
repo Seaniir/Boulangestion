@@ -44,12 +44,11 @@ public class HistoriqueCommandesVentesDao{
 	}*/
 	
 	// TEST PARSE 
-	public ConnectionUrlParser.Pair<CommandeClient, Client> read(int id) {
-        ConnectionUrlParser.Pair<CommandeClient, Client> pair = null;
+	public ConnectionUrlParser.Pair<ArrayList<CommandeClient>, ArrayList<Client>> read() {
+        ConnectionUrlParser.Pair<ArrayList<CommandeClient>, ArrayList<Client>> pair = new ConnectionUrlParser.Pair<ArrayList<CommandeClient>, ArrayList<Client>>(new ArrayList<CommandeClient>(), new ArrayList<Client>() );
         try {
-            PreparedStatement sql = connect.prepareStatement("SELECT * FROM commandesclients INNER JOIN clients ON commandesclients.fk_client = clients.id AND commandesclients.id = ? ");
-            sql.setInt(1,id);
-            //AND commandesclients.id = ?
+            PreparedStatement sql = connect.prepareStatement("SELECT * FROM commandesclients INNER JOIN clients ON commandesclients.fk_client = clients.id AND commandesclients.status = 'Terminé' ");
+            //sql.setInt(1,1);
             ResultSet rs = sql.executeQuery();
             while(rs.next()) {
                 CommandeClient cC = new CommandeClient();
@@ -61,8 +60,10 @@ public class HistoriqueCommandesVentesDao{
                 cC.setTypePaiment(rs.getString("typePaiment")); 
                 c.setName(rs.getString("nom"));
                 c.setFirstName(rs.getString("prenom"));
-                pair = new ConnectionUrlParser.Pair<>(cC, c);
-                System.out.println(rs.getString("nom"));
+                pair.left.add(cC);
+                pair.right.add(c);
+                
+                System.out.println("Ceci est dans le DAO "+rs.getString("prenom")+" "+rs.getString("nom"));
             }
         }catch(Exception e) {
             e.printStackTrace();

@@ -167,7 +167,16 @@ public class ListeClients extends JPanel {
 	}
 		// Remplir ma table avec la DB --- Si rajouter colonne ne pas oublier ICI
 		public DefaultTableModel liste() {
-			String [] col = {"N° Client","Nom","Prénom","Adresse", "Téléphone","Email", "Modifier","Historique","Supprimer"};
+			String [] col = {"N° Client",
+					"Nom",
+					"Prénom",
+					"Adresse", 
+					"Téléphone",
+					"Email", 
+					"Modifier",
+					"Historique",
+					"Supprimer"
+			};
 			DefaultTableModel tab = new DefaultTableModel(null, col);
 			
 			ClientDao clientDao = new ClientDao();
