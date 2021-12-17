@@ -16,39 +16,13 @@ public class HistoriqueCommandesVentesDao{
 	ResultSet rs = null;
 	List<CommandeClient> listeCC = new ArrayList<>();
 	
-	/*public List<CommandeClient> read() {
-		//ConnectionUrlParser.Pair<CommandeClient, Client> pair = null;
-		PreparedStatement sql;
-        try {
-            sql = connect.prepareStatement("SELECT * FROM commandesclients INNER JOIN clients ON commandesclients.fk_client = clients.id");
-            
-            rs = sql.executeQuery();
-            while(rs.next()) {
-                CommandeClient cC = new CommandeClient();
-                Client c = new Client();
-                cC.setId(rs.getInt("commandesclients.id"));
-                cC.setWithdrawal_at(rs.getDate("withdrawal_at"));
-                c.setFirstName(rs.getString("prenom"));
-                c.setName(rs.getString("nom"));
-                cC.setNbrArticles(rs.getInt("nbrArticles"));
-                cC.setPrixTotal(rs.getInt("prixTotal"));
-                System.out.println(rs.getString("prenom")+" "+rs.getString("nom"));
-                listeCC.add(cC);
-               
-            }
-            
-        }catch(Exception e) {
-            e.printStackTrace();
-        }
-        return listeCC;
-	}*/
 	
-	// TEST PARSE 
+	
+	
 	public ConnectionUrlParser.Pair<ArrayList<CommandeClient>, ArrayList<Client>> read() {
         ConnectionUrlParser.Pair<ArrayList<CommandeClient>, ArrayList<Client>> pair = new ConnectionUrlParser.Pair<ArrayList<CommandeClient>, ArrayList<Client>>(new ArrayList<CommandeClient>(), new ArrayList<Client>() );
         try {
             PreparedStatement sql = connect.prepareStatement("SELECT * FROM commandesclients INNER JOIN clients ON commandesclients.fk_client = clients.id AND commandesclients.status = 'Terminé' ");
-            //sql.setInt(1,1);
             ResultSet rs = sql.executeQuery();
             while(rs.next()) {
                 CommandeClient cC = new CommandeClient();
@@ -62,8 +36,6 @@ public class HistoriqueCommandesVentesDao{
                 c.setFirstName(rs.getString("prenom"));
                 pair.left.add(cC);
                 pair.right.add(c);
-                
-                System.out.println("Ceci est dans le DAO "+rs.getString("prenom")+" "+rs.getString("nom"));
             }
         }catch(Exception e) {
             e.printStackTrace();
