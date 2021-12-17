@@ -9,6 +9,26 @@ public class Produit {
     private float prixHT;
     private float prixTTC;
 
+    public Produit(){};
+
+    public Produit(int id, String libelle, String fabricant, float poids, int quantite, float prixHT, float prixTTC){
+        this.id = id;
+        this.libelle = libelle;
+        this.fabricant = fabricant;
+        this.poids = poids;
+        this.quantite = quantite;
+        this.prixHT = prixHT;
+        this.prixTTC = prixTTC;
+    }
+    public Produit(String libelle, String fabricant, float poids, int quantite, float prixHT, float prixTTC){
+        this.libelle = libelle;
+        this.fabricant = fabricant;
+        this.poids = poids;
+        this.quantite = quantite;
+        this.prixHT = prixHT;
+        this.prixTTC = prixTTC;
+    }
+
     public void setQuantite(int quantite) {
         this.quantite = quantite;
     }

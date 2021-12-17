@@ -29,6 +29,7 @@ public class ProduitsView extends JPanel {
 	private JTable table;
 	JButton btnModifier = new JButton();
 	JButton btnAnnuler = new JButton();
+	ArrayList<Integer> idList = new ArrayList<Integer>();
 	/**
 	 * Create the panel.
 	 */
@@ -74,7 +75,7 @@ public class ProduitsView extends JPanel {
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				PanelsManager.contentPane.removeAll();
-				PanelsManager.contentPane.add(PanelsManager.switchToNouvelleCommandePanel());
+				PanelsManager.contentPane.add(PanelsManager.switchtoNewProduitViewPanel());
 				PanelsManager.contentPane.revalidate();
 				PanelsManager.contentPane.repaint();
 			}
@@ -87,15 +88,12 @@ public class ProduitsView extends JPanel {
 		btnModifier.addActionListener(
 				new ActionListener() {
 					public void actionPerformed(ActionEvent event) {
-						int n = JOptionPane.showConfirmDialog(null, "Voulez-vous modifier cette commande ?", "Modifier", JOptionPane.YES_NO_OPTION);
+						int n = JOptionPane.showConfirmDialog(null, "Voulez-vous modifier ce produit ?", "Modifier", JOptionPane.YES_NO_OPTION);
 						if (n == JOptionPane.YES_OPTION) {
-							CommandeClientDAO commandeClientDAO = new CommandeClientDAO();
-							ConnectionUrlParser.Pair < CommandeClient, Client > pair = commandeClientDAO.findById((int) table.getValueAt(table.getSelectedRow(), 0));
-							NouvelleCommandeClientView.currentCommande = pair.left;
-							NouvelleCommandeClientView.currentClient = pair.right;
-							NouvelleCommandeClientView.modify = true;
+							NouveauProduit.currentProduit = new Produit(idList.get(table.getSelectedRow()), table.getValueAt(table.getSelectedRow(), 0).toString(), table.getValueAt(table.getSelectedRow(), 1).toString(), Float.parseFloat(table.getValueAt(table.getSelectedRow(), 2).toString()), Integer.parseInt(table.getValueAt(table.getSelectedRow(), 3).toString()), Float.parseFloat(table.getValueAt(table.getSelectedRow(), 4).toString()), Float.parseFloat(table.getValueAt(table.getSelectedRow(), 5).toString()));
+							NouveauProduit.modify = true;
 							PanelsManager.contentPane.removeAll();
-							PanelsManager.contentPane.add(PanelsManager.switchToNouvelleCommandePanel());
+							PanelsManager.contentPane.add(PanelsManager.switchtoNewProduitViewPanel());
 							PanelsManager.contentPane.revalidate();
 							PanelsManager.contentPane.repaint();
 						} else {
@@ -107,12 +105,12 @@ public class ProduitsView extends JPanel {
 		btnAnnuler.addActionListener(
 				new ActionListener() {
 					public void actionPerformed(ActionEvent event) {
-						int n = JOptionPane.showConfirmDialog(null, "Voulez-vous annuler cette commande ?", "Annuler", JOptionPane.YES_NO_OPTION);
+						int n = JOptionPane.showConfirmDialog(null, "Voulez-vous supprimer ce produit ?", "Supprimer", JOptionPane.YES_NO_OPTION);
 						if (n == JOptionPane.YES_OPTION) {
-							CommandeClientDAO commandeClientDAO = new CommandeClientDAO();
-							commandeClientDAO.delete((int) table.getValueAt(table.getSelectedRow(), 0));
+							ProduitDAO produitDAO = new ProduitDAO();
+							produitDAO.delete(idList.get(table.getSelectedRow()));
 							PanelsManager.contentPane.removeAll();
-							PanelsManager.contentPane.add(PanelsManager.switchToCommandesClientPanel());
+							PanelsManager.contentPane.add(PanelsManager.switchtoProduitsViewPanel());
 							PanelsManager.contentPane.revalidate();
 							PanelsManager.contentPane.repaint();
 						} else {
@@ -191,7 +189,6 @@ public class ProduitsView extends JPanel {
 				"Prix HT",
 				"Prix TTC",
 				"Modifier",
-				"Historique",
 				"Supprimer"
 		};
 		DefaultTableModel tab = new DefaultTableModel(null, col);
@@ -201,6 +198,7 @@ public class ProduitsView extends JPanel {
 		produits.addAll(produitDAO.read());
 		for (Produit produit: produits) {
 			Vector vect = new Vector();
+			idList.add(produit.getId());
 			vect.add(produit.getLibelle());
 			vect.add(produit.getFabricant());
 			vect.add(produit.getPoids());
@@ -246,7 +244,7 @@ public class ProduitsView extends JPanel {
 		}
 		public Component getTableCellRendererComponent(JTable table, Object value,
 													   boolean isSelected, boolean hasFocus, int row, int column) {
-			setText((value == null) ? "Annuler" : value.toString());
+			setText((value == null) ? "Supprimer" : value.toString());
 			return this;
 		}
 	}
@@ -259,7 +257,7 @@ public class ProduitsView extends JPanel {
 		}
 		public Component getTableCellEditorComponent(JTable table, Object value,
 													 boolean isSelected, int row, int column) {
-			label = (value == null) ? "Annuler" : value.toString();
+			label = (value == null) ? "Supprimer" : value.toString();
 			btnAnnuler.setText(label);
 			return btnAnnuler;
 		}

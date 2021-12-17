@@ -373,7 +373,8 @@ public class NouvelleCommandeClientView extends JPanel {
 				for (int i = 0; i < m; i++) {
 					ArrayList < Produit > row = new ArrayList < Produit > ();
 					Produit produit = new Produit();
-					produit.setId(idList.get(i));
+					if (!modify)
+						produit.setId(idList.get(i));
 					produit.setPrixHT(Float.parseFloat(table.getValueAt(i, 2).toString()));
 					produit.setPrixTTC(Float.parseFloat(table.getValueAt(i, 4).toString()));
 					produit.setQuantite(Integer.parseInt(table.getValueAt(i, 0).toString()));
