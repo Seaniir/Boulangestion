@@ -79,12 +79,15 @@ public class HistoriqueCommandesVentes extends JPanel {
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(0, 0, 912, 706);
 		listing.add(scrollPane);
-		
-		listingHistorique = new JTable();
+		HistoriqueCommandesVentesDao hcv = new HistoriqueCommandesVentesDao();
+		CommandeClient c = new CommandeClient();
+		ConnectionUrlParser.Pair<CommandeClient, Client> pair = hcv.read(c.getId());
+		System.out.println(pair);
+		/*listingHistorique = new JTable();
 		listingHistorique.setRowSelectionAllowed(false);
 		scrollPane.setViewportView(listingHistorique);
 		listingHistorique.setRowHeight(100);
-		listingHistorique.setModel(liste());
+		//listingHistorique.setModel(liste());
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 		centerRenderer.setHorizontalAlignment(JLabel.CENTER);
 		listingHistorique.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
@@ -92,11 +95,10 @@ public class HistoriqueCommandesVentes extends JPanel {
 		listingHistorique.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
 		listingHistorique.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
 		listingHistorique.getColumnModel().getColumn(4).setCellRenderer(centerRenderer);
-		listingHistorique.getColumnModel().getColumn(5).setCellRenderer(centerRenderer);
-		
+		listingHistorique.getColumnModel().getColumn(5).setCellRenderer(centerRenderer);*/
 	}
 	
-	public DefaultTableModel liste() {
+	/*public DefaultTableModel liste() {
 		String [] col = {
 				"N° commande/vente",
 				"Date",
@@ -112,21 +114,21 @@ public class HistoriqueCommandesVentes extends JPanel {
 		Client c = new Client();
 		ClientDao x = new ClientDao();
 		List<CommandeClient> listHcv = new ArrayList<>();
-		ConnectionUrlParser.Pair<CommandeClient, Client> pair = hcv.read();
+		ConnectionUrlParser.Pair<CommandeClient, Client> pair = hcv.read(int id);
 		
 			 Vector vect = new Vector();
 			 vect.add(pair.left.getId());
 			 vect.add(pair.left.getWithdrawal_at());
-			 vect.add(pair.right.getFirstName()+pair.right.getName());
+			 vect.add(pair.right.getFirstName()+" "+pair.right.getName());
 			 vect.add(pair.left.getNbrArticles());
 			 vect.add(pair.left.getPrixTotal());
 			 vect.add(pair.left.getTypePaiment());
 			 System.out.println(pair.right.getFirstName()+pair.right.getName());
-			 System.out.println(pair.left.getId()+pair.right.getName());
+			 //System.out.println(pair.left.getId()+pair.right.getName());
 			 
 			 tab.addRow(vect);
 		
 		return tab;
 	
-	}	
+	}	*/
 }

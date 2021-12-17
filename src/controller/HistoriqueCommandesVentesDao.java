@@ -44,12 +44,13 @@ public class HistoriqueCommandesVentesDao{
 	}*/
 	
 	// TEST PARSE 
-	public ConnectionUrlParser.Pair<CommandeClient, Client> read() {
+	public ConnectionUrlParser.Pair<CommandeClient, Client> read(int id) {
         ConnectionUrlParser.Pair<CommandeClient, Client> pair = null;
         try {
-            PreparedStatement req = connect.prepareStatement("SELECT * FROM commandesclients INNER JOIN clients ON commandesclients.fk_client = clients.id");
-            
-            ResultSet rs = req.executeQuery();
+            PreparedStatement sql = connect.prepareStatement("SELECT * FROM commandesclients INNER JOIN clients ON commandesclients.fk_client = clients.id AND commandesclients.id = ? ");
+            sql.setInt(1,id);
+            //AND commandesclients.id = ?
+            ResultSet rs = sql.executeQuery();
             while(rs.next()) {
                 CommandeClient cC = new CommandeClient();
                 Client c = new Client();

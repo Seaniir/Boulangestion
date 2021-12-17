@@ -66,8 +66,15 @@ public class ClientDao implements IDao<Client> {
             sql.setInt(1, 1);
             rs = sql.executeQuery();
             while(rs.next()) {
-                Client client = new Client(rs.getInt("id"),rs.getString("nom"),rs.getString("prenom"),rs.getString("adresse"),rs.getInt("zip"),rs.getString("ville"),
-          rs.getString("telephone"),rs.getString("email"));
+                Client client = new Client(
+                		rs.getInt("id"),
+                		rs.getString("nom"),
+                		rs.getString("prenom"),
+                		rs.getString("adresse"),
+                		rs.getInt("zip"),
+                		rs.getString("ville"),
+                		rs.getString("telephone"),
+                		rs.getString("email"));
 
                 listeClient.add(client);
             }
