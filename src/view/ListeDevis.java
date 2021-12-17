@@ -16,30 +16,32 @@ import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 
 import controller.ClientDao;
-import controller.IDao;
 import controller.PanelsManager;
 import model.Client;
+import view.ListeClients.ButtonEditor;
+import view.ListeClients.ButtonRenderer;
+import view.ListeClients.SecondButtonEditor;
+import view.ListeClients.SecondButtonRenderer;
+import view.ListeClients.ThirdButtonEditor;
+import view.ListeClients.ThirdButtonRenderer;
 
-import javax.swing.JTable;
-import javax.swing.JScrollPane;
-
-public class ListeClients extends JPanel {
-	
+public class ListeDevis extends JPanel {
 	private JTable listingClients;
 	JButton btnModify = new JButton();
 	JButton btnDelete = new JButton();
 	JButton btnBrowsingHistory = new JButton();
-	
 	/**
 	 * Create the panel.
 	 */
-	public ListeClients() {
+	public ListeDevis() {
 		setBounds(0, 0, 1440, 900);
 		setBackground(new Color(255, 235, 205));
 		setLayout(null);
@@ -167,15 +169,16 @@ public class ListeClients extends JPanel {
 	}
 		// Remplir ma table avec la DB --- Si rajouter colonne ne pas oublier ICI
 		public DefaultTableModel liste() {
-			String [] col = {"N° Client",
-					"Nom",
-					"Prénom",
-					"Adresse", 
-					"Téléphone",
-					"Email", 
+			String [] col = {
+					"N° Devis",
+					"Crée le",
+					"Client",
+					"Nbr articles", 
+					"Prix total TTC",
+					"Valider", 
 					"Modifier",
-					"Historique",
-					"Supprimer"
+					"Annuler",
+					
 			};
 			DefaultTableModel tab = new DefaultTableModel(null, col);
 			
@@ -286,4 +289,5 @@ public class ListeClients extends JPanel {
 	      return new String(label);
 	    }
 	}
+
 }
