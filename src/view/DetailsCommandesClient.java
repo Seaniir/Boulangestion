@@ -273,8 +273,8 @@ public class DetailsCommandesClient extends JPanel {
 		table_1.setModel(liste());
 		float prixTotal = 0;
 		for (int i = 0; i < table_1.getRowCount(); i++) {
-			prixTotal += Float.parseFloat(table_1.getValueAt(i, 5).toString());
 			System.out.println(table_1.getValueAt(i, 5));
+			prixTotal += Float.parseFloat(table_1.getValueAt(i, 5).toString());
 		}
 		prixTotal_label.setText(String.valueOf(prixTotal));
 		if (currentCommande.getTypePaiment().equals("Espèces")) {
@@ -327,12 +327,12 @@ public class DetailsCommandesClient extends JPanel {
 		ArrayList < ArrayList < Produit >> contactList = gson.fromJson(currentCommande.getProduits(), type);
 		for (ArrayList < Produit > produit: contactList) {
 			Vector vect = new Vector();
-			vect.add(produit.get(0).getId());
+			vect.add(produit.get(0).getQuantite());
 			vect.add(produit.get(0).getLibelle());
-			//vect.add(produit.get(0).getPrixUnitaire());
-			//vect.add(produit.get(0).getPrixUnitaire() * 2);
-			//vect.add(produit.get(0).getPrixUnitaire() * 2);
-			//vect.add(produit.get(0).getPrixUnitaire() * 2 * produit.get(0).getId());
+			vect.add(produit.get(0).getPrixHT());
+			vect.add(produit.get(0).getPrixHT() * produit.get(0).getQuantite());
+			vect.add(produit.get(0).getPrixTTC());
+			vect.add(produit.get(0).getPrixTTC() * produit.get(0).getQuantite());
 			tab.addRow(vect);
 		}
 

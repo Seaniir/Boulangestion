@@ -38,6 +38,7 @@ public class NouvelleCommandeClientView extends JPanel {
 	JButton button = new JButton();
 	JComboBox comboBox = new JComboBox();
 	JLabel prixTotal_label = new JLabel();
+	ArrayList<Integer> idList = new ArrayList<Integer>();
 
 	/**
 	 * Create the panel.
@@ -372,14 +373,17 @@ public class NouvelleCommandeClientView extends JPanel {
 				for (int i = 0; i < m; i++) {
 					ArrayList < Produit > row = new ArrayList < Produit > ();
 					Produit produit = new Produit();
-					produit.setId(Integer.parseInt(table.getValueAt(i, 0).toString()));
+					produit.setId(idList.get(i));
+					produit.setPrixHT(Float.parseFloat(table.getValueAt(i, 2).toString()));
+					produit.setPrixTTC(Float.parseFloat(table.getValueAt(i, 4).toString()));
+					produit.setQuantite(Integer.parseInt(table.getValueAt(i, 0).toString()));
 					produit.setLibelle((String) table.getValueAt(i, 1));
 					//produit.setPrixUnitaire((Float) table.getValueAt(i, 2));
 					row.add(produit);
 					matrix.add(row);
 				}
 
-				System.out.println(matrix);
+				System.out.println(idList);
 				String json = new Gson().toJson(matrix);
 				System.out.println(json);
 				Date date = null;
@@ -405,8 +409,8 @@ public class NouvelleCommandeClientView extends JPanel {
 		panel.add(btnNewButton_1_1);
 		float prixTotal = 0;
 		for (int i = 0; i < table.getRowCount(); i++) {
-			prixTotal += Float.parseFloat(table.getValueAt(i, 5).toString());
-			System.out.println(table.getValueAt(i, 5));
+			prixTotal += Float.parseFloat(table.getValueAt(i, 4).toString());
+			System.out.println(table.getValueAt(i, 4));
 		}
 		prixTotal_label.setText(String.valueOf(prixTotal));
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
@@ -425,9 +429,8 @@ public class NouvelleCommandeClientView extends JPanel {
 					int column = table.getSelectedColumn();
 					System.out.println(table.getColumnName(column));
 					if (table.getColumnName(column).equals("Quantité")) {
-						table.setValueAt(Float.parseFloat(table.getValueAt(row, 0).toString()) * Float.parseFloat(table.getValueAt(row, 2).toString()), row, 3);
-						table.setValueAt(Float.parseFloat(table.getValueAt(row, 0).toString()) * (Float.parseFloat(table.getValueAt(row, 2).toString()) * 2), row, 4);
-						table.setValueAt(Float.parseFloat(table.getValueAt(row, 0).toString()) * (Float.parseFloat(table.getValueAt(row, 2).toString()) * 2), row, 5);
+						table.setValueAt(Float.parseFloat(table.getValueAt(row, 0).toString()) * (Float.parseFloat(table.getValueAt(row, 2).toString())), row, 3);
+						table.setValueAt(Float.parseFloat(table.getValueAt(row, 0).toString()) * (Float.parseFloat(table.getValueAt(row, 4).toString())), row, 5);
 						float prixTotal = 0;
 						for (int i = 0; i < table.getRowCount(); i++) {
 							prixTotal += Float.parseFloat(table.getValueAt(i, 5).toString());
@@ -443,20 +446,15 @@ public class NouvelleCommandeClientView extends JPanel {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
 				if (e.getStateChange() == ItemEvent.SELECTED) { // Check if the value got selected, ignore if it has been deselected
-					System.out.println(e.getItem().toString());
 					ProduitDAO produitDAO = new ProduitDAO();
 					List < Produit > listProduits = new ArrayList < > ();
 					listProduits.addAll(produitDAO.read());
 					int row = table.getSelectedRow();
-					System.out.println(row);
 					for (Produit article: listProduits) {
-						System.out.println(article.getLibelle());
-						System.out.println(e.getItem().toString());
-						if (article.getLibelle().equals(e.getItem().toString())) {
-							//table.setValueAt(article.getPrixUnitaire(), row, 2);
-							table.setValueAt(Float.parseFloat(table.getValueAt(row, 0).toString()) * Float.parseFloat(table.getValueAt(row, 2).toString()), row, 3);
-							table.setValueAt(Float.parseFloat(table.getValueAt(row, 0).toString()) * (Float.parseFloat(table.getValueAt(row, 2).toString()) * 2), row, 4);
-							table.setValueAt(Float.parseFloat(table.getValueAt(row, 0).toString()) * (Float.parseFloat(table.getValueAt(row, 2).toString()) * 2), row, 5);
+						if (article.getLibelle().equals(e.getItem())) {
+							idList.add(article.getId());
+							table.setValueAt(article.getPrixHT(),row, 2);
+							table.setValueAt(article.getPrixTTC(),row, 4);
 							float prixTotal = 0;
 							for (int i = 0; i < table.getRowCount(); i++) {
 								prixTotal += Float.parseFloat(table.getValueAt(i, 5).toString());
@@ -473,10 +471,10 @@ public class NouvelleCommandeClientView extends JPanel {
 		String[] col = {
 				"Quantité",
 				"Libellé",
-				"Prix Unitaire",
+				"Prix Unitaire HT",
 				"Prix total HT",
-				"Prix total TTC",
-				"Montant réglé"
+				"Prix Unitaire TTC",
+				"Prix total TTC"
 		};
 		DefaultTableModel tab = new DefaultTableModel(null, col);
 
@@ -492,21 +490,22 @@ public class NouvelleCommandeClientView extends JPanel {
 			ArrayList < ArrayList < Produit >> contactList = gson.fromJson(currentCommande.getProduits(), type);
 			for (ArrayList < Produit > produit: contactList) {
 				Vector vect = new Vector();
-				vect.add(produit.get(0).getId());
+				vect.add(produit.get(0).getQuantite());
 				vect.add(produit.get(0).getLibelle());
-				//vect.add(produit.get(0).getPrixUnitaire());
-				//vect.add(produit.get(0).getPrixUnitaire() * 2);
-				//vect.add(produit.get(0).getPrixUnitaire() * 2);
-				//vect.add(produit.get(0).getPrixUnitaire() * 2 * produit.get(0).getId());
+				vect.add(produit.get(0).getPrixHT());
+				vect.add(produit.get(0).getPrixTTC() * produit.get(0).getQuantite());
+				vect.add(produit.get(0).getPrixTTC());
+				vect.add(produit.get(0).getPrixTTC() * produit.get(0).getQuantite());
 				tab.addRow(vect);
 			}
 		} else {
 			Vector vect = new Vector();
+			idList.add(listProduits.get(0).getId());
 			vect.add(0);
 			vect.add(listProduits.get(0).getLibelle());
-			//vect.add(listProduits.get(0).getPrixUnitaire());
+			vect.add(listProduits.get(0).getPrixHT());
 			vect.add(0);
-			vect.add(0);
+			vect.add(listProduits.get(0).getPrixTTC());
 			vect.add(0);
 			tab.addRow(vect);
 			prixTotal_label.setText(Float.toString(0));
@@ -522,9 +521,9 @@ public class NouvelleCommandeClientView extends JPanel {
 		Vector vect = new Vector();
 		vect.add(0);
 		vect.add(listProduits.get(0).getLibelle());
-		//vect.add(listProduits.get(0).getPrixUnitaire());
+		vect.add(listProduits.get(0).getPrixHT());
 		vect.add(0);
-		vect.add(0);
+		vect.add(listProduits.get(0).getPrixTTC());
 		vect.add(0);
 		model.addRow(vect);
 		table.setModel(model);
