@@ -178,7 +178,14 @@ public class NouveauClient extends JPanel {
 					String tel_saisie = telValue.getText();
 					String email_saisie = emailValue.getText();
 					
-					Client nouveau = new Client(name_saisie,firstName_saisie,adress_saisie,zip_saisie,city_saisie,tel_saisie,email_saisie);
+					Client nouveau = new Client(
+							name_saisie,
+							firstName_saisie,
+							adress_saisie,
+							zip_saisie,
+							city_saisie,
+							tel_saisie,
+							email_saisie);
 					clientDaoModified.update(nouveau, ClientDao.currentClient.getId());
 					btnNewButton.setText("Valider");
 					nameValue.setText("");
@@ -228,7 +235,7 @@ public class NouveauClient extends JPanel {
 							cityValue.setText("");
 							telValue.setText("");
 							emailValue.setText("");
-							clientDao.inscription(nouveau);
+							clientDao.create(nouveau);
 						}else {
 							JOptionPane.showMessageDialog(null, "Mail existe deja","Error",JOptionPane.ERROR_MESSAGE);
 							

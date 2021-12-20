@@ -15,10 +15,28 @@ public class ClientDao implements IDao<Client> {
 	ResultSet rs = null;
 	List<Client> listeClient = new ArrayList<>();
 	public static Client currentClient;
-	
-	public void inscription(Client client) {
+	public boolean mailAlreadyExists(String mail) {
+		Boolean msg = false;
 		try {
-			PreparedStatement sql = connect.prepareStatement("INSERT INTO clients (nom,prenom,adresse,zip,ville,telephone,email) VALUES"
+			PreparedStatement sql = connect.prepareStatement("SELECT * FROM "+
+		"clients WHERE email=?");
+			sql.setString(1, mail);
+			ResultSet rs = sql.executeQuery();
+			if(!rs.next()) {
+				
+				msg = true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return msg;
+	}
+
+	@Override
+	public void create(Client client) {
+		try {
+			PreparedStatement sql = connect.prepareStatement("INSERT INTO"+ 
+		"clients (nom,prenom,adresse,zip,ville,telephone,email) VALUES"
 					+"(?,?,?,?,?,?,?)");
 			
 			sql.setString(1, client.getName());
@@ -32,29 +50,7 @@ public class ClientDao implements IDao<Client> {
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
-		}	
-	}
-	
-	public boolean mailAlreadyExists(String mail) {
-		Boolean msg = false;
-		try {
-			PreparedStatement sql = connect.prepareStatement("SELECT * FROM clients WHERE email=?");
-			sql.setString(1, mail);
-			ResultSet rs = sql.executeQuery();
-			if(!rs.next()) {
-				
-				msg = true;
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
-		return msg;
-	}
-
-	@Override
-	public void create(Client client) {
-		
 	}
 
 	@Override
@@ -75,10 +71,8 @@ public class ClientDao implements IDao<Client> {
                 		rs.getString("ville"),
                 		rs.getString("telephone"),
                 		rs.getString("email"));
-
                 listeClient.add(client);
             }
-            
         }catch(Exception e) {
             e.printStackTrace();
             System.out.println("Insertion KO - KO - KO");
@@ -86,11 +80,12 @@ public class ClientDao implements IDao<Client> {
         return listeClient;
     }
 	
-
 	@Override
 	public void update(Client client, int idClient) {
 		try {
-			PreparedStatement sql = connect.prepareStatement("UPDATE clients SET nom=?, prenom=?, adresse=?, zip=?, ville=?, telephone=?, email=? WHERE clients.id=?");
+			PreparedStatement sql = connect.prepareStatement("UPDATE clients"+
+		"SET nom=?, prenom=?, adresse=?, zip=?, ville=?, telephone=?, email=?"+
+					"WHERE clients.id=?");
 			sql.setString(1, client.getName());
 			sql.setString(2, client.getFirstName());
 			sql.setString(3, client.getAdress());
@@ -101,20 +96,18 @@ public class ClientDao implements IDao<Client> {
 			sql.setInt(8, idClient);
 			sql.executeUpdate();
 		} catch (SQLException e) {
-			
 			e.printStackTrace();
 		}
-		
 	}
 
 	@Override
 	public void delete(int idToDelete) {
 		try {
-            PreparedStatement sql = connect.prepareStatement("UPDATE clients SET isVisible=? WHERE id=?");
+            PreparedStatement sql = connect.prepareStatement("UPDATE clients"+
+		" SET isVisible=? WHERE id=?");
             sql.setInt(1, 0);
             sql.setInt(2, idToDelete);
             sql.executeUpdate();
-    
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -124,24 +117,27 @@ public class ClientDao implements IDao<Client> {
 	public Client findById(int id) {
 		
 		try {
-			PreparedStatement req = connect.prepareStatement("SELECT * FROM clients WHERE id=?");
+			PreparedStatement req = connect.prepareStatement("SELECT * FROM"+
+		" clients WHERE id=?");
 			req.setInt(1, id);
 			
 			ResultSet rs = req.executeQuery();
 			
 			while(rs.next()) {
-				currentClient = new Client(rs.getInt("id"),rs.getString("nom"),rs.getString("prenom"),rs.getString("adresse"),rs.getInt("zip"),rs.getString("ville"),
-				          rs.getString("telephone"),rs.getString("email"));
-				
-				
+				currentClient = new Client(
+					rs.getInt("id"),
+					rs.getString("nom"),
+					rs.getString("prenom"),
+					rs.getString("adresse"),
+					rs.getInt("zip"),
+					rs.getString("ville"),
+					rs.getString("telephone"),
+					rs.getString("email"));
 			}
 			
 		}catch(Exception e) {
 			e.printStackTrace();
-			
 		}
 		return currentClient;
 	}
-	
-
 }

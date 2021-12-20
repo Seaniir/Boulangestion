@@ -45,7 +45,7 @@ public class ListeClients extends JPanel {
 		setLayout(null);
 		
 		JPanel panel = new JPanel();
-		panel.setBounds(0, 0, 1440, 131);
+		panel.setBounds(0, 0, 1440, 94);
 		panel.setBackground(Color.WHITE);
 		add(panel);
 		panel.setLayout(null);

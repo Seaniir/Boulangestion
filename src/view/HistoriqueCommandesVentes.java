@@ -13,7 +13,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
@@ -22,11 +21,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import com.mysql.cj.conf.ConnectionUrlParser;
-import com.mysql.cj.conf.ConnectionUrlParser.Pair;
-
-import controller.ClientDao;
 import controller.CommandeClientDAO;
-import controller.HistoriqueCommandesVentesDao;
 import controller.PanelsManager;
 import model.Client;
 import model.CommandeClient;
@@ -71,8 +66,6 @@ public class HistoriqueCommandesVentes extends JPanel {
 		panel.add(btnAccueil);
 		
 		// Panel Historique
-		
-		
 		JPanel listing = new JPanel();
 		listing.setBackground(new Color(255, 255, 255));
 		listing.setBounds(264, 155, 912, 706);
@@ -82,10 +75,7 @@ public class HistoriqueCommandesVentes extends JPanel {
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(0, 0, 912, 706);
 		listing.add(scrollPane);
-		
-		/*HistoriqueCommandesVentesDao hcv = new HistoriqueCommandesVentesDao();
-		ConnectionUrlParser.Pair<CommandeClient, Client> pair = hcv.read();
-		System.out.println(pair);*/
+
 		// La mise en forme du tableau 
 		listingHistorique = new JTable();
 		listingHistorique.setRowSelectionAllowed(false);
@@ -93,11 +83,9 @@ public class HistoriqueCommandesVentes extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				int id = listingHistorique.getSelectedRow();
-
-				//int article_id = (int) listingHistorique.getModel().getValueAt(id, 0);
-
 				CommandeClientDAO commandeClientDAO = new CommandeClientDAO();
-				ConnectionUrlParser.Pair < CommandeClient, Client > pair = commandeClientDAO.findById((Integer) listingHistorique.getValueAt(id, 0));
+				ConnectionUrlParser.Pair < CommandeClient, Client > pair = 
+						commandeClientDAO.findById((Integer) listingHistorique.getValueAt(id, 0));
 				DetailsCommandesClient.currentCommande = pair.left;
 				DetailsCommandesClient.currentClient = pair.right;
 				PanelsManager.contentPane.removeAll();
@@ -130,13 +118,11 @@ public class HistoriqueCommandesVentes extends JPanel {
 				"Paiement"
 		};
 		DefaultTableModel tab = new DefaultTableModel(null, col);
-		
 		// Les données du tableau 
-		HistoriqueCommandesVentesDao hcv = new HistoriqueCommandesVentesDao();
+		CommandeClientDAO hcv = new CommandeClientDAO();
 		List<CommandeClient> cC = new ArrayList<>();
 		List<Client> c = new ArrayList<>();
-		
-		ConnectionUrlParser.Pair<ArrayList<CommandeClient>, ArrayList<Client>> pair = hcv.read();
+		ConnectionUrlParser.Pair<ArrayList<CommandeClient>, ArrayList<Client>> pair = hcv.readPairHisto();
 		int i = 0;
 		for (CommandeClient cx : pair.left) {
 			Vector vect = new Vector();

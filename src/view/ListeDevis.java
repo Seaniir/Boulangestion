@@ -25,21 +25,13 @@ import javax.swing.table.TableCellRenderer;
 
 import com.mysql.cj.conf.ConnectionUrlParser;
 
-import controller.ClientDao;
 import controller.CommandeClientDAO;
-import controller.HistoriqueCommandesVentesDao;
 import controller.PanelsManager;
 import model.Client;
 import model.CommandeClient;
-import view.ListeClients.ButtonEditor;
-import view.ListeClients.ButtonRenderer;
-import view.ListeClients.SecondButtonEditor;
-import view.ListeClients.SecondButtonRenderer;
-import view.ListeClients.ThirdButtonEditor;
-import view.ListeClients.ThirdButtonRenderer;
 
 public class ListeDevis extends JPanel {
-	private JTable listingClients;
+	private JTable table;
 	JButton btnValidate = new JButton();
 	JButton btnModify = new JButton();
 	JButton btnDelete = new JButton();
@@ -102,28 +94,28 @@ public class ListeDevis extends JPanel {
 		scrollPane.setBounds(0, 0, 912, 706);
 		listing.add(scrollPane);
 		
-		listingClients = new JTable();
-		listingClients.setRowSelectionAllowed(false);
-		scrollPane.setViewportView(listingClients);
-		listingClients.setRowHeight(100);
-		listingClients.setModel(liste());
+		table = new JTable();
+		table.setRowSelectionAllowed(false);
+		scrollPane.setViewportView(table);
+		table.setRowHeight(100);
+		table.setModel(liste());
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 		centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-		listingClients.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
-		listingClients.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
-		listingClients.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
-		listingClients.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
-		listingClients.getColumnModel().getColumn(4).setCellRenderer(centerRenderer);
-		listingClients.getColumnModel().getColumn(5).setCellRenderer(centerRenderer);
-		listingClients.getColumnModel().getColumn(6).setCellRenderer(centerRenderer);
+		table.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
+		table.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
+		table.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
+		table.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
+		table.getColumnModel().getColumn(4).setCellRenderer(centerRenderer);
+		table.getColumnModel().getColumn(5).setCellRenderer(centerRenderer);
+		table.getColumnModel().getColumn(6).setCellRenderer(centerRenderer);
 		
 		
-		listingClients.getColumn("Valider").setCellRenderer(new ButtonRenderer());
-		listingClients.getColumn("Valider").setCellEditor(new ButtonEditor(new JCheckBox()));
-		listingClients.getColumn("Modifier").setCellRenderer(new SecondButtonRenderer());
-		listingClients.getColumn("Modifier").setCellEditor(new SecondButtonEditor(new JCheckBox()));
-		listingClients.getColumn("Annuler").setCellRenderer(new ThirdButtonRenderer());
-		listingClients.getColumn("Annuler").setCellEditor(new ThirdButtonEditor(new JCheckBox()));
+		table.getColumn("Valider").setCellRenderer(new ButtonRenderer());
+		table.getColumn("Valider").setCellEditor(new ButtonEditor(new JCheckBox()));
+		table.getColumn("Modifier").setCellRenderer(new SecondButtonRenderer());
+		table.getColumn("Modifier").setCellEditor(new SecondButtonEditor(new JCheckBox()));
+		table.getColumn("Annuler").setCellRenderer(new ThirdButtonRenderer());
+		table.getColumn("Annuler").setCellEditor(new ThirdButtonEditor(new JCheckBox()));
 		
 		// Lors du clic sur le bouton modifier il se passe: 
 		btnModify.addActionListener(new ActionListener() {
@@ -131,7 +123,7 @@ public class ListeDevis extends JPanel {
 				int n = JOptionPane.showConfirmDialog(null, "Etes vous sur de modifier ?","Modification",JOptionPane.YES_NO_OPTION);
 				if (n == JOptionPane.YES_OPTION) {
 					CommandeClientDAO commandeClientDAO = new CommandeClientDAO();
-					ConnectionUrlParser.Pair < CommandeClient, Client > pair = commandeClientDAO.findById((int) listingClients.getValueAt(listingClients.getSelectedRow(), 0));
+					ConnectionUrlParser.Pair < CommandeClient, Client > pair = commandeClientDAO.findById((int) table.getValueAt(table.getSelectedRow(), 0));
 					NouveauDevis.currentCommande = pair.left;
 					NouveauDevis.currentClient = pair.right;
 					NouveauDevis.modify = true;
@@ -142,8 +134,7 @@ public class ListeDevis extends JPanel {
 					PanelsManager.contentPane.revalidate();
 				} else if (n == JOptionPane.NO_OPTION) {
 					
-				}
-					
+				}	
 			}
 		});
 		
@@ -152,7 +143,7 @@ public class ListeDevis extends JPanel {
 				int n = JOptionPane.showConfirmDialog(null, "Etes vous sur de supprimer ?","Suppression",JOptionPane.YES_NO_OPTION);
 				if (n == JOptionPane.YES_OPTION) {
 					CommandeClientDAO ccDao = new CommandeClientDAO();
-					ccDao.delete((int) listingClients.getValueAt(listingClients.getSelectedRow(), 0));
+					ccDao.delete((int) table.getValueAt(table.getSelectedRow(), 0));
 					PanelsManager.contentPane.removeAll();
 					PanelsManager.contentPane.add(PanelsManager.switchtoListeDevisPanel());
 					PanelsManager.contentPane.repaint();
@@ -169,7 +160,7 @@ public class ListeDevis extends JPanel {
 				int n = JOptionPane.showConfirmDialog(null, "Etes vous sur de passer ce devis en valider ?","Validation",JOptionPane.YES_NO_OPTION);
 				if (n == JOptionPane.YES_OPTION) {
 					CommandeClientDAO ccDao = new CommandeClientDAO();
-					ccDao.archive((int) listingClients.getValueAt(listingClients.getSelectedRow(), 0));
+					ccDao.archive((int) table.getValueAt(table.getSelectedRow(), 0));
 					PanelsManager.contentPane.removeAll();
 					PanelsManager.contentPane.add(PanelsManager.switchtoListeDevisPanel());
 					PanelsManager.contentPane.repaint();
@@ -181,7 +172,7 @@ public class ListeDevis extends JPanel {
 			}
 		});
 	}
-		// Remplir ma table avec la DB --- Si rajouter colonne ne pas oublier ICI
+		// Intitulé des colonnes
 		public DefaultTableModel liste() {
 			String [] col = {
 					"N° Devis",
@@ -191,17 +182,15 @@ public class ListeDevis extends JPanel {
 					"Prix total TTC",
 					"Valider", 
 					"Modifier",
-					"Annuler",
-					
+					"Annuler",		
 			};
 			DefaultTableModel tab = new DefaultTableModel(null, col);
-			
 			// Les données du tableau 
 			CommandeClientDAO hcv = new CommandeClientDAO();
 			List<CommandeClient> cC = new ArrayList<>();
 			List<Client> c = new ArrayList<>();
 			
-			ConnectionUrlParser.Pair<ArrayList<CommandeClient>, ArrayList<Client>> pair = hcv.readPair();
+			ConnectionUrlParser.Pair<ArrayList<CommandeClient>, ArrayList<Client>> pair = hcv.readPairDevis();
 			int i = 0;
 			for (CommandeClient cx : pair.left) {
 				Vector vect = new Vector();
@@ -215,11 +204,9 @@ public class ListeDevis extends JPanel {
 				i++;
 			}
 			return tab;
-		
 		}	
-	
 		
-	// Class pour les boutons dans le JTable.Comment faire plus propre ?  
+	// Class qui créer les boutons dans la JTable  
 	class ButtonRenderer extends JButton implements TableCellRenderer{
 			public ButtonRenderer() {
 				setOpaque(true);
@@ -292,10 +279,8 @@ public class ListeDevis extends JPanel {
 	class ThirdButtonEditor extends DefaultCellEditor{
 	    public ThirdButtonEditor(JCheckBox checkBox) {
 			super(checkBox);
-			
 		}
 		private String label;
-	    
 	    public Component getTableCellEditorComponent(JTable table, Object value,
 	    boolean isSelected, int row, int column){
 	      label = (value == null) ? "Annuler" : value.toString();

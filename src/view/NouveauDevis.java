@@ -52,7 +52,6 @@ import controller.ProduitDAO;
 import model.Client;
 import model.CommandeClient;
 import model.Produit;
-import view.NouvelleCommandeClientView.DateLabelFormatter;
 
 public class NouveauDevis extends JPanel {
 	static public boolean modify = false;

@@ -32,7 +32,7 @@ public class Login extends JPanel {
 		
 		JLabel lblBoulangestion = new JLabel("Boulangestion");
 		lblBoulangestion.setHorizontalAlignment(SwingConstants.CENTER);
-		lblBoulangestion.setForeground(new Color(128, 0, 0));
+		lblBoulangestion.setForeground(new Color(157, 70, 6));
 		lblBoulangestion.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 80));
 		lblBoulangestion.setBounds(10, 38, 1420, 98);
 		add(lblBoulangestion);
