@@ -36,6 +36,7 @@ public class NouvelleCommandeClientView extends JPanel {
 	static CommandeClient currentCommande = new CommandeClient();
 	private JTable table;
 	JButton button = new JButton();
+	JButton btnSupprimer = new JButton();
 	JComboBox comboBox = new JComboBox();
 	JLabel prixTotal_label = new JLabel();
 	ArrayList<Integer> idList = new ArrayList<Integer>();
@@ -250,6 +251,7 @@ public class NouvelleCommandeClientView extends JPanel {
 		panel_3.add(id_commande_label);
 
 		JLabel lblNewLabel_7 = new JLabel("Total :");
+
 		lblNewLabel_7.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblNewLabel_7.setBounds(1199, 196, 116, 35);
 		panel.add(lblNewLabel_7);
@@ -416,6 +418,8 @@ public class NouvelleCommandeClientView extends JPanel {
 		table.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
 		table.getColumnModel().getColumn(4).setCellRenderer(centerRenderer);
 		table.getColumnModel().getColumn(5).setCellRenderer(centerRenderer);
+		table.getColumn("Supprimer").setCellRenderer(new ButtonRenderer());
+		table.getColumn("Supprimer").setCellEditor(new ButtonEditor(new JCheckBox()));
 		table.addPropertyChangeListener("tableCellEditor", new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
@@ -437,6 +441,23 @@ public class NouvelleCommandeClientView extends JPanel {
 				}
 			}
 		});
+		btnSupprimer.addActionListener(
+				new ActionListener() {
+					public void actionPerformed(ActionEvent event) {
+						int n = JOptionPane.showConfirmDialog(null, "Voulez-vous supprimer ce produit ?", "Supprimer", JOptionPane.YES_NO_OPTION);
+						if (n == JOptionPane.YES_OPTION) {
+							((DefaultTableModel)table.getModel()).removeRow(table.getSelectedRow());
+							float prixTotal = 0;
+							for (int i = 0; i < table.getRowCount(); i++) {
+								prixTotal += Float.parseFloat(table.getValueAt(i, 5).toString());
+							}
+							prixTotal_label.setText(Float.toString(prixTotal));
+						} else {
+
+						}
+					}
+				}
+		);
 		comboBox.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
@@ -453,6 +474,8 @@ public class NouvelleCommandeClientView extends JPanel {
 							poidsList.add(table.getSelectedRow(), article.getPoids());
 							table.setValueAt(article.getPrixHT(),row, 2);
 							table.setValueAt(article.getPrixTTC(),row, 4);
+							table.setValueAt(Float.parseFloat(table.getValueAt(row, 0).toString()) * (Float.parseFloat(table.getValueAt(row, 2).toString())), row, 3);
+							table.setValueAt(Float.parseFloat(table.getValueAt(row, 0).toString()) * (Float.parseFloat(table.getValueAt(row, 4).toString())), row, 5);
 							float prixTotal = 0;
 							for (int i = 0; i < table.getRowCount(); i++) {
 								prixTotal += Float.parseFloat(table.getValueAt(i, 5).toString());
@@ -472,7 +495,8 @@ public class NouvelleCommandeClientView extends JPanel {
 				"Prix Unitaire HT",
 				"Prix total HT",
 				"Prix Unitaire TTC",
-				"Prix total TTC"
+				"Prix total TTC",
+				"Supprimer"
 		};
 		DefaultTableModel tab = new DefaultTableModel(null, col);
 
@@ -530,6 +554,34 @@ public class NouvelleCommandeClientView extends JPanel {
 		vect.add(0);
 		model.addRow(vect);
 		table.setModel(model);
+	}
+
+	class ButtonRenderer extends JButton implements TableCellRenderer {
+		public ButtonRenderer() {
+			setOpaque(true);
+		}
+		public Component getTableCellRendererComponent(JTable table, Object value,
+													   boolean isSelected, boolean hasFocus, int row, int column) {
+			setText((value == null) ? "Supprimer" : value.toString());
+			return this;
+		}
+	}
+
+	class ButtonEditor extends DefaultCellEditor {
+		private String label;
+
+		public ButtonEditor(JCheckBox checkBox) {
+			super(checkBox);
+		}
+		public Component getTableCellEditorComponent(JTable table, Object value,
+													 boolean isSelected, int row, int column) {
+			label = (value == null) ? "Supprimer" : value.toString();
+			btnSupprimer.setText(label);
+			return btnSupprimer;
+		}
+		public Object getCellEditorValue() {
+			return new String(label);
+		}
 	}
 
 	public class DateLabelFormatter extends JFormattedTextField.AbstractFormatter {
