@@ -40,9 +40,6 @@ public class ListeClients extends JPanel {
 	JButton btnDelete = new JButton();
 	JButton btnBrowsingHistory = new JButton();
 	
-	/**
-	 * Create the panel.
-	 */
 	public ListeClients() {
 		setBounds(0, 0, 1440, 900);
 		setBackground(new Color(254, 245, 232));
@@ -169,7 +166,7 @@ public class ListeClients extends JPanel {
 			}
 		});
 	}
-		// Remplir ma table avec la DB --- Si rajouter colonne ne pas oublier ICI
+		// Les intitulés des colonnes du tableau
 		public DefaultTableModel liste() {
 			String [] col = {"N° Client",
 					"Nom",
@@ -181,6 +178,7 @@ public class ListeClients extends JPanel {
 					"Historique",
 					"Supprimer"
 			};
+			// Les données du tableau
 			DefaultTableModel tab = new DefaultTableModel(null, col);
 			
 			ClientDao clientDao = new ClientDao();
@@ -202,7 +200,7 @@ public class ListeClients extends JPanel {
 		}	
 	
 		
-	// Class pour les boutons dans le JTable.Comment faire plus propre ?  
+	// Class pour les boutons dans le JTable 
 	class ButtonRenderer extends JButton implements TableCellRenderer{
 			public ButtonRenderer() {
 				setOpaque(true);
