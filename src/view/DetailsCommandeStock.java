@@ -43,6 +43,10 @@ import model.Fournisseur;
 import model.Produit;
 
 public class DetailsCommandeStock extends JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	static Fournisseur currentFournisseur = new Fournisseur();
 	static CommandeStock currentCmdStock = new CommandeStock();
 	private JTable table_1;
@@ -73,7 +77,8 @@ public class DetailsCommandeStock extends JPanel {
 				PanelsManager.contentPane.revalidate();	
 			}
 		});
-		btnRetour.setIcon(new ImageIcon("C:\\Users\\fredb\\AFPA\\workspace-java\\Boulangestion\\projetBoulang\\arrow_left.png"));
+		btnRetour.setIcon(new ImageIcon
+			("C:\\Users\\fredb\\AFPA\\workspace-java\\Boulangestion\\projetBoulang\\arrow_left.png"));
 		btnRetour.setBounds(22, 11, 40, 40);
 		menu.add(btnRetour);
 		
@@ -93,7 +98,8 @@ public class DetailsCommandeStock extends JPanel {
 				PanelsManager.contentPane.revalidate();
 			}
 		});
-		btnAccueil.setIcon(new ImageIcon("C:\\Users\\fredb\\AFPA\\workspace-java\\Boulangestion\\projetBoulang\\exit.png"));
+		btnAccueil.setIcon(new ImageIcon
+				("C:\\Users\\fredb\\AFPA\\workspace-java\\Boulangestion\\projetBoulang\\exit.png"));
 		btnAccueil.setBounds(1370, 11, 40, 40);
 		menu.add(btnAccueil);
 		
@@ -116,6 +122,7 @@ public class DetailsCommandeStock extends JPanel {
 		lblFournisseur.setBackground(new Color(254, 245, 232));
 		lblFournisseur.setHorizontalAlignment(SwingConstants.CENTER);
 		
+		//block d'info fournisseur
 		JPanel infosFournisseur = new JPanel();
 		infosFournisseur.setBackground(new Color(255, 255, 255));
 		infosFournisseur.setBounds(10, 11, 553, 165);
@@ -130,7 +137,7 @@ public class DetailsCommandeStock extends JPanel {
 		lblAdress.setBounds(11, 63, 57, 14);
 		infosFournisseur.add(lblAdress);
 
-		JLabel lblTel = new JLabel("T\u00E9l\u00E9phone :");
+		JLabel lblTel = new JLabel("Telephone :");
 		lblTel.setBounds(11, 102, 72, 14);
 		infosFournisseur.add(lblTel);
 		
@@ -161,6 +168,7 @@ public class DetailsCommandeStock extends JPanel {
 		scrollPane.setBounds(10, 188, 1014, 436);
 		corps.add(scrollPane);
 		
+		//block d'info date et numero commande
 		JPanel datePanel = new JPanel();
 		datePanel.setBackground(new Color(255, 255, 255));
 		datePanel.setBounds(723, 11, 693, 165);
@@ -191,6 +199,7 @@ public class DetailsCommandeStock extends JPanel {
 		id_commande_label.setBounds(349, 117, 99, 37);
 		datePanel.add(id_commande_label);
 		
+		//block info prix total
 		JLabel lblTotal = new JLabel("Total :");
 		lblTotal.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblTotal.setBounds(1199, 196, 116, 35);
@@ -208,12 +217,15 @@ public class DetailsCommandeStock extends JPanel {
 		prixTotal_label.setBounds(38, 11, 125, 77);
 		totalPanel.add(prixTotal_label);
 		
+		//creation du tableau
 		table_1 = new JTable();
 		table_1.setEnabled(false);
 		table_1.setRowSelectionAllowed(false);
 		scrollPane.setViewportView(table_1);
 		table_1.setRowHeight(100);
 		table_1.setModel(liste());
+		
+		//mise en place des infos fournisseur et commande
 		float prixTotal = 0;
 		for (int i = 0; i < table_1.getRowCount(); i++) {
 			prixTotal += Float.parseFloat(table_1.getValueAt(i, 5).toString());
@@ -221,20 +233,20 @@ public class DetailsCommandeStock extends JPanel {
 		prixTotal_label.setText(String.valueOf(prixTotal));
 		id_commande_label.setText(String.valueOf(currentCmdStock.getId()));
 		societeLabel.setText(currentFournisseur.getSociete());
-		adresseLabel.setText(currentFournisseur.getAdresse()+" "+currentFournisseur.getCodePostal()+" "+
-				currentFournisseur.getVille());
+		adresseLabel.setText(currentFournisseur.getAdresse()+" "+currentFournisseur.getCodePostal()+
+				" "+currentFournisseur.getVille());
 		phoneLabel.setText(currentFournisseur.getTel());
 		mailLabel.setText(currentFournisseur.getEmail());
-		
 		Date date = currentCmdStock.getDateReception();
 		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 		String strDate = dateFormat.format(date);
 		created_at_label.setText(strDate);
-		UtilDateModel model = new UtilDateModel();
 		Properties p = new Properties();
 		p.put("text.today", "Today");
 		p.put("text.month", "Month");
 		p.put("text.year", "Year");
+		
+		//centrage du contenu des cellules
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 		centerRenderer.setHorizontalAlignment(JLabel.CENTER);
 		table_1.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
@@ -244,6 +256,8 @@ public class DetailsCommandeStock extends JPanel {
 		table_1.getColumnModel().getColumn(4).setCellRenderer(centerRenderer);
 		table_1.getColumnModel().getColumn(5).setCellRenderer(centerRenderer);
 	}
+	
+	//remplissage du tableau
 	public DefaultTableModel liste() {
 		String[] col = {
 				"Quantité",
@@ -254,7 +268,6 @@ public class DetailsCommandeStock extends JPanel {
 				"Prix total TTC"
 		};
 		DefaultTableModel tab = new DefaultTableModel(null, col);
-
 		ProduitDAO produitDAO = new ProduitDAO();
 		List < Produit > listProduits = new ArrayList < > ();
 		listProduits.addAll(produitDAO.read());
@@ -278,7 +291,10 @@ public class DetailsCommandeStock extends JPanel {
 	}
 
 	public class DateLabelFormatter extends JFormattedTextField.AbstractFormatter {
-
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 		private String datePattern = "dd/MM/yyy";
 		private SimpleDateFormat dateFormatter = new SimpleDateFormat(datePattern);
 
@@ -293,10 +309,7 @@ public class DetailsCommandeStock extends JPanel {
 				Calendar cal = (Calendar) value;
 				return dateFormatter.format(cal.getTime());
 			}
-
 			return "";
 		}
-
 	}
-	
 }

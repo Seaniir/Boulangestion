@@ -1,23 +1,15 @@
 package view;
 
 import java.awt.Color;
-
 import javax.swing.JPanel;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-
 import java.awt.Font;
 import javax.swing.ImageIcon;
 import javax.swing.InputVerifier;
 import javax.swing.SwingConstants;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-
 import controller.FournisseurDao;
 import controller.PanelsManager;
 import model.Fournisseur;
-
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -26,11 +18,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.regex.Pattern;
-import java.awt.event.InputMethodListener;
-import java.awt.event.InputMethodEvent;
 
 public class NewFournisseur extends JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JTextField societeValue;
 	private JTextField correspValue;
 	private JTextField adressValue;
@@ -67,7 +60,8 @@ public class NewFournisseur extends JPanel {
 				modify = false;
 			}
 		});
-		btnRetour.setIcon(new ImageIcon("C:\\Users\\fredb\\AFPA\\workspace-java\\Boulangestion\\projetBoulang\\arrow_left.png"));
+		btnRetour.setIcon(new ImageIcon
+			("C:\\Users\\fredb\\AFPA\\workspace-java\\Boulangestion\\projetBoulang\\arrow_left.png"));
 		btnRetour.setBounds(22, 11, 40, 40);
 		menu.add(btnRetour);
 		
@@ -88,7 +82,8 @@ public class NewFournisseur extends JPanel {
 				modify = false;
 			}
 		});
-		btnAccueil.setIcon(new ImageIcon("C:\\Users\\fredb\\AFPA\\workspace-java\\Boulangestion\\projetBoulang\\exit.png"));
+		btnAccueil.setIcon(new ImageIcon
+			("C:\\Users\\fredb\\AFPA\\workspace-java\\Boulangestion\\projetBoulang\\exit.png"));
 		btnAccueil.setBounds(1370, 11, 40, 40);
 		menu.add(btnAccueil);
 		
@@ -183,10 +178,12 @@ public class NewFournisseur extends JPanel {
 			@Override
 			public boolean verify(JComponent input) {
 				String tel = ((JTextField) input).getText().trim();
-				if(tel.matches("^(?:(?:\\+|00)33|0)\\s*[1-9](?:[\\s.-]*\\d{2}){4}$") || tel.isEmpty()) {
+				if(tel.matches("^(?:(?:\\+|00)33|0)\\s*[1-9](?:[\\s.-]*\\d{2}){4}$")
+						|| tel.isEmpty()) {
 					return true;
 				}else {
-					JOptionPane.showMessageDialog(null, "Téléphone invalide", "Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Téléphone invalide", 
+						"Error", JOptionPane.ERROR_MESSAGE);
 					return false;
 				}
 			}
@@ -202,10 +199,12 @@ public class NewFournisseur extends JPanel {
 			@Override
 			public boolean verify(JComponent input) {
 				String mail = ((JTextField) input).getText().trim();
-				if(mail.matches("^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+[.]+[a-zA-Z0-9]{2,6}+$") || mail.isEmpty()) {
+				if(mail.matches("^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+[.]+[a-zA-Z0-9]{2,6}+$") 
+						|| mail.isEmpty()) {
 					return true;
 				}else {
-					JOptionPane.showMessageDialog(null, "Email invalide", "Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Email invalide", "Error",
+						JOptionPane.ERROR_MESSAGE);
 					return false;
 				}
 			}
@@ -226,13 +225,11 @@ public class NewFournisseur extends JPanel {
 					String villeSaisie = villeValue.getText();
 					String telSaisie = telValue.getText();
 					String emailSaisie = emailValue.getText();
-					
-					Fournisseur nouveau = new Fournisseur(societeSaisie, correspSaisie, adresseSaisie, cpSaisie, villeSaisie, telSaisie, emailSaisie);
-					
+					Fournisseur nouveau = new Fournisseur(societeSaisie, correspSaisie, 
+						adresseSaisie, cpSaisie, villeSaisie, telSaisie, emailSaisie);
 					FournisseurDao fournisseurDao = new FournisseurDao();
 					//ajoute le fournisseur à la bdd
 					fournisseurDao.create(nouveau);
-					
 					clearFields();
 				}
 			});
@@ -241,7 +238,6 @@ public class NewFournisseur extends JPanel {
 			btnValider.setText("Modifier");
 			//remplissage des champs avec les données du current Fournisseur de la ligne cliquée
 			fillFields(FournisseurDao.currentFournisseur);
-			
 			btnValider.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					String societeSaisie = societeValue.getText();
@@ -251,13 +247,11 @@ public class NewFournisseur extends JPanel {
 					String villeSaisie = villeValue.getText();
 					String telSaisie = telValue.getText();
 					String emailSaisie = emailValue.getText();
-					
-					Fournisseur nouveau = new Fournisseur(societeSaisie, correspSaisie, adresseSaisie, cpSaisie, villeSaisie, telSaisie, emailSaisie);
+					Fournisseur nouveau = new Fournisseur(societeSaisie, correspSaisie,
+						adresseSaisie, cpSaisie, villeSaisie, telSaisie, emailSaisie);
 					FournisseurDao fournisseurDaoModified = new FournisseurDao();
-					
 					//modifie le fournisseur dans la bdd
 					fournisseurDaoModified.update(nouveau, FournisseurDao.currentFournisseur.getId());
-					
 					clearFields();
 					modify = false;
 					//retour à la liste après la modif
@@ -276,10 +270,9 @@ public class NewFournisseur extends JPanel {
 		JButton btnAnnuler = new JButton("Annuler");
 		btnAnnuler.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
 				//pop-up de confirmation: si oui vide les champs, si non, ne fait rien
-				if (JOptionPane.showConfirmDialog(null, "Etes-vous sûr de vouloir annuler?", "Annulation",
-				        JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+				if (JOptionPane.showConfirmDialog(null, "Etes-vous sûr de vouloir annuler?",
+						"Annulation", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 					clearFields();
 					modify = false;
 				}
@@ -290,7 +283,7 @@ public class NewFournisseur extends JPanel {
 		formulaire.add(btnAnnuler);
 		
 	}
-	//méthode pour vider les champs
+	//methode pour vider les champs
 	public void clearFields() {
 		societeValue.setText(null);
 		correspValue.setText(null);
@@ -302,6 +295,7 @@ public class NewFournisseur extends JPanel {
 		btnValider.setText("Valider");
 	}
 	
+	//methode pour remplir les champs
 	public void fillFields(Fournisseur fournisseur) {
 		societeValue.setText(fournisseur.getSociete());
 		correspValue.setText(fournisseur.getCorrespondant());
@@ -311,4 +305,5 @@ public class NewFournisseur extends JPanel {
 		telValue.setText(fournisseur.getTel());
 		emailValue.setText(fournisseur.getEmail());	
 	}
+	
 }

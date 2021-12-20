@@ -83,7 +83,8 @@ public class NewCommandeStock extends JPanel {
 				modify = false;
 			}
 		});
-		btnRetour.setIcon(new ImageIcon("C:\\Users\\fredb\\AFPA\\workspace-java\\Boulangestion\\projetBoulang\\arrow_left.png"));
+		btnRetour.setIcon(new ImageIcon
+			("C:\\Users\\fredb\\AFPA\\workspace-java\\Boulangestion\\projetBoulang\\arrow_left.png"));
 		btnRetour.setBounds(22, 11, 40, 40);
 		menu.add(btnRetour);
 		
@@ -104,7 +105,8 @@ public class NewCommandeStock extends JPanel {
 				modify = false;
 			}
 		});
-		btnAccueil.setIcon(new ImageIcon("C:\\Users\\fredb\\AFPA\\workspace-java\\Boulangestion\\projetBoulang\\exit.png"));
+		btnAccueil.setIcon(new ImageIcon
+			("C:\\Users\\fredb\\AFPA\\workspace-java\\Boulangestion\\projetBoulang\\exit.png"));
 		btnAccueil.setBounds(1370, 11, 40, 40);
 		menu.add(btnAccueil);
 		
@@ -141,7 +143,7 @@ public class NewCommandeStock extends JPanel {
 		lblAdress.setBounds(11, 63, 57, 14);
 		infosFournisseur.add(lblAdress);
 
-		JLabel lblTel = new JLabel("T\u00E9l\u00E9phone :");
+		JLabel lblTel = new JLabel("Telephone :");
 		lblTel.setBounds(11, 102, 72, 14);
 		infosFournisseur.add(lblTel);
 		
@@ -198,7 +200,8 @@ public class NewCommandeStock extends JPanel {
 							currentFournisseur.setVille(fournisseur.getVille());
 							currentFournisseur.setTel(fournisseur.getTel());
 							currentFournisseur.setEmail(fournisseur.getEmail());
-							adresseLabel.setText(fournisseur.getAdresse()+" "+fournisseur.getCodePostal()+" "+fournisseur.getVille());
+							adresseLabel.setText(fournisseur.getAdresse()+" "+
+									fournisseur.getCodePostal()+" "+fournisseur.getVille());
 							phoneLabel.setText(fournisseur.getTel());
 							mailLabel.setText(fournisseur.getEmail());
 						}
@@ -293,16 +296,17 @@ public class NewCommandeStock extends JPanel {
 						produit.setLibelle((String) cmd.getValueAt(i, 1));
 						produit.setPrixHT(Float.parseFloat(cmd.getValueAt(i, 2).toString()));
 						produit.setPrixTTC(Float.parseFloat(cmd.getValueAt(i, 4).toString()));
-						
 						row.add(produit);
 						matrix.add(row);
 					}
 				String json = new Gson().toJson(matrix);
 				Date newDate = Date.from(now.atZone(ZoneId.systemDefault()).toInstant());
+				
 				if (modify) {
 					commandeStockDao.update(new CommandeStock(currentCmdStock.getId(),newDate,
-							currentFournisseur.getId(), cmd.getRowCount(), Float.parseFloat(prixTotal_label.getText()),
-							json), currentCmdStock.getId());
+						currentFournisseur.getId(), cmd.getRowCount(),
+						Float.parseFloat(prixTotal_label.getText()), json),
+						currentCmdStock.getId());
 					modify = false;
 					//retour à la liste après la modif
 					PanelsManager.contentPane.removeAll();
@@ -310,7 +314,9 @@ public class NewCommandeStock extends JPanel {
 					PanelsManager.contentPane.repaint();
 					PanelsManager.contentPane.revalidate();
 				}else {
-					commandeStockDao.create(new CommandeStock(currentCmdStock.getId(),newDate, currentFournisseur.getId(), cmd.getRowCount(), Float.parseFloat(prixTotal_label.getText()), json));
+					commandeStockDao.create(new CommandeStock(currentCmdStock.getId(),newDate,
+						currentFournisseur.getId(), cmd.getRowCount(),
+						Float.parseFloat(prixTotal_label.getText()), json));
 				}
 			}	
 		});
@@ -339,8 +345,10 @@ public class NewCommandeStock extends JPanel {
 					int row = cmd.getSelectedRow();
 					int column = cmd.getSelectedColumn();
 					if (cmd.getColumnName(column).equals("Quantité")) {
-						cmd.setValueAt(Float.parseFloat(cmd.getValueAt(row, 0).toString()) * (Float.parseFloat(cmd.getValueAt(row, 2).toString())), row, 3);
-						cmd.setValueAt(Float.parseFloat(cmd.getValueAt(row, 0).toString()) * (Float.parseFloat(cmd.getValueAt(row, 4).toString())), row, 5);
+						cmd.setValueAt(Float.parseFloat(cmd.getValueAt(row, 0).toString())
+							* (Float.parseFloat(cmd.getValueAt(row, 2).toString())), row, 3);
+						cmd.setValueAt(Float.parseFloat(cmd.getValueAt(row, 0).toString())
+							* (Float.parseFloat(cmd.getValueAt(row, 4).toString())), row, 5);
 						float prixTotal = 0;
 						for (int i = 0; i < cmd.getRowCount(); i++) {
 							prixTotal += Float.parseFloat(cmd.getValueAt(i, 5).toString());
@@ -353,7 +361,8 @@ public class NewCommandeStock extends JPanel {
 		comboBox.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
-				if (e.getStateChange() == ItemEvent.SELECTED) { // Check if the value got selected, ignore if it has been deselected
+				if (e.getStateChange() == ItemEvent.SELECTED) {
+					// Check if the value got selected, ignore if it has been deselected
 					ProduitDAO produitDAO = new ProduitDAO();
 					List < Produit > listProduits = new ArrayList < > ();
 					listProduits.addAll(produitDAO.read());
@@ -382,6 +391,8 @@ public class NewCommandeStock extends JPanel {
 		}
 		prixTotal_label.setText(String.valueOf(prixTotal));
 	}
+	
+	//remplissage du tableau en fonction de modify
 	public DefaultTableModel liste() {
 		String[] col = {
 				"Quantité",
@@ -450,7 +461,10 @@ public class NewCommandeStock extends JPanel {
 	}
 
 	public class DateLabelFormatter extends JFormattedTextField.AbstractFormatter {
-
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 		private String datePattern = "dd/MM/yyy";
 		private SimpleDateFormat dateFormatter = new SimpleDateFormat(datePattern);
 
@@ -465,9 +479,7 @@ public class NewCommandeStock extends JPanel {
 				Calendar cal = (Calendar) value;
 				return dateFormatter.format(cal.getTime());
 			}
-
 			return "";
 		}
-
 	}
 }

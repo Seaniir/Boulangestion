@@ -37,7 +37,6 @@ public class ListeFournisseurs extends JPanel {
 	private static final long serialVersionUID = 1L;
 
 	private JTable listingFournisseurs;
-	
 	JButton btnModifier = new JButton();
 	JButton btnHistorique = new JButton();
 	JButton btnDelete = new JButton();

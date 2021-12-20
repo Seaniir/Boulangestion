@@ -82,7 +82,8 @@ public class CommandeStockView extends JPanel {
 				PanelsManager.contentPane.revalidate();
 			}
 		});
-		btnAccueil.setIcon(new ImageIcon("C:\\Users\\fredb\\AFPA\\workspace-java\\Boulangestion\\projetBoulang\\exit.png"));
+		btnAccueil.setIcon(new ImageIcon
+			("C:\\Users\\fredb\\AFPA\\workspace-java\\Boulangestion\\projetBoulang\\exit.png"));
 		btnAccueil.setBounds(1370, 11, 40, 40);
 		menu.add(btnAccueil);
 		
@@ -146,7 +147,8 @@ public class CommandeStockView extends JPanel {
 				if (n == JOptionPane.YES_OPTION) {
 					CommandeStockDao commandeStockDao = new CommandeStockDao();
 					ConnectionUrlParser.Pair < CommandeStock, Fournisseur > pair = 
-						commandeStockDao.findByIdPair((int) listingCmdStock.getValueAt(listingCmdStock.getSelectedRow(), 0));
+						commandeStockDao.findByIdPair((int) listingCmdStock.getValueAt(
+						listingCmdStock.getSelectedRow(), 0));
 					NewCommandeStock.currentCmdStock = pair.left;
 					NewCommandeStock.currentFournisseur = pair.right;
 					NewCommandeStock.modify = true;
@@ -161,8 +163,8 @@ public class CommandeStockView extends JPanel {
 		btnDelete.addActionListener(new ActionListener(){
 	        public void actionPerformed(ActionEvent event)
 	        {
-	        	//pop-up de confirmation: si oui va sur la suppression du fournisseur dans ma liste, pas dans la bdd, 
-	        	//si non, ne fait rien
+	        	//pop-up de confirmation: si oui va sur la suppression du fournisseur
+	        	//dans ma liste, pas dans la bdd, si non, ne fait rien
 				if (JOptionPane.showConfirmDialog(null, "Etes-vous sûr de vouloir supprimer?", "Attention",
 			        JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 					CommandeStockDao commandeStockDao = new CommandeStockDao();
@@ -191,20 +193,15 @@ public class CommandeStockView extends JPanel {
 		btnNewCmdStock.setForeground(new Color(0, 0, 0));
 		btnNewCmdStock.setBounds(470, 823, 499, 53);
 		add(btnNewCmdStock);
-		
 	}
 
 	//remplissage du tableau
 	public DefaultTableModel liste() {
-		String [] col = {"N° Commande","Reçue le","Fournisseur","Nbr Articles","Prix total TTC","Modifier", "Annuler"};
+		String [] col = {"N° Commande","Reçue le","Fournisseur","Nbr Articles", "Prix total TTC","Modifier", "Annuler"};
 		DefaultTableModel tab = new DefaultTableModel(null, col);
-		
 		CommandeStockDao cmdStockDao = new CommandeStockDao();
-		List<CommandeStock> commandes = new ArrayList<>();
-		List<Fournisseur> fournisseurs = new ArrayList<>();
 		ConnectionUrlParser.Pair<ArrayList<CommandeStock>, ArrayList<Fournisseur>> pair = cmdStockDao.readPair();
-		int i=0;
-		for (CommandeStock commande : pair.left) {
+		for (int i = 0; i < pair.left.size(); i++) {
 			Vector vect = new Vector();
 			DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 			Date dateObj = pair.left.get(i).getDateReception();
@@ -215,7 +212,6 @@ public class CommandeStockView extends JPanel {
 			vect.add(pair.left.get(i).getNbrArticles());
 			vect.add(pair.left.get(i).getPrixTotal());
 			tab.addRow(vect);
-			i++;
 		}
 		return tab;
 	}
