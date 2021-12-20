@@ -220,6 +220,7 @@ public class DetailsCommandeStock extends JPanel {
 			prixTotal += Float.parseFloat(table_1.getValueAt(i, 5).toString());
 		}
 		prixTotal_label.setText(String.valueOf(prixTotal));
+		id_commande_label.setText(String.valueOf(currentCmdStock.getId()));
 		societeLabel.setText(currentFournisseur.getSociete());
 		adresseLabel.setText(currentFournisseur.getAdresse()+" "+currentFournisseur.getCodePostal()+" "+
 				currentFournisseur.getVille());
@@ -248,9 +249,10 @@ public class DetailsCommandeStock extends JPanel {
 		String[] col = {
 				"Quantité",
 				"Libellé",
-				"Prix Unitaire",
+				"Prix Unitaire HT",
 				"Prix total HT",
-				"Prix total TTC",
+				"Prix Unitaire TTC",
+				"Prix total TTC"
 		};
 		DefaultTableModel tab = new DefaultTableModel(null, col);
 
@@ -269,6 +271,7 @@ public class DetailsCommandeStock extends JPanel {
 			vect.add(produit.get(0).getLibelle());
 			vect.add(produit.get(0).getPrixHT());
 			vect.add(produit.get(0).getPrixHT() * produit.get(0).getQuantite());
+			vect.add(produit.get(0).getPrixTTC());
 			vect.add(produit.get(0).getPrixTTC() * produit.get(0).getQuantite());
 			tab.addRow(vect);
 		}
