@@ -1,5 +1,6 @@
 package view;
 
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
@@ -7,9 +8,7 @@ import javax.swing.SwingConstants;
 import controller.PanelsManager;
 
 import javax.swing.ImageIcon;
-import java.awt.Color;
-import java.awt.BorderLayout;
-import java.awt.Font;
+import java.awt.*;
 import javax.swing.JMenuBar;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -17,6 +16,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 public class AccueilMenu extends JPanel {
 	private final JLabel lblBoulangestion = new JLabel("\u00A9 2021 Boulangestion");
@@ -59,10 +61,19 @@ public class AccueilMenu extends JPanel {
 		panel.setBounds(0, 0, 1440, 900);
 		add(panel);
 		panel.setLayout(null);
+		BufferedImage img = null;
+		try {
+			img = ImageIO.read(new File("C:\\Users\\Quentin\\Downloads\\projetBoulang\\istockphoto-1268508772-170667a.jpg"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		Image dimg = img.getScaledInstance(1440, 900,
+				Image.SCALE_SMOOTH);
+		ImageIcon imageIcon = new ImageIcon(dimg);
 		lblBoulangestion.setBounds(0, 886, 1440, 14);
 		lblBoulangestion.setHorizontalAlignment(SwingConstants.CENTER);
 		panel.add(lblBoulangestion);
-		
+
 		JLabel lblTitre = new JLabel("Boulangestion");
 		lblTitre.setBounds(0, 62, 1440, 93);
 		lblTitre.setForeground(new Color(157, 70, 6));
@@ -363,6 +374,11 @@ public class AccueilMenu extends JPanel {
 		btnFaq.setBounds(1161, 352, 161, 33);
 		btnFaq.setVisible(false);
 		panel.add(btnFaq);
+		
+				JLabel lblNewLabel = new JLabel("");
+				lblNewLabel.setIcon(imageIcon);
+				lblNewLabel.setBounds(0, 0, 1440, 900);
+				panel.add(lblNewLabel);
 
 		
 	}

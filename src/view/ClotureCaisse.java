@@ -32,9 +32,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Vector;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.regex.Pattern;
 import java.awt.event.InputMethodListener;
 import java.awt.event.InputMethodEvent;
@@ -58,27 +57,6 @@ public class ClotureCaisse extends JPanel {
 		add(menu);
 		menu.setLayout(null);
 
-		JButton btnRetour = new JButton("");
-		btnRetour.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				PanelsManager.contentPane.removeAll();
-				PanelsManager.contentPane.add(PanelsManager.switchToListeFournisseurs());
-				PanelsManager.contentPane.repaint();
-				PanelsManager.contentPane.revalidate();
-				modify = false;
-			}
-		});
-		btnRetour.setIcon(new ImageIcon("C:\\Users\\fredb\\AFPA\\workspace-java\\Boulangestion\\projetBoulang\\arrow_left.png"));
-		btnRetour.setBounds(22, 11, 40, 40);
-		menu.add(btnRetour);
-
-		JLabel lblNewLabel = new JLabel("Retour");
-		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		lblNewLabel.setBounds(10, 62, 63, 18);
-		menu.add(lblNewLabel);
-
 		JButton btnAccueil = new JButton("");
 		btnAccueil.addMouseListener(new MouseAdapter() {
 			@Override
@@ -87,7 +65,6 @@ public class ClotureCaisse extends JPanel {
 				PanelsManager.contentPane.add(PanelsManager.switchToAccueilMenu());
 				PanelsManager.contentPane.repaint();
 				PanelsManager.contentPane.revalidate();
-				modify = false;
 			}
 		});
 		btnAccueil.setIcon(new ImageIcon("C:\\Users\\fredb\\AFPA\\workspace-java\\Boulangestion\\projetBoulang\\exit.png"));
@@ -160,23 +137,44 @@ public class ClotureCaisse extends JPanel {
 		btnValider = new JButton("Valider");
 
 		CommandeClientDAO commandeClientDAO = new CommandeClientDAO();
-		List<CommandeClient> listCommandes = commandeClientDAO.read();
+		List<CommandeClient> listCommandes = commandeClientDAO.readIsClosed();
 		System.out.println(listCommandes.size());
 		float prixEspeceLabel = 0;
 		float prixCarteLabel = 0;
 		for (int i = 0 ; i < listCommandes.size() ; i++)
 		{
 			System.out.println(listCommandes.get(i).getId());
-			if (listCommandes.get(i).getTypePaiment().equals("Especes"))
+			if (listCommandes.get(i).getTypePaiment().equals("Especes") && !listCommandes.get(i).isCloturee())
 			{
 				prixEspeceLabel += listCommandes.get(i).getPrixTotal();
 			}
-			else if(listCommandes.get(i).getTypePaiment().equals("Carte banquaire"))
+			else if(listCommandes.get(i).getTypePaiment().equals("Carte banquaire") && !listCommandes.get(i).isCloturee())
 			{
 				prixCarteLabel += listCommandes.get(i).getPrixTotal();
 			}
 		}
 		totalEspeceLabel.setText(String.valueOf(prixEspeceLabel));
 		totalCarteLabel.setText(String.valueOf(prixCarteLabel));
+		totalClotureLabel.setText(String.valueOf(prixEspeceLabel + prixCarteLabel));
+		String DATE_FORMAT_NOW = "dd/MM/yyyy";
+		Calendar cal = Calendar.getInstance();
+		SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT_NOW);
+		dateLabel.setText(sdf.format(cal.getTime()));
+
+		btnNewButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				for (int i = 0 ; i < listCommandes.size() ; i++)
+				{
+					System.out.println(listCommandes.get(i).getProduits());
+					listCommandes.get(i).setCloturee(true);
+					commandeClientDAO.update(listCommandes.get(i), listCommandes.get(i).getId());
+				}
+				PanelsManager.contentPane.removeAll();
+				PanelsManager.contentPane.add(PanelsManager.switchToClotureCaissePanel());
+				PanelsManager.contentPane.repaint();
+				PanelsManager.contentPane.revalidate();
+			}
+		});
 	}
 }

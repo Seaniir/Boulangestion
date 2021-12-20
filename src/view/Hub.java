@@ -7,6 +7,7 @@ import model.User;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -23,6 +24,9 @@ import javax.swing.JPasswordField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import javax.swing.ImageIcon;
 
 
@@ -48,7 +52,7 @@ public class Hub extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Hub() {
+	public Hub() throws IOException {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(0, 0, 1440, 900);
 		contentPane = new JPanel();

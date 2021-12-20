@@ -48,7 +48,7 @@ public class CommandeClientDAO {
         java.util.Date utilDate = commandeClient.getWithdrawal_at();
         java.sql.Date sqlDate = new java.sql.Date(commandeClient.getWithdrawal_at().getTime());
         try {
-            PreparedStatement sql = connect.prepareStatement("UPDATE commandesclients SET withdrawal_at=?, fk_client=?, nbrArticles=?, prixTotal=?, accompte=?, status=?, typePaiment=?, produits=? WHERE commandesclients.id=?");
+            PreparedStatement sql = connect.prepareStatement("UPDATE commandesclients SET withdrawal_at=?, fk_client=?, nbrArticles=?, prixTotal=?, accompte=?, status=?, typePaiment=?, produits=?, cloturee=? WHERE commandesclients.id=?");
             sql.setDate(1, sqlDate);
             sql.setInt(2, commandeClient.getFk_client());
             sql.setInt(3, commandeClient.getNbrArticles());
@@ -57,7 +57,8 @@ public class CommandeClientDAO {
             sql.setString(6, commandeClient.getStatus());
             sql.setString(7, commandeClient.getTypePaiment());
             sql.setString(8, commandeClient.getProduits());
-            sql.setInt(9, idCommandeClient);
+            sql.setBoolean(9, commandeClient.isCloturee());
+            sql.setInt(10, idCommandeClient);
             sql.executeUpdate();
         } catch (SQLException e) {
 
@@ -101,6 +102,39 @@ public class CommandeClientDAO {
                 article.setPrixTotal(rs.getFloat("prixTotal"));
                 article.setAccompte(rs.getBoolean("accompte"));
                 article.setStatus(rs.getString("status"));
+                article.setCloturee(rs.getBoolean("cloturee"));
+
+                commandeClient.add(article);
+            }
+        }catch(Exception e) {
+            e.printStackTrace();
+        }
+        return commandeClient;
+    }
+
+    public List<CommandeClient> readIsClosed() {
+        List<CommandeClient> commandeClient = new ArrayList<>();
+
+        try {
+            PreparedStatement req = connect.prepareStatement("SELECT * FROM commandesclients WHERE commandesclients.cloturee='0'");
+
+            ResultSet rs = req.executeQuery();
+
+            while(rs.next()) {
+                java.util.Date utilDate = new java.util.Date(rs.getDate("created_at").getTime());
+                java.util.Date withDate = new java.util.Date(rs.getDate("withdrawal_at").getTime());
+                CommandeClient article = new CommandeClient();
+                article.setId(rs.getInt("id"));
+                article.setCreated_at(utilDate);
+                article.setWithdrawal_at(withDate);
+                article.setFk_client(rs.getInt("fk_client"));
+                article.setNbrArticles(rs.getInt("nbrArticles"));
+                article.setTypePaiment(rs.getString("typePaiment"));
+                article.setPrixTotal(rs.getFloat("prixTotal"));
+                article.setAccompte(rs.getBoolean("accompte"));
+                article.setStatus(rs.getString("status"));
+                article.setProduits(rs.getString("produits"));
+                article.setCloturee(rs.getBoolean("cloturee"));
 
                 commandeClient.add(article);
             }
