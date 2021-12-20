@@ -192,21 +192,16 @@ public class ListeDevis extends JPanel {
 			DefaultTableModel tab = new DefaultTableModel(null, col);
 			// Les données du tableau 
 			CommandeClientDAO hcv = new CommandeClientDAO();
-			List<CommandeClient> cC = new ArrayList<>();
-			List<Client> c = new ArrayList<>();
-			
-			ConnectionUrlParser.Pair<ArrayList<CommandeClient>, ArrayList<Client>> pair = hcv.readPairDevis();
-			int i = 0;
-			for (CommandeClient cx : pair.left) {
+			ConnectionUrlParser.Pair<ArrayList<CommandeClient>, ArrayList<Client>> pair = 
+					hcv.readPairDevis();
+			for (int i = 0; i < pair.left.size(); i++) {
 				Vector vect = new Vector();
 				vect.add(pair.left.get(i).getId());
 				vect.add(pair.left.get(i).getWithdrawal_at());
 				vect.add(pair.right.get(i).getFirstName()+" "+pair.right.get(i).getName());
 				vect.add(pair.left.get(i).getNbrArticles());
 				vect.add(pair.left.get(i).getPrixTotal());
-				
 				tab.addRow(vect);
-				i++;
 			}
 			return tab;
 		}	

@@ -116,11 +116,8 @@ public class HistoriqueCommandesVentes extends JPanel {
 		DefaultTableModel tab = new DefaultTableModel(null, col);
 		// Les données du tableau 
 		CommandeClientDAO hcv = new CommandeClientDAO();
-		List<CommandeClient> cC = new ArrayList<>();
-		List<Client> c = new ArrayList<>();
 		ConnectionUrlParser.Pair<ArrayList<CommandeClient>, ArrayList<Client>> pair = hcv.readPairHisto();
-		int i = 0;
-		for (CommandeClient cx : pair.left) {
+		for (int i = 0; i < pair.left.size();i++) {
 			Vector vect = new Vector();
 			vect.add(pair.left.get(i).getId());
 			vect.add(pair.left.get(i).getWithdrawal_at());
@@ -129,7 +126,6 @@ public class HistoriqueCommandesVentes extends JPanel {
 			vect.add(pair.left.get(i).getPrixTotal());
 			vect.add(pair.left.get(i).getTypePaiment());
 			tab.addRow(vect);
-			i++;
 		}
 		return tab;
 	}	
