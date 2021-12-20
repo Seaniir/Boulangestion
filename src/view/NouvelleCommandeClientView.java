@@ -14,33 +14,31 @@ import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 import java.awt.*;
-import java.awt.event.*;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
+import java.awt.event.ItemEvent;
 import java.lang.reflect.Type;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 
 public class NouvelleCommandeClientView extends JPanel {
 	static public boolean modify = false;
 	static Client currentClient = new Client();
 	static CommandeClient currentCommande = new CommandeClient();
-	private JTable table;
+	private final JTable table;
 	JButton button = new JButton();
 	JButton btnSupprimer = new JButton();
-	JComboBox comboBox = new JComboBox();
-	JLabel prixTotal_label = new JLabel();
-	ArrayList<Integer> idList = new ArrayList<Integer>();
-	ArrayList<Float> poidsList = new ArrayList<Float>();
+	JComboBox<String> comboBox = new JComboBox<>();
+	JLabel prixTotal_label;
+	ArrayList<Integer> idList = new ArrayList<>();
+	ArrayList<Float> poidsList = new ArrayList<>();
 
 	/**
 	 * Create the panel.
@@ -57,60 +55,48 @@ public class NouvelleCommandeClientView extends JPanel {
 
 		JButton accueilBtn = new JButton("");
 		ImageIcon accueilImage = new ImageIcon("C:\\Users\\Quentin\\Downloads\\sign-out.png");
-		Image accueilImageImage = accueilImage.getImage(); // transform it
-		Image newimg4 = accueilImageImage.getScaledInstance(75, 75, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
-		accueilImage = new ImageIcon(newimg4); // transform it back
+		Image accueilImageImage = accueilImage.getImage();
+		Image newimg4 = accueilImageImage.getScaledInstance(75, 75, java.awt.Image.SCALE_SMOOTH);
+		accueilImage = new ImageIcon(newimg4);
 		accueilBtn.setIcon(accueilImage);
 		accueilBtn.setBounds(1333, 0, 107, 75);
 		panel_1.add(accueilBtn);
-		accueilBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				currentClient = new Client();
-				currentCommande = new CommandeClient();
-				modify = false;
-				PanelsManager.contentPane.removeAll();
-				PanelsManager.contentPane.add(PanelsManager.switchToAccueilMenu());
-				PanelsManager.contentPane.revalidate();
-				PanelsManager.contentPane.repaint();
-			}
+		accueilBtn.addActionListener(e -> {
+			currentClient = new Client();
+			currentCommande = new CommandeClient();
+			modify = false;
+			PanelsManager.contentPane.removeAll();
+			PanelsManager.contentPane.add(PanelsManager.switchToAccueilMenu());
+			PanelsManager.contentPane.revalidate();
+			PanelsManager.contentPane.repaint();
 		});
 
 		JButton historiqueBtn = new JButton("");
 		ImageIcon imageIcon = new ImageIcon("C:\\Users\\Quentin\\Downloads\\history.png");
-		Image image = imageIcon.getImage(); // transform it
-		Image newimg = image.getScaledInstance(75, 75, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
-		imageIcon = new ImageIcon(newimg); // transform it back
+		Image image = imageIcon.getImage();
+		Image newimg = image.getScaledInstance(75, 75, java.awt.Image.SCALE_SMOOTH);
+		imageIcon = new ImageIcon(newimg);
 		historiqueBtn.setIcon(imageIcon);
 		historiqueBtn.setBounds(0, 0, 127, 75);
 		panel_1.add(historiqueBtn);
 		button.addActionListener(
-				new ActionListener() {
-					public void actionPerformed(ActionEvent event) {
-						JOptionPane.showMessageDialog(null, "Do you want to modify this line?");
-					}
-				}
+				event -> JOptionPane.showMessageDialog(null, "Do you want to modify this line?")
 		);
-		ImageIcon imageClient = new ImageIcon("C:\\Users\\Quentin\\Downloads\\user.png");
-		Image imageClientImage = imageClient.getImage(); // transform it
-		Image newimg2 = imageClientImage.getScaledInstance(75, 75, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
-		imageClient = new ImageIcon(newimg2);
 
 		JButton returnBtn = new JButton("");
-		returnBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				currentClient = new Client();
-				currentCommande = new CommandeClient();
-				modify = false;
-				PanelsManager.contentPane.removeAll();
-				PanelsManager.contentPane.add(PanelsManager.switchToCommandesClientPanel());
-				PanelsManager.contentPane.revalidate();
-				PanelsManager.contentPane.repaint();
-			}
+		returnBtn.addActionListener(e -> {
+			currentClient = new Client();
+			currentCommande = new CommandeClient();
+			modify = false;
+			PanelsManager.contentPane.removeAll();
+			PanelsManager.contentPane.add(PanelsManager.switchToCommandesClientPanel());
+			PanelsManager.contentPane.revalidate();
+			PanelsManager.contentPane.repaint();
 		});
 		ImageIcon imageReturn = new ImageIcon("C:\\Users\\Quentin\\Downloads\\return.png");
-		Image imageReturnImage = imageReturn.getImage(); // transform it
-		Image newimg3 = imageReturnImage.getScaledInstance(75, 75, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
-		imageReturn = new ImageIcon(newimg3); // transform it back
+		Image imageReturnImage = imageReturn.getImage();
+		Image newimg3 = imageReturnImage.getScaledInstance(75, 75, java.awt.Image.SCALE_SMOOTH);
+		imageReturn = new ImageIcon(newimg3);
 		returnBtn.setBounds(127, 0, 127, 75);
 		returnBtn.setIcon(imageReturn);
 		panel_1.add(returnBtn);
@@ -165,10 +151,9 @@ public class NouvelleCommandeClientView extends JPanel {
 		lblNewLabel_5.setBounds(237, 26, 78, 14);
 		panel_2.add(lblNewLabel_5);
 
-		JComboBox comboBox_1 = new JComboBox();
+		JComboBox<String> comboBox_1 = new JComboBox<>();
 		ClientDao clientDao = new ClientDao();
-		List < Client > listClients = new ArrayList < > ();
-		listClients.addAll(clientDao.read());
+		List<Client> listClients = new ArrayList<>(clientDao.read());
 		if (modify) {
 			comboBox_1.addItem(currentClient.getName());
 			for (Client clients: listClients) {
@@ -199,23 +184,20 @@ public class NouvelleCommandeClientView extends JPanel {
 		scrollPane.setBounds(10, 167, 1014, 452);
 		panel.add(scrollPane);
 
-		comboBox_1.addItemListener(new ItemListener() {
-			@Override
-			public void itemStateChanged(ItemEvent e) {
-				if (e.getStateChange() == ItemEvent.SELECTED) { // Check if the value got selected, ignore if it has been deselected
-					for (Client client: listClients) {
-						if (client.getName().equals(e.getItem().toString())) {
-							currentClient.setName(client.getName());
-							currentClient.setEmail(client.getEmail());
-							currentClient.setFirstName(client.getFirstName());
-							currentClient.setId(client.getId());
-							currentClient.setAdress(client.getAdress());
-							currentClient.setCity(client.getCity());
-							currentClient.setZip(client.getZip());
-							adresseLabel.setText(client.getAdress());
-							prenomLabel.setText(client.getFirstName());
-							phoneLabel.setText(client.getTel());
-						}
+		comboBox_1.addItemListener(e -> {
+			if (e.getStateChange() == ItemEvent.SELECTED) {
+				for (Client client: listClients) {
+					if (client.getName().equals(e.getItem().toString())) {
+						currentClient.setName(client.getName());
+						currentClient.setEmail(client.getEmail());
+						currentClient.setFirstName(client.getFirstName());
+						currentClient.setId(client.getId());
+						currentClient.setAdress(client.getAdress());
+						currentClient.setCity(client.getCity());
+						currentClient.setZip(client.getZip());
+						adresseLabel.setText(client.getAdress());
+						prenomLabel.setText(client.getFirstName());
+						phoneLabel.setText(client.getTel());
 					}
 				}
 			}
@@ -286,17 +268,9 @@ public class NouvelleCommandeClientView extends JPanel {
 		rdbtnNewRadioButton_1.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		rdbtnNewRadioButton_1.setBounds(18, 48, 132, 23);
 
-		rdbtnNewRadioButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				rdbtnNewRadioButton_1.setSelected(false);
-			}
-		});
+		rdbtnNewRadioButton.addActionListener(e -> rdbtnNewRadioButton_1.setSelected(false));
 
-		rdbtnNewRadioButton_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				rdbtnNewRadioButton.setSelected(false);
-			}
-		});
+		rdbtnNewRadioButton_1.addActionListener(e -> rdbtnNewRadioButton.setSelected(false));
 
 		panel_5.add(rdbtnNewRadioButton);
 		panel_5.add(rdbtnNewRadioButton_1);
@@ -308,11 +282,7 @@ public class NouvelleCommandeClientView extends JPanel {
 		table.setModel(liste());
 
 		JButton btnNewButton = new JButton("Ajouter un produit");
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				relisting();
-			}
-		});
+		btnNewButton.addActionListener(e -> relisting());
 		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 30));
 		btnNewButton.setBounds(105, 630, 760, 77);
 		panel.add(btnNewButton);
@@ -350,50 +320,46 @@ public class NouvelleCommandeClientView extends JPanel {
 		datePicker.getJFormattedTextField().setText(strDate);
 		add(datePicker);
 
-		btnNewButton_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				CommandeClientDAO commandeClientDAO = new CommandeClientDAO();
-				String typePaiment = "";
-				if (rdbtnNewRadioButton.isSelected()) {
-					typePaiment = "Especes";
-				} else if (rdbtnNewRadioButton_1.isSelected()) {
-					typePaiment = "Carte banquaire";
-				}
-				DateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE);
-
-				DateFormat inputFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE);
-				System.out.println(datePicker.getJFormattedTextField().getText());
-				int m = table.getRowCount(), n = table.getColumnCount();
-				ArrayList < ArrayList < Produit >> matrix = new ArrayList < ArrayList < Produit >> ();
-
-				for (int i = 0; i < m; i++) {
-					ArrayList < Produit > row = new ArrayList < Produit > ();
-					Produit produit = new Produit();
-					produit.setId(idList.get(i));
-					produit.setPoids(poidsList.get(i));
-					produit.setPrixHT(Float.parseFloat(table.getValueAt(i, 2).toString()));
-					produit.setPrixTTC(Float.parseFloat(table.getValueAt(i, 4).toString()));
-					produit.setQuantite(Integer.parseInt(table.getValueAt(i, 0).toString()));
-					produit.setLibelle((String) table.getValueAt(i, 1));
-					//produit.setPrixUnitaire((Float) table.getValueAt(i, 2));
-					row.add(produit);
-					matrix.add(row);
-				}
-
-				System.out.println(idList);
-				String json = new Gson().toJson(matrix);
-				System.out.println(json);
-				Date date = null;
-				try {
-					date = inputFormat.parse(datePicker.getJFormattedTextField().getText());
-				} catch (ParseException ex) {
-					ex.printStackTrace();
-				}
-				if (modify)
-					commandeClientDAO.update(new CommandeClient(date, date, currentClient.getId(), table.getRowCount(), Float.parseFloat(prixTotal_label.getText()), true, "En cours", typePaiment, json), currentCommande.getId());
-				else
-					commandeClientDAO.add(new CommandeClient(date, date, currentClient.getId(), table.getRowCount(), Float.parseFloat(prixTotal_label.getText()), true, "En cours", typePaiment, json));
+		btnNewButton_1.addActionListener(e -> {
+			CommandeClientDAO commandeClientDAO = new CommandeClientDAO();
+			String typePaiment = "";
+			if (rdbtnNewRadioButton.isSelected()) {
+				typePaiment = "Especes";
+			} else if (rdbtnNewRadioButton_1.isSelected()) {
+				typePaiment = "Carte banquaire";
 			}
+
+			DateFormat inputFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE);
+			System.out.println(datePicker.getJFormattedTextField().getText());
+			int m = table.getRowCount();
+			ArrayList < ArrayList < Produit >> matrix = new ArrayList<>();
+
+			for (int i = 0; i < m; i++) {
+				ArrayList < Produit > row = new ArrayList<>();
+				Produit produit = new Produit();
+				produit.setId(idList.get(i));
+				produit.setPoids(poidsList.get(i));
+				produit.setPrixHT(Float.parseFloat(table.getValueAt(i, 2).toString()));
+				produit.setPrixTTC(Float.parseFloat(table.getValueAt(i, 4).toString()));
+				produit.setQuantite(Integer.parseInt(table.getValueAt(i, 0).toString()));
+				produit.setLibelle((String) table.getValueAt(i, 1));
+				row.add(produit);
+				matrix.add(row);
+			}
+
+			System.out.println(idList);
+			String json = new Gson().toJson(matrix);
+			System.out.println(json);
+			Date date = null;
+			try {
+				date = inputFormat.parse(datePicker.getJFormattedTextField().getText());
+			} catch (ParseException ex) {
+				ex.printStackTrace();
+			}
+			if (modify)
+				commandeClientDAO.update(new CommandeClient(date, date, currentClient.getId(), table.getRowCount(), Float.parseFloat(prixTotal_label.getText()), true, "En cours", typePaiment, json), currentCommande.getId());
+			else
+				commandeClientDAO.add(new CommandeClient(date, date, currentClient.getId(), table.getRowCount(), Float.parseFloat(prixTotal_label.getText()), true, "En cours", typePaiment, json));
 		});
 		btnNewButton_1.setBackground(Color.ORANGE);
 		btnNewButton_1.setFont(new Font("Tahoma", Font.PLAIN, 25));
@@ -420,68 +386,56 @@ public class NouvelleCommandeClientView extends JPanel {
 		table.getColumnModel().getColumn(5).setCellRenderer(centerRenderer);
 		table.getColumn("Supprimer").setCellRenderer(new ButtonRenderer());
 		table.getColumn("Supprimer").setCellEditor(new ButtonEditor(new JCheckBox()));
-		table.addPropertyChangeListener("tableCellEditor", new PropertyChangeListener() {
-			@Override
-			public void propertyChange(PropertyChangeEvent evt) {
-				if (evt.getNewValue() == null) {
-					int row = table.getSelectedRow();
-					int column = table.getSelectedColumn();
-					System.out.println(table.getColumnName(column));
-					if (table.getColumnName(column).equals("Quantité")) {
-						table.setValueAt(Float.parseFloat(table.getValueAt(row, 0).toString()) * (Float.parseFloat(table.getValueAt(row, 2).toString())), row, 3);
-						table.setValueAt(Float.parseFloat(table.getValueAt(row, 0).toString()) * (Float.parseFloat(table.getValueAt(row, 4).toString())), row, 5);
-						float prixTotal = 0;
-						for (int i = 0; i < table.getRowCount(); i++) {
-							prixTotal += Float.parseFloat(table.getValueAt(i, 5).toString());
-						}
-						prixTotal_label.setText(Float.toString(prixTotal));
+		table.addPropertyChangeListener("tableCellEditor", evt -> {
+			if (evt.getNewValue() == null) {
+				int row = table.getSelectedRow();
+				int column = table.getSelectedColumn();
+				System.out.println(table.getColumnName(column));
+				if (table.getColumnName(column).equals("Quantité")) {
+					table.setValueAt(Float.parseFloat(table.getValueAt(row, 0).toString()) * (Float.parseFloat(table.getValueAt(row, 2).toString())), row, 3);
+					table.setValueAt(Float.parseFloat(table.getValueAt(row, 0).toString()) * (Float.parseFloat(table.getValueAt(row, 4).toString())), row, 5);
+					float prixTotal1 = 0;
+					for (int i = 0; i < table.getRowCount(); i++) {
+						prixTotal1 += Float.parseFloat(table.getValueAt(i, 5).toString());
 					}
-				} else {
-					// editing started
+					prixTotal_label.setText(Float.toString(prixTotal1));
 				}
 			}
+
 		});
 		btnSupprimer.addActionListener(
-				new ActionListener() {
-					public void actionPerformed(ActionEvent event) {
-						int n = JOptionPane.showConfirmDialog(null, "Voulez-vous supprimer ce produit ?", "Supprimer", JOptionPane.YES_NO_OPTION);
-						if (n == JOptionPane.YES_OPTION) {
-							((DefaultTableModel)table.getModel()).removeRow(table.getSelectedRow());
-							float prixTotal = 0;
-							for (int i = 0; i < table.getRowCount(); i++) {
-								prixTotal += Float.parseFloat(table.getValueAt(i, 5).toString());
-							}
-							prixTotal_label.setText(Float.toString(prixTotal));
-						} else {
-
+				event -> {
+					int n = JOptionPane.showConfirmDialog(null, "Voulez-vous supprimer ce produit ?", "Supprimer", JOptionPane.YES_NO_OPTION);
+					if (n == JOptionPane.YES_OPTION) {
+						((DefaultTableModel)table.getModel()).removeRow(table.getSelectedRow());
+						float prixTotal12 = 0;
+						for (int i = 0; i < table.getRowCount(); i++) {
+							prixTotal12 += Float.parseFloat(table.getValueAt(i, 5).toString());
 						}
+						prixTotal_label.setText(Float.toString(prixTotal12));
 					}
 				}
 		);
-		comboBox.addItemListener(new ItemListener() {
-			@Override
-			public void itemStateChanged(ItemEvent e) {
-				if (e.getStateChange() == ItemEvent.SELECTED) { // Check if the value got selected, ignore if it has been deselected
-					ProduitDAO produitDAO = new ProduitDAO();
-					List < Produit > listProduits = new ArrayList < > ();
-					listProduits.addAll(produitDAO.read());
-					int row = table.getSelectedRow();
-					for (Produit article: listProduits) {
-						if (article.getLibelle().equals(e.getItem())) {
-							idList.remove(table.getSelectedRow());
-							idList.add(table.getSelectedRow(), article.getId());
-							poidsList.remove(table.getSelectedRow());
-							poidsList.add(table.getSelectedRow(), article.getPoids());
-							table.setValueAt(article.getPrixHT(),row, 2);
-							table.setValueAt(article.getPrixTTC(),row, 4);
-							table.setValueAt(Float.parseFloat(table.getValueAt(row, 0).toString()) * (Float.parseFloat(table.getValueAt(row, 2).toString())), row, 3);
-							table.setValueAt(Float.parseFloat(table.getValueAt(row, 0).toString()) * (Float.parseFloat(table.getValueAt(row, 4).toString())), row, 5);
-							float prixTotal = 0;
-							for (int i = 0; i < table.getRowCount(); i++) {
-								prixTotal += Float.parseFloat(table.getValueAt(i, 5).toString());
-							}
-							prixTotal_label.setText(Float.toString(prixTotal));
+		comboBox.addItemListener(e -> {
+			if (e.getStateChange() == ItemEvent.SELECTED) {
+				ProduitDAO produitDAO = new ProduitDAO();
+				List<Produit> listProduits = new ArrayList<>(produitDAO.read());
+				int row = table.getSelectedRow();
+				for (Produit article: listProduits) {
+					if (article.getLibelle().equals(e.getItem())) {
+						idList.remove(table.getSelectedRow());
+						idList.add(table.getSelectedRow(), article.getId());
+						poidsList.remove(table.getSelectedRow());
+						poidsList.add(table.getSelectedRow(), article.getPoids());
+						table.setValueAt(article.getPrixHT(),row, 2);
+						table.setValueAt(article.getPrixTTC(),row, 4);
+						table.setValueAt(Float.parseFloat(table.getValueAt(row, 0).toString()) * (Float.parseFloat(table.getValueAt(row, 2).toString())), row, 3);
+						table.setValueAt(Float.parseFloat(table.getValueAt(row, 0).toString()) * (Float.parseFloat(table.getValueAt(row, 4).toString())), row, 5);
+						float prixTotal13 = 0;
+						for (int i = 0; i < table.getRowCount(); i++) {
+							prixTotal13 += Float.parseFloat(table.getValueAt(i, 5).toString());
 						}
+						prixTotal_label.setText(Float.toString(prixTotal13));
 					}
 				}
 			}
@@ -501,8 +455,7 @@ public class NouvelleCommandeClientView extends JPanel {
 		DefaultTableModel tab = new DefaultTableModel(null, col);
 
 		ProduitDAO produitDAO = new ProduitDAO();
-		List < Produit > listProduits = new ArrayList < > ();
-		listProduits.addAll(produitDAO.read());
+		List<Produit> listProduits = new ArrayList<>(produitDAO.read());
 		for (Produit article: listProduits) {
 			comboBox.addItem(article.getLibelle());
 		}
@@ -511,7 +464,7 @@ public class NouvelleCommandeClientView extends JPanel {
 			Type type = new TypeToken < ArrayList < ArrayList < Produit >>> () {}.getType();
 			ArrayList < ArrayList < Produit >> contactList = gson.fromJson(currentCommande.getProduits(), type);
 			for (ArrayList < Produit > produit: contactList) {
-				Vector vect = new Vector();
+				Vector<java.io.Serializable> vect = new Vector<>();
 				poidsList.add(produit.get(0).getPoids());
 				idList.add(produit.get(0).getId());
 				vect.add(produit.get(0).getQuantite());
@@ -523,7 +476,7 @@ public class NouvelleCommandeClientView extends JPanel {
 				tab.addRow(vect);
 			}
 		} else {
-			Vector vect = new Vector();
+			Vector<java.io.Serializable> vect = new Vector<>();
 			idList.add(listProduits.get(0).getId());
 			poidsList.add(listProduits.get(0).getPoids());
 			vect.add(0);
@@ -541,9 +494,8 @@ public class NouvelleCommandeClientView extends JPanel {
 	public void relisting() {
 		DefaultTableModel model = (DefaultTableModel) table.getModel();
 		ProduitDAO produitDAO = new ProduitDAO();
-		List < Produit > listProduits = new ArrayList < > ();
-		listProduits.addAll(produitDAO.read());
-		Vector vect = new Vector();
+		List<Produit> listProduits = new ArrayList<>(produitDAO.read());
+		Vector<java.io.Serializable> vect = new Vector<>();
 		vect.add(0);
 		idList.add(listProduits.get(0).getId());
 		poidsList.add(listProduits.get(0).getPoids());
@@ -556,7 +508,7 @@ public class NouvelleCommandeClientView extends JPanel {
 		table.setModel(model);
 	}
 
-	class ButtonRenderer extends JButton implements TableCellRenderer {
+	static class ButtonRenderer extends JButton implements TableCellRenderer {
 		public ButtonRenderer() {
 			setOpaque(true);
 		}
@@ -580,14 +532,14 @@ public class NouvelleCommandeClientView extends JPanel {
 			return btnSupprimer;
 		}
 		public Object getCellEditorValue() {
-			return new String(label);
+			return label;
 		}
 	}
 
-	public class DateLabelFormatter extends JFormattedTextField.AbstractFormatter {
+	public static class DateLabelFormatter extends JFormattedTextField.AbstractFormatter {
 
-		private String datePattern = "dd/MM/yyy";
-		private SimpleDateFormat dateFormatter = new SimpleDateFormat(datePattern);
+		private final String datePattern = "dd/MM/yyy";
+		private final SimpleDateFormat dateFormatter = new SimpleDateFormat(datePattern);
 
 		@Override
 		public Object stringToValue(String text) throws ParseException {
@@ -595,7 +547,7 @@ public class NouvelleCommandeClientView extends JPanel {
 		}
 
 		@Override
-		public String valueToString(Object value) throws ParseException {
+		public String valueToString(Object value) {
 			if (value != null) {
 				Calendar cal = (Calendar) value;
 				return dateFormatter.format(cal.getTime());

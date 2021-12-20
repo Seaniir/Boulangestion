@@ -1,22 +1,19 @@
 package view;
 
-import javax.swing.JPanel;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
+import javax.imageio.ImageIO;
+import javax.swing.*;
 
-import java.awt.Font;
-import java.awt.Color;
-import javax.swing.SwingConstants;
+import java.awt.*;
 
 import controller.PanelsManager;
 import controller.UserDao;
 import model.User;
 
-import javax.swing.JTextField;
-import javax.swing.JPasswordField;
-import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 public class Login extends JPanel {
 	private JTextField loginValue;
@@ -29,7 +26,17 @@ public class Login extends JPanel {
 		setBackground(new Color(255, 239, 213));
 		setBounds(0,0,1440,900);
 		setLayout(null);
-		
+
+		BufferedImage img = null;
+		try {
+			img = ImageIO.read(new File("C:\\Users\\Quentin\\Downloads\\projetBoulang\\ApplicationFrameHost_9xgfw1hOm4.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		Image dimg = img.getScaledInstance(1440, 900,
+				Image.SCALE_SMOOTH);
+		ImageIcon imageIcon = new ImageIcon(dimg);
+
 		JLabel lblBoulangestion = new JLabel("Boulangestion");
 		lblBoulangestion.setHorizontalAlignment(SwingConstants.CENTER);
 		lblBoulangestion.setForeground(new Color(128, 0, 0));
@@ -102,6 +109,10 @@ public class Login extends JPanel {
 		});
 		btnNewButton.setBounds(10, 296, 526, 42);
 		panel.add(btnNewButton);
+		JLabel lblNewLabel = new JLabel("");
+		lblNewLabel.setIcon(imageIcon);
+		lblNewLabel.setBounds(0, 0, 1440, 900);
+		add(lblNewLabel);
 		
 	}
 }

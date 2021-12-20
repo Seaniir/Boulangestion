@@ -63,7 +63,7 @@ public class AccueilMenu extends JPanel {
 		panel.setLayout(null);
 		BufferedImage img = null;
 		try {
-			img = ImageIO.read(new File("C:\\Users\\Quentin\\Downloads\\projetBoulang\\istockphoto-1268508772-170667a.jpg"));
+			img = ImageIO.read(new File("C:\\Users\\Quentin\\Downloads\\projetBoulang\\ApplicationFrameHost_9xgfw1hOm4.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -80,7 +80,7 @@ public class AccueilMenu extends JPanel {
 		lblTitre.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTitre.setFont(new Font("Gentium Book Basic", Font.PLAIN, 80));
 		panel.add(lblTitre);
-		
+
 		//menu vente
 		btnVente = new JButton("Vente");
 		btnVente.addMouseListener(new MouseAdapter() {
@@ -94,7 +94,7 @@ public class AccueilMenu extends JPanel {
 				btnHistoriqueVC.setVisible(true);
 			}
 		});
-		
+
 		//menu compta
 		btnCompta = new JButton("Comptabilite");
 		btnCompta.addMouseListener(new MouseAdapter() {
@@ -110,7 +110,7 @@ public class AccueilMenu extends JPanel {
 		btnCompta.setBackground(new Color(242, 193, 102));
 		btnCompta.setBounds(370, 215, 161, 33);
 		panel.add(btnCompta);
-		
+
 		//menu clients
 		btnClients = new JButton("Clients");
 		btnClients.addMouseListener(new MouseAdapter() {
@@ -126,7 +126,7 @@ public class AccueilMenu extends JPanel {
 		btnClients.setBackground(new Color(242, 193, 102));
 		btnClients.setBounds(641, 215, 161, 33);
 		panel.add(btnClients);
-		
+
 		//menu stocks
 		btnStocks = new JButton("Stocks");
 		btnStocks.addMouseListener(new MouseAdapter() {
@@ -143,7 +143,7 @@ public class AccueilMenu extends JPanel {
 		btnStocks.setBackground(new Color(242, 193, 102));
 		btnStocks.setBounds(914, 215, 161, 33);
 		panel.add(btnStocks);
-		
+
 		//menu aide
 		btnAide = new JButton("Aide");
 		btnAide.addMouseListener(new MouseAdapter() {
@@ -160,7 +160,7 @@ public class AccueilMenu extends JPanel {
 		//btnAide.setBorder(new RoundedBorder(10));
 		btnAide.setBounds(1161, 215, 161, 33);
 		panel.add(btnAide);
-		
+
 		//bouton de d�connexion qui revient � la page de connexion
 		JButton btnDeco = new JButton("");
 		btnDeco.addMouseListener(new MouseAdapter() {
@@ -175,14 +175,14 @@ public class AccueilMenu extends JPanel {
 		btnDeco.setIcon(new ImageIcon("C:\\Users\\fredb\\AFPA\\projetBoulang\\power_off.png"));
 		btnDeco.setBounds(1360, 820, 80, 80);
 		panel.add(btnDeco);
-		
+
 		//d�but des sous-menus
-		
+
 		btnVente.setFont(new Font("Tahoma", Font.PLAIN, 22));
 		btnVente.setBackground(new Color(242, 193, 102));
 		btnVente.setBounds(114, 215, 161, 33);
 		panel.add(btnVente);
-		
+
 		btnVenteDirecte = new JButton("Vente directe");
 		btnVenteDirecte.addMouseListener(new MouseAdapter() {
 			@Override
@@ -194,7 +194,7 @@ public class AccueilMenu extends JPanel {
 		btnVenteDirecte.setBounds(114, 284, 161, 33);
 		btnVenteDirecte.setVisible(false);
 		panel.add(btnVenteDirecte);
-		
+
 		btnDevis = new JButton("Devis");
 		btnDevis.addMouseListener(new MouseAdapter() {
 			@Override
@@ -210,7 +210,7 @@ public class AccueilMenu extends JPanel {
 		btnDevis.setBounds(114, 352, 161, 33);
 		btnDevis.setVisible(false);
 		panel.add(btnDevis);
-		
+
 		btnCmdClients = new JButton("Commandes");
 		btnCmdClients.addMouseListener(new MouseAdapter() {
 			@Override
@@ -226,7 +226,7 @@ public class AccueilMenu extends JPanel {
 		btnCmdClients.setBounds(114, 424, 161, 33);
 		btnCmdClients.setVisible(false);
 		panel.add(btnCmdClients);
-		
+
 		btnHistoriqueVC = new JButton("Historique");
 		btnHistoriqueVC.addMouseListener(new MouseAdapter() {
 			@Override
@@ -242,7 +242,7 @@ public class AccueilMenu extends JPanel {
 		btnHistoriqueVC.setBounds(114, 496, 161, 33);
 		btnHistoriqueVC.setVisible(false);
 		panel.add(btnHistoriqueVC);
-		
+
 		btnClotureCaisse = new JButton("Cloture caisse");
 		btnClotureCaisse.addMouseListener(new MouseAdapter() {
 			@Override
@@ -258,7 +258,7 @@ public class AccueilMenu extends JPanel {
 		btnClotureCaisse.setBounds(370, 284, 161, 33);
 		btnClotureCaisse.setVisible(false);
 		panel.add(btnClotureCaisse);
-		
+
 		btnStatistiques = new JButton("Statistiques");
 		btnStatistiques.addMouseListener(new MouseAdapter() {
 			@Override
@@ -270,7 +270,7 @@ public class AccueilMenu extends JPanel {
 		btnStatistiques.setBounds(370, 352, 161, 33);
 		btnStatistiques.setVisible(false);
 		panel.add(btnStatistiques);
-		
+
 		btnListeClients = new JButton("Liste clients");
 		btnListeClients.addMouseListener(new MouseAdapter() {
 			@Override
@@ -286,7 +286,7 @@ public class AccueilMenu extends JPanel {
 		btnListeClients.setBounds(641, 284, 161, 33);
 		btnListeClients.setVisible(false);
 		panel.add(btnListeClients);
-		
+
 		btnNewClient = new JButton("Nouveau client");
 		btnNewClient.addMouseListener(new MouseAdapter() {
 			@Override
@@ -302,7 +302,7 @@ public class AccueilMenu extends JPanel {
 		btnNewClient.setBounds(641, 352, 161, 33);
 		btnNewClient.setVisible(false);
 		panel.add(btnNewClient);
-		
+
 		btnCmdStock = new JButton("Commande");
 		btnCmdStock.addMouseListener(new MouseAdapter() {
 			@Override
@@ -318,7 +318,7 @@ public class AccueilMenu extends JPanel {
 		btnCmdStock.setBounds(914, 284, 161, 33);
 		btnCmdStock.setVisible(false);
 		panel.add(btnCmdStock);
-		
+
 		btnProduits = new JButton("Produits");
 		btnProduits.addMouseListener(new MouseAdapter() {
 			@Override
@@ -334,7 +334,7 @@ public class AccueilMenu extends JPanel {
 		btnProduits.setBounds(914, 352, 161, 33);
 		btnProduits.setVisible(false);
 		panel.add(btnProduits);
-		
+
 		btnFournisseurs = new JButton("Fournisseurs");
 		btnFournisseurs.addMouseListener(new MouseAdapter() {
 			@Override
@@ -350,7 +350,7 @@ public class AccueilMenu extends JPanel {
 		btnFournisseurs.setBounds(914, 424, 161, 33);
 		btnFournisseurs.setVisible(false);
 		panel.add(btnFournisseurs);
-		
+
 		btnDoc = new JButton("Documentation");
 		btnDoc.addMouseListener(new MouseAdapter() {
 			@Override
@@ -362,7 +362,7 @@ public class AccueilMenu extends JPanel {
 		btnDoc.setBounds(1161, 284, 161, 33);
 		btnDoc.setVisible(false);
 		panel.add(btnDoc);
-		
+
 		btnFaq = new JButton("FAQ");
 		btnFaq.addMouseListener(new MouseAdapter() {
 			@Override
@@ -374,13 +374,11 @@ public class AccueilMenu extends JPanel {
 		btnFaq.setBounds(1161, 352, 161, 33);
 		btnFaq.setVisible(false);
 		panel.add(btnFaq);
-		
+
 				JLabel lblNewLabel = new JLabel("");
 				lblNewLabel.setIcon(imageIcon);
 				lblNewLabel.setBounds(0, 0, 1440, 900);
 				panel.add(lblNewLabel);
-
-		
 	}
 	
 	//m�thode pour rendre les sous-menus invisibles

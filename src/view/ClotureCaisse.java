@@ -1,13 +1,13 @@
 package view;
 
-import java.awt.Color;
+import java.awt.*;
 
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
-import java.awt.Font;
 import javax.swing.ImageIcon;
 import javax.swing.InputVerifier;
 import javax.swing.SwingConstants;
@@ -31,9 +31,13 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.List;
 import java.util.regex.Pattern;
 import java.awt.event.InputMethodListener;
 import java.awt.event.InputMethodEvent;
@@ -67,7 +71,20 @@ public class ClotureCaisse extends JPanel {
 				PanelsManager.contentPane.revalidate();
 			}
 		});
-		btnAccueil.setIcon(new ImageIcon("C:\\Users\\fredb\\AFPA\\workspace-java\\Boulangestion\\projetBoulang\\exit.png"));
+
+		BufferedImage img = null;
+		try {
+			img = ImageIO.read(new File(
+					"C:\\Users\\Quentin\\Downloads\\projetBoulang\\ApplicationFrameHost_9xgfw1hOm4.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		Image dimg = img.getScaledInstance(1440, 900,
+				Image.SCALE_SMOOTH);
+		ImageIcon imageIcon = new ImageIcon(dimg);
+		
+		btnAccueil.setIcon(new ImageIcon(
+				"C:\\Users\\fredb\\AFPA\\workspace-java\\Boulangestion\\projetBoulang\\exit.png"));
 		btnAccueil.setBounds(1370, 11, 40, 40);
 		menu.add(btnAccueil);
 
@@ -78,7 +95,7 @@ public class ClotureCaisse extends JPanel {
 		menu.add(lblNewLabel_1);
 
 		JPanel formulaire = new JPanel();
-		formulaire.setBackground(new Color(255, 255, 255));
+		formulaire.setBackground(Color.ORANGE);
 		formulaire.setBounds(265, 155, 911, 467);
 		add(formulaire);
 		formulaire.setLayout(null);
@@ -118,7 +135,7 @@ public class ClotureCaisse extends JPanel {
 		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 25));
 		btnNewButton.setBounds(578, 685, 335, 57);
 		add(btnNewButton);
-		
+
 		JPanel panel = new JPanel();
 		panel.setBounds(1069, 89, 371, 50);
 		add(panel);
@@ -128,7 +145,12 @@ public class ClotureCaisse extends JPanel {
 		lblNewLabel_4.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblNewLabel_4.setBounds(20, 11, 152, 28);
 		panel.add(lblNewLabel_4);
-		
+
+		JLabel lblNewLabel = new JLabel("");
+		lblNewLabel.setIcon(imageIcon);
+		lblNewLabel.setBounds(0, 0, 1440, 900);
+		add(lblNewLabel);
+
 		JLabel dateLabel = new JLabel("");
 		dateLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		dateLabel.setBounds(182, 11, 142, 28);

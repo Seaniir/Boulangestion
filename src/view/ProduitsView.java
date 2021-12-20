@@ -13,23 +13,18 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Vector;
 
 public class ProduitsView extends JPanel {
 
-	private JTable table;
+	private final JTable table;
 	JButton btnModifier = new JButton();
 	JButton btnAnnuler = new JButton();
-	ArrayList<Integer> idList = new ArrayList<Integer>();
+	ArrayList<Integer> idList = new ArrayList<>();
 	/**
 	 * Create the panel.
 	 */
@@ -54,8 +49,6 @@ public class ProduitsView extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 				int id = table.getSelectedRow();
 
-				int article_id = (int) table.getModel().getValueAt(id, 0);
-
 				CommandeClientDAO commandeClientDAO = new CommandeClientDAO();
 				ConnectionUrlParser.Pair < CommandeClient, Client > pair = commandeClientDAO.findById((Integer) table.getValueAt(id, 0));
 				DetailsCommandesClient.currentCommande = pair.left;
@@ -72,13 +65,11 @@ public class ProduitsView extends JPanel {
 		table.setModel(liste());
 
 		JButton btnNewButton = new JButton("Nouveau produit");
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				PanelsManager.contentPane.removeAll();
-				PanelsManager.contentPane.add(PanelsManager.switchtoNewProduitViewPanel());
-				PanelsManager.contentPane.revalidate();
-				PanelsManager.contentPane.repaint();
-			}
+		btnNewButton.addActionListener(e -> {
+			PanelsManager.contentPane.removeAll();
+			PanelsManager.contentPane.add(PanelsManager.switchtoNewProduitViewPanel());
+			PanelsManager.contentPane.revalidate();
+			PanelsManager.contentPane.repaint();
 		});
 		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 30));
 		btnNewButton.setBackground(new Color(255, 165, 0));
@@ -86,36 +77,28 @@ public class ProduitsView extends JPanel {
 		btnNewButton.setBounds(467, 663, 499, 53);
 		panel.add(btnNewButton);
 		btnModifier.addActionListener(
-				new ActionListener() {
-					public void actionPerformed(ActionEvent event) {
-						int n = JOptionPane.showConfirmDialog(null, "Voulez-vous modifier ce produit ?", "Modifier", JOptionPane.YES_NO_OPTION);
-						if (n == JOptionPane.YES_OPTION) {
-							NouveauProduit.currentProduit = new Produit(idList.get(table.getSelectedRow()), table.getValueAt(table.getSelectedRow(), 0).toString(), table.getValueAt(table.getSelectedRow(), 1).toString(), Float.parseFloat(table.getValueAt(table.getSelectedRow(), 2).toString()), Integer.parseInt(table.getValueAt(table.getSelectedRow(), 3).toString()), Float.parseFloat(table.getValueAt(table.getSelectedRow(), 4).toString()), Float.parseFloat(table.getValueAt(table.getSelectedRow(), 5).toString()));
-							NouveauProduit.modify = true;
-							PanelsManager.contentPane.removeAll();
-							PanelsManager.contentPane.add(PanelsManager.switchtoNewProduitViewPanel());
-							PanelsManager.contentPane.revalidate();
-							PanelsManager.contentPane.repaint();
-						} else {
-
-						}
+				event -> {
+					int n = JOptionPane.showConfirmDialog(null, "Voulez-vous modifier ce produit ?", "Modifier", JOptionPane.YES_NO_OPTION);
+					if (n == JOptionPane.YES_OPTION) {
+						NouveauProduit.currentProduit = new Produit(idList.get(table.getSelectedRow()), table.getValueAt(table.getSelectedRow(), 0).toString(), table.getValueAt(table.getSelectedRow(), 1).toString(), Float.parseFloat(table.getValueAt(table.getSelectedRow(), 2).toString()), Integer.parseInt(table.getValueAt(table.getSelectedRow(), 3).toString()), Float.parseFloat(table.getValueAt(table.getSelectedRow(), 4).toString()), Float.parseFloat(table.getValueAt(table.getSelectedRow(), 5).toString()));
+						NouveauProduit.modify = true;
+						PanelsManager.contentPane.removeAll();
+						PanelsManager.contentPane.add(PanelsManager.switchtoNewProduitViewPanel());
+						PanelsManager.contentPane.revalidate();
+						PanelsManager.contentPane.repaint();
 					}
 				}
 		);
 		btnAnnuler.addActionListener(
-				new ActionListener() {
-					public void actionPerformed(ActionEvent event) {
-						int n = JOptionPane.showConfirmDialog(null, "Voulez-vous supprimer ce produit ?", "Supprimer", JOptionPane.YES_NO_OPTION);
-						if (n == JOptionPane.YES_OPTION) {
-							ProduitDAO produitDAO = new ProduitDAO();
-							produitDAO.delete(idList.get(table.getSelectedRow()));
-							PanelsManager.contentPane.removeAll();
-							PanelsManager.contentPane.add(PanelsManager.switchtoProduitsViewPanel());
-							PanelsManager.contentPane.revalidate();
-							PanelsManager.contentPane.repaint();
-						} else {
-
-						}
+				event -> {
+					int n = JOptionPane.showConfirmDialog(null, "Voulez-vous supprimer ce produit ?", "Supprimer", JOptionPane.YES_NO_OPTION);
+					if (n == JOptionPane.YES_OPTION) {
+						ProduitDAO produitDAO = new ProduitDAO();
+						produitDAO.delete(idList.get(table.getSelectedRow()));
+						PanelsManager.contentPane.removeAll();
+						PanelsManager.contentPane.add(PanelsManager.switchtoProduitsViewPanel());
+						PanelsManager.contentPane.revalidate();
+						PanelsManager.contentPane.repaint();
 					}
 				}
 		);
@@ -139,23 +122,21 @@ public class ProduitsView extends JPanel {
 		add(panel_1);
 		panel_1.setLayout(null);
 		ImageIcon imageIcon = new ImageIcon("C:\\Users\\Quentin\\Downloads\\history.png");
-		Image image = imageIcon.getImage(); // transform it
-		Image newimg = image.getScaledInstance(75, 75, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
-		imageIcon = new ImageIcon(newimg); // transform it back
+		Image image = imageIcon.getImage();
+		Image newimg = image.getScaledInstance(75, 75, java.awt.Image.SCALE_SMOOTH);
+		imageIcon = new ImageIcon(newimg);
 
 		JButton accueilBtn = new JButton("");
 		ImageIcon imageIcon1 = new ImageIcon("C:\\Users\\Quentin\\Downloads\\sign-out.png");
-		Image image1 = imageIcon1.getImage(); // transform it
-		Image newimg1 = image1.getScaledInstance(75, 75, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
-		accueilBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				PanelsManager.contentPane.removeAll();
-				PanelsManager.contentPane.add(PanelsManager.switchToAccueilMenu());
-				PanelsManager.contentPane.revalidate();
-				PanelsManager.contentPane.repaint();
-			}
+		Image image1 = imageIcon1.getImage();
+		Image newimg1 = image1.getScaledInstance(75, 75, java.awt.Image.SCALE_SMOOTH);
+		accueilBtn.addActionListener(e -> {
+			PanelsManager.contentPane.removeAll();
+			PanelsManager.contentPane.add(PanelsManager.switchToAccueilMenu());
+			PanelsManager.contentPane.revalidate();
+			PanelsManager.contentPane.repaint();
 		});
-		imageIcon1 = new ImageIcon(newimg1); // transform it back
+		imageIcon1 = new ImageIcon(newimg1);
 
 		JLabel lblNewLabel = new JLabel("Historique");
 		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 18));
@@ -194,10 +175,9 @@ public class ProduitsView extends JPanel {
 		DefaultTableModel tab = new DefaultTableModel(null, col);
 
 		ProduitDAO produitDAO = new ProduitDAO();
-		List <Produit> produits = new ArrayList < > ();
-		produits.addAll(produitDAO.read());
+		List<Produit> produits = new ArrayList<>(produitDAO.read());
 		for (Produit produit: produits) {
-			Vector vect = new Vector();
+			Vector<java.io.Serializable> vect = new Vector<>();
 			idList.add(produit.getId());
 			vect.add(produit.getLibelle());
 			vect.add(produit.getFabricant());
@@ -210,7 +190,7 @@ public class ProduitsView extends JPanel {
 		return tab;
 	}
 
-	class ButtonRenderer extends JButton implements TableCellRenderer {
+	static class ButtonRenderer extends JButton implements TableCellRenderer {
 		public ButtonRenderer() {
 			setOpaque(true);
 		}
@@ -234,11 +214,11 @@ public class ProduitsView extends JPanel {
 			return btnModifier;
 		}
 		public Object getCellEditorValue() {
-			return new String(label);
+			return label;
 		}
 	}
 
-	class SecondButtonRenderer extends JButton implements TableCellRenderer {
+	static class SecondButtonRenderer extends JButton implements TableCellRenderer {
 		public SecondButtonRenderer() {
 			setOpaque(true);
 		}
@@ -262,7 +242,7 @@ public class ProduitsView extends JPanel {
 			return btnAnnuler;
 		}
 		public Object getCellEditorValue() {
-			return new String(label);
+			return label;
 		}
 	}
 }
