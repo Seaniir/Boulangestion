@@ -149,13 +149,6 @@ public class HistoriqueCommandesVentes extends JPanel {
 			tab.addRow(vect);
 			i++;
 		}
-		
-			
-			
-		
-		
-		
-		 
 		return tab;
 	}	
 }
