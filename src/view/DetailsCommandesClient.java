@@ -9,8 +9,7 @@ import model.CommandeClient;
 import model.Produit;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
+import javax.swing.table.*;
 import java.awt.*;
 import java.lang.reflect.Type;
 import java.text.DateFormat;
