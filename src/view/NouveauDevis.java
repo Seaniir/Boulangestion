@@ -68,11 +68,12 @@ public class NouveauDevis extends JPanel {
 	public NouveauDevis() {
 		setBounds(0, 0, 1440, 900);
 		setLayout(null);
-
+		setBackground(new Color(254, 245, 232));
+		
 		JPanel panel_1 = new JPanel();
 		panel_1.setLayout(null);
 		panel_1.setBackground(Color.WHITE);
-		panel_1.setBounds(0, 0, 1440, 99);
+		panel_1.setBounds(0, 0, 1440, 94);
 		add(panel_1);
 
 		JButton accueilBtn = new JButton("");
@@ -81,7 +82,7 @@ public class NouveauDevis extends JPanel {
 		Image newimg4 = accueilImageImage.getScaledInstance(75, 75, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
 		accueilImage = new ImageIcon(newimg4); // transform it back
 		accueilBtn.setIcon(accueilImage);
-		accueilBtn.setBounds(1333, 0, 107, 75);
+		accueilBtn.setBounds(1370, 11, 40, 40);
 		panel_1.add(accueilBtn);
 		accueilBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -101,7 +102,7 @@ public class NouveauDevis extends JPanel {
 		Image newimg = image.getScaledInstance(75, 75, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
 		imageIcon = new ImageIcon(newimg); // transform it back
 		historiqueBtn.setIcon(imageIcon);
-		historiqueBtn.setBounds(0, 0, 127, 75);
+		historiqueBtn.setBounds(0, 11, 40, 40);
 		panel_1.add(historiqueBtn);
 		button.addActionListener(
 				new ActionListener() {
@@ -131,23 +132,23 @@ public class NouveauDevis extends JPanel {
 		Image imageReturnImage = imageReturn.getImage(); // transform it
 		Image newimg3 = imageReturnImage.getScaledInstance(75, 75, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
 		imageReturn = new ImageIcon(newimg3); // transform it back
-		returnBtn.setBounds(127, 0, 127, 75);
+		returnBtn.setBounds(127, 11, 40, 40);
 		returnBtn.setIcon(imageReturn);
 		panel_1.add(returnBtn);
 
 		JLabel lblNewLabel_9 = new JLabel("Historique");
 		lblNewLabel_9.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_9.setBounds(0, 74, 127, 25);
+		lblNewLabel_9.setBounds(0, 74, 63, 18);
 		panel_1.add(lblNewLabel_9);
 
 		JLabel lblNewLabel_10 = new JLabel("Retour");
 		lblNewLabel_10.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_10.setBounds(127, 74, 127, 25);
+		lblNewLabel_10.setBounds(127, 74, 63, 18);
 		panel_1.add(lblNewLabel_10);
 
 		JLabel lblNewLabel_11 = new JLabel("Accueil");
 		lblNewLabel_11.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_11.setBounds(1333, 74, 107, 25);
+		lblNewLabel_11.setBounds(1355, 62, 63, 18);
 		panel_1.add(lblNewLabel_11);
 
 		JPanel panel = new JPanel();

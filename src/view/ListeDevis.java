@@ -18,10 +18,14 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.RowSorter;
+import javax.swing.SortOrder;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 import com.mysql.cj.conf.ConnectionUrlParser;
 
@@ -38,11 +42,11 @@ public class ListeDevis extends JPanel {
 	
 	public ListeDevis() {
 		setBounds(0, 0, 1440, 900);
-		setBackground(new Color(255, 235, 205));
+		setBackground(new Color(254, 245, 232));
 		setLayout(null);
 		
 		JPanel panel = new JPanel();
-		panel.setBounds(0, 0, 1440, 131);
+		panel.setBounds(0, 0, 1440, 94);
 		panel.setBackground(Color.WHITE);
 		add(panel);
 		panel.setLayout(null);
@@ -50,7 +54,7 @@ public class ListeDevis extends JPanel {
 		JLabel lblAccueil = new JLabel("Accueil");
 		lblAccueil.setHorizontalAlignment(SwingConstants.CENTER);
 		lblAccueil.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblAccueil.setBounds(1270, 102, 160, 19);
+		lblAccueil.setBounds(1355, 62, 63, 18);
 		panel.add(lblAccueil);
 		
 		JButton btnAccueil = new JButton("");
@@ -64,7 +68,7 @@ public class ListeDevis extends JPanel {
 		});
 		btnAccueil.setBackground(Color.WHITE);
 		btnAccueil.setIcon(new ImageIcon("C:\\Users\\Julien\\Desktop\\projetBoulang\\exit.png"));
-		btnAccueil.setBounds(1270, 10, 160, 82);
+		btnAccueil.setBounds(1370, 11, 40, 40);
 		panel.add(btnAccueil);
 		// Ajouter un client
 		
@@ -116,6 +120,14 @@ public class ListeDevis extends JPanel {
 		table.getColumn("Modifier").setCellEditor(new SecondButtonEditor(new JCheckBox()));
 		table.getColumn("Annuler").setCellRenderer(new ThirdButtonRenderer());
 		table.getColumn("Annuler").setCellEditor(new ThirdButtonEditor(new JCheckBox()));
+		
+		//Tri par ordre ascendant sur les colonnes de num de cmd, de societe et de date
+        TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(table.getModel());
+        table.setRowSorter(sorter);
+        List<RowSorter.SortKey> sortKeys = new ArrayList<>();
+        sortKeys.add(new RowSorter.SortKey(0, SortOrder.ASCENDING));
+        sortKeys.add(new RowSorter.SortKey(1, SortOrder.ASCENDING));
+        sorter.setSortKeys(sortKeys);
 		
 		// Lors du clic sur le bouton modifier il se passe: 
 		btnModify.addActionListener(new ActionListener() {

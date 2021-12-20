@@ -19,6 +19,8 @@ import java.util.Vector;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 import com.mysql.cj.conf.ConnectionUrlParser;
 import controller.CommandeClientDAO;
@@ -27,6 +29,8 @@ import model.Client;
 import model.CommandeClient;
 
 import javax.swing.JTable;
+import javax.swing.RowSorter;
+import javax.swing.SortOrder;
 
 public class HistoriqueCommandesVentes extends JPanel {
 	private JTable listingHistorique;
@@ -36,19 +40,19 @@ public class HistoriqueCommandesVentes extends JPanel {
 	 */
 	public HistoriqueCommandesVentes() {
 		setBounds(0, 0, 1440, 900);
-		setBackground(new Color(255, 235, 205));
+		setBackground(new Color(254, 245, 232));
 		setLayout(null);
 		// Panel TOP
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.WHITE);
-		panel.setBounds(0, 0, 1440, 131);
+		panel.setBounds(0, 0, 1440, 94);
 		add(panel);
 		panel.setLayout(null);
 		
 		JLabel lblAccueil = new JLabel("Accueil");
 		lblAccueil.setHorizontalAlignment(SwingConstants.CENTER);
 		lblAccueil.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblAccueil.setBounds(1270, 102, 160, 19);
+		lblAccueil.setBounds(1355, 62, 63, 18);
 		panel.add(lblAccueil);
 		
 		JButton btnAccueil = new JButton("");
@@ -62,7 +66,7 @@ public class HistoriqueCommandesVentes extends JPanel {
 		});
 		btnAccueil.setBackground(Color.WHITE);
 		btnAccueil.setIcon(new ImageIcon("C:\\Users\\Julien\\Desktop\\projetBoulang\\exit.png"));
-		btnAccueil.setBounds(1270, 10, 160, 82);
+		btnAccueil.setBounds(1370, 11, 40, 40);
 		panel.add(btnAccueil);
 		
 		// Panel Historique
@@ -106,6 +110,14 @@ public class HistoriqueCommandesVentes extends JPanel {
 		listingHistorique.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
 		listingHistorique.getColumnModel().getColumn(4).setCellRenderer(centerRenderer);
 		listingHistorique.getColumnModel().getColumn(5).setCellRenderer(centerRenderer);
+		
+		//Tri par ordre ascendant sur les colonnes de num de cmd, de societe et de date
+        TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(listingHistorique.getModel());
+        listingHistorique.setRowSorter(sorter);
+        List<RowSorter.SortKey> sortKeys = new ArrayList<>();
+        sortKeys.add(new RowSorter.SortKey(0, SortOrder.ASCENDING));
+        sortKeys.add(new RowSorter.SortKey(1, SortOrder.ASCENDING));
+        sorter.setSortKeys(sortKeys);
 	}
 		// Les intitulés des colonnes du tableau
 	public DefaultTableModel liste() {
