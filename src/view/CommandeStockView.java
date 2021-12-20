@@ -12,23 +12,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Vector;
 
-import javax.swing.DefaultCellEditor;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.RowSorter;
-import javax.swing.SortOrder;
-import javax.swing.SwingConstants;
+import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableModel;
-import javax.swing.table.TableRowSorter;
 
 import com.mysql.cj.conf.ConnectionUrlParser;
 import controller.CommandeStockDao;
@@ -40,6 +27,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 public class CommandeStockView extends JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	private JTable listingCmdStock;
 	
 	JButton btnModifier = new JButton();
@@ -69,7 +61,8 @@ public class CommandeStockView extends JPanel {
 				PanelsManager.contentPane.revalidate();
 			}
 		});
-		btnFournisseur.setIcon(new ImageIcon("C:\\Users\\fredb\\AFPA\\workspace-java\\Boulangestion\\projetBoulang\\accountMenu.png"));
+		btnFournisseur.setIcon(new ImageIcon
+				("C:\\Users\\fredb\\AFPA\\workspace-java\\Boulangestion\\projetBoulang\\accountMenu.png"));
 		btnFournisseur.setBounds(38, 11, 40, 40);
 		menu.add(btnFournisseur);
 		
@@ -116,7 +109,8 @@ public class CommandeStockView extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 				int id = listingCmdStock.getSelectedRow();
 				CommandeStockDao commandeStockDao = new CommandeStockDao();
-				ConnectionUrlParser.Pair < CommandeStock, Fournisseur > pair = commandeStockDao.findByIdPair((Integer) listingCmdStock.getValueAt(id, 0));
+				ConnectionUrlParser.Pair < CommandeStock, Fournisseur > pair =
+						commandeStockDao.findByIdPair((Integer) listingCmdStock.getValueAt(id, 0));
 				DetailsCommandeStock.currentCmdStock = pair.left;
 				DetailsCommandeStock.currentFournisseur = pair.right;
 				PanelsManager.contentPane.removeAll();
@@ -147,10 +141,12 @@ public class CommandeStockView extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				//pop-up de confirmation: si oui va sur la modification du fournisseur, si non, ne fait rien
-				int n = JOptionPane.showConfirmDialog(null, "Voulez-vous modifier cette commande ?", "Modifier", JOptionPane.YES_NO_OPTION);
+				int n = JOptionPane.showConfirmDialog(null, "Voulez-vous modifier cette commande ?", "Modifier",
+						JOptionPane.YES_NO_OPTION);
 				if (n == JOptionPane.YES_OPTION) {
 					CommandeStockDao commandeStockDao = new CommandeStockDao();
-					ConnectionUrlParser.Pair < CommandeStock, Fournisseur > pair = commandeStockDao.findByIdPair((int) listingCmdStock.getValueAt(listingCmdStock.getSelectedRow(), 0));
+					ConnectionUrlParser.Pair < CommandeStock, Fournisseur > pair = 
+						commandeStockDao.findByIdPair((int) listingCmdStock.getValueAt(listingCmdStock.getSelectedRow(), 0));
 					NewCommandeStock.currentCmdStock = pair.left;
 					NewCommandeStock.currentFournisseur = pair.right;
 					NewCommandeStock.modify = true;
@@ -165,7 +161,8 @@ public class CommandeStockView extends JPanel {
 		btnDelete.addActionListener(new ActionListener(){
 	        public void actionPerformed(ActionEvent event)
 	        {
-	        	//pop-up de confirmation: si oui va sur la suppression du fournisseur dans ma liste, pas dans la bdd, si non, ne fait rien
+	        	//pop-up de confirmation: si oui va sur la suppression du fournisseur dans ma liste, pas dans la bdd, 
+	        	//si non, ne fait rien
 				if (JOptionPane.showConfirmDialog(null, "Etes-vous sûr de vouloir supprimer?", "Attention",
 			        JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 					CommandeStockDao commandeStockDao = new CommandeStockDao();
@@ -195,14 +192,6 @@ public class CommandeStockView extends JPanel {
 		btnNewCmdStock.setBounds(470, 823, 499, 53);
 		add(btnNewCmdStock);
 		
-		//Tri par ordre ascendant sur les colonnes de num de cmd, de societe et de date
-		TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(listingCmdStock.getModel());
-		listingCmdStock.setRowSorter(sorter);
-		List<RowSorter.SortKey> sortKeys = new ArrayList<>();
-		sortKeys.add(new RowSorter.SortKey(0, SortOrder.ASCENDING));
-		sortKeys.add(new RowSorter.SortKey(1, SortOrder.ASCENDING));
-        sortKeys.add(new RowSorter.SortKey(2, SortOrder.ASCENDING));
-        sorter.setSortKeys(sortKeys);
 	}
 
 	//remplissage du tableau
@@ -232,7 +221,11 @@ public class CommandeStockView extends JPanel {
 	}
 	
 	class ButtonRenderer extends JButton implements TableCellRenderer{
-	    public ButtonRenderer() {
+	    /**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+		public ButtonRenderer() {
 	      setOpaque(true);
 	    }
 	    public Component getTableCellRendererComponent(JTable table, Object value,
@@ -242,7 +235,11 @@ public class CommandeStockView extends JPanel {
 	    }
 	}
 	class ButtonEditor extends DefaultCellEditor{
-	    private String label;
+	    /**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+		private String label;
 	    
 	    public ButtonEditor(JCheckBox checkBox){
 	      super(checkBox);
@@ -260,7 +257,11 @@ public class CommandeStockView extends JPanel {
 	 }
 	
 	class SecondButtonRenderer extends JButton implements TableCellRenderer{
-	    public SecondButtonRenderer() {
+	    /**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+		public SecondButtonRenderer() {
 	      setOpaque(true);
 	    }
 	    public Component getTableCellRendererComponent(JTable table, Object value,
@@ -270,7 +271,12 @@ public class CommandeStockView extends JPanel {
 	    }
 	}
 	class SecondButtonEditor extends DefaultCellEditor{
-	    public SecondButtonEditor(JCheckBox checkBox) {
+	    /**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
+		public SecondButtonEditor(JCheckBox checkBox) {
 			super(checkBox);
 			
 		}

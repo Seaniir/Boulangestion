@@ -282,28 +282,22 @@ public class NewCommandeStock extends JPanel {
 		btnValider.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				CommandeStockDao commandeStockDao = new CommandeStockDao();
-
-				DateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE);
-				DateFormat inputFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE);
-				int m = cmd.getRowCount(), n = cmd.getColumnCount();
+				int m = cmd.getRowCount();
 				ArrayList < ArrayList < Produit >> matrix = new ArrayList < ArrayList < Produit >> ();
-
-				for (int i = 0; i < m; i++) {
-					ArrayList < Produit > row = new ArrayList < Produit > ();
-					Produit produit = new Produit();
-					produit.setId(idList.get(i));
-					produit.setPoids(poidsList.get(i));
-					produit.setQuantite(Integer.parseInt(cmd.getValueAt(i, 0).toString()));
-					produit.setLibelle((String) cmd.getValueAt(i, 1));
-					produit.setPrixHT(Float.parseFloat(cmd.getValueAt(i, 2).toString()));
-					produit.setPrixTTC(Float.parseFloat(cmd.getValueAt(i, 4).toString()));
-					
-					row.add(produit);
-					matrix.add(row);
-				}
-
+					for (int i = 0; i < m; i++) {
+						ArrayList < Produit > row = new ArrayList < Produit > ();
+						Produit produit = new Produit();
+						produit.setId(idList.get(i));
+						produit.setPoids(poidsList.get(i));
+						produit.setQuantite(Integer.parseInt(cmd.getValueAt(i, 0).toString()));
+						produit.setLibelle((String) cmd.getValueAt(i, 1));
+						produit.setPrixHT(Float.parseFloat(cmd.getValueAt(i, 2).toString()));
+						produit.setPrixTTC(Float.parseFloat(cmd.getValueAt(i, 4).toString()));
+						
+						row.add(produit);
+						matrix.add(row);
+					}
 				String json = new Gson().toJson(matrix);
-				
 				Date newDate = Date.from(now.atZone(ZoneId.systemDefault()).toInstant());
 				if (modify) {
 					commandeStockDao.update(new CommandeStock(currentCmdStock.getId(),newDate,
@@ -353,8 +347,6 @@ public class NewCommandeStock extends JPanel {
 						}
 						prixTotal_label.setText(Float.toString(prixTotal));
 					}
-				} else {
-					// editing started
 				}
 			}
 		});

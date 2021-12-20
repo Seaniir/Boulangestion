@@ -138,7 +138,7 @@ public class DetailsCommandeStock extends JPanel {
 		lblEmail.setBounds(11, 140, 72, 14);
 		infosFournisseur.add(lblEmail);
 		FournisseurDao fournisseurDao = new FournisseurDao();
-		List<Fournisseur> listFournisseurs = new ArrayList <> ();
+		List<Fournisseur> listFournisseurs = new ArrayList<>();
 		listFournisseurs.addAll(fournisseurDao.read());
 		
 		JLabel societeLabel = new JLabel("");
@@ -216,7 +216,6 @@ public class DetailsCommandeStock extends JPanel {
 		table_1.setModel(liste());
 		float prixTotal = 0;
 		for (int i = 0; i < table_1.getRowCount(); i++) {
-			System.out.println(table_1.getValueAt(i, 5));
 			prixTotal += Float.parseFloat(table_1.getValueAt(i, 5).toString());
 		}
 		prixTotal_label.setText(String.valueOf(prixTotal));

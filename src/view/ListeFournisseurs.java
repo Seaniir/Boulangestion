@@ -31,6 +31,11 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 public class ListeFournisseurs extends JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	private JTable listingFournisseurs;
 	
 	JButton btnModifier = new JButton();
@@ -60,7 +65,8 @@ public class ListeFournisseurs extends JPanel {
 				PanelsManager.contentPane.revalidate();
 			}
 		});
-		btnAccueil.setIcon(new ImageIcon("C:\\Users\\fredb\\AFPA\\workspace-java\\Boulangestion\\projetBoulang\\exit.png"));
+		btnAccueil.setIcon(new ImageIcon
+			("C:\\Users\\fredb\\AFPA\\workspace-java\\Boulangestion\\projetBoulang\\exit.png"));
 		btnAccueil.setBounds(1370, 11, 40, 40);
 		menu.add(btnAccueil);
 		
@@ -102,7 +108,7 @@ public class ListeFournisseurs extends JPanel {
 		listingFournisseurs.getColumn("Supprimer").setCellRenderer(new ThirdButtonRenderer());
 		listingFournisseurs.getColumn("Supprimer").setCellEditor(new ThirdButtonEditor(new JCheckBox()));
 		
-		//bouton de colonne "modifier" qui redirige vers le formulaire Fournisseur à modifier
+		//bouton de colonne "modifier" qui redirige vers le formulaire Fournisseur a modifier
 		btnModifier.addActionListener(new ActionListener(){			        
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -110,7 +116,8 @@ public class ListeFournisseurs extends JPanel {
 				if (JOptionPane.showConfirmDialog(null, "Etes-vous sûr de vouloir modifier?", "Attention",
 				        JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 					FournisseurDao fournisseurDao = new FournisseurDao();
-					fournisseurDao.findById((int) listingFournisseurs.getValueAt(listingFournisseurs.getSelectedRow(), 0));
+					fournisseurDao.findById((int) 
+						listingFournisseurs.getValueAt(listingFournisseurs.getSelectedRow(), 0));
 					NewFournisseur.modify = true;
 					PanelsManager.contentPane.removeAll();
 					PanelsManager.contentPane.add(PanelsManager.switchToNewFournisseur());
@@ -120,8 +127,8 @@ public class ListeFournisseurs extends JPanel {
 			}
 	    });
 		
-		//bouton de la colonne "historique" qui redirige vers la page de listing commandes fournisseurs filtré par la 
-		//société
+		//bouton de la colonne "historique" qui redirige vers la page de listing
+		//commandes fournisseurs filtré par la société
 		btnHistorique.addActionListener(new ActionListener(){
 	        public void actionPerformed(ActionEvent event)
 	        {
@@ -135,11 +142,13 @@ public class ListeFournisseurs extends JPanel {
 		btnDelete.addActionListener(new ActionListener(){
 	        public void actionPerformed(ActionEvent event)
 	        {
-	        	//pop-up de confirmation: si oui va sur la suppression du fournisseur dans ma liste, pas dans la bdd, si non, ne fait rien
+	        	//pop-up de confirmation: si oui va sur la suppression du fournisseur
+	        	//dans ma liste, pas dans la bdd, si non, ne fait rien
 				if (JOptionPane.showConfirmDialog(null, "Etes-vous sûr de vouloir supprimer?", "Attention",
 				        JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 					FournisseurDao fournisseurDao = new FournisseurDao();
-					fournisseurDao.delete((int) listingFournisseurs.getValueAt(listingFournisseurs.getSelectedRow(), 0));
+					fournisseurDao.delete((int) listingFournisseurs.getValueAt
+						(listingFournisseurs.getSelectedRow(), 0));
 					
 					//rafraichi la page
 					PanelsManager.contentPane.removeAll();
@@ -165,13 +174,14 @@ public class ListeFournisseurs extends JPanel {
 		btnNewFournisseur.setForeground(new Color(0, 0, 0));
 		btnNewFournisseur.setBounds(470, 823, 499, 53);
 		add(btnNewFournisseur);
+		
 	}
 	
 	//remplissage du tableau
 	public DefaultTableModel liste() {
-		String [] col = {"N° Fournisseur","Societe","Correspondant","Adresse","Telephone", "Email","Modifier", "Historique", "Supprimer"};
+		String [] col = {"N° Fournisseur","Societe","Correspondant","Adresse",
+				"Telephone", "Email","Modifier", "Historique", "Supprimer"};
 		DefaultTableModel tab = new DefaultTableModel(null, col);
-		
 		FournisseurDao fournisseurDao = new FournisseurDao();
 		List<Fournisseur> listFournisseurs = new ArrayList<>();
 		listFournisseurs.addAll(fournisseurDao.read());
@@ -180,7 +190,8 @@ public class ListeFournisseurs extends JPanel {
 			vect.add(fournisseur.getId());
 			 vect.add(fournisseur.getSociete());
 			 vect.add(fournisseur.getCorrespondant());
-			 vect.add(fournisseur.getAdresse()+" "+fournisseur.getCodePostal()+" "+fournisseur.getVille());
+			 vect.add(fournisseur.getAdresse()+" "+fournisseur.getCodePostal()+
+				" "+fournisseur.getVille());
 			 vect.add(fournisseur.getTel());
 			 vect.add(fournisseur.getEmail());
 			 
@@ -190,7 +201,11 @@ public class ListeFournisseurs extends JPanel {
 	}
 	
 	class ButtonRenderer extends JButton implements TableCellRenderer{
-	    public ButtonRenderer() {
+	    /**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+		public ButtonRenderer() {
 	      setOpaque(true);
 	    }
 	    public Component getTableCellRendererComponent(JTable table, Object value,
@@ -200,7 +215,11 @@ public class ListeFournisseurs extends JPanel {
 	    }
 	}
 	class ButtonEditor extends DefaultCellEditor{
-	    private String label;
+	    /**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+		private String label;
 	    
 	    public ButtonEditor(JCheckBox checkBox){
 	      super(checkBox);
@@ -217,7 +236,11 @@ public class ListeFournisseurs extends JPanel {
 	    }
 	 }
 	class SecondButtonRenderer extends JButton implements TableCellRenderer{
-	    public SecondButtonRenderer() {
+	    /**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+		public SecondButtonRenderer() {
 	      setOpaque(true);
 	    }
 	    public Component getTableCellRendererComponent(JTable table, Object value,
@@ -227,7 +250,12 @@ public class ListeFournisseurs extends JPanel {
 	    }
 	}
 	class SecondButtonEditor extends DefaultCellEditor{
-	    public SecondButtonEditor(JCheckBox checkBox) {
+	    /**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
+		public SecondButtonEditor(JCheckBox checkBox) {
 			super(checkBox);
 			
 		}
@@ -245,7 +273,11 @@ public class ListeFournisseurs extends JPanel {
 	    }
 	 }
 	class ThirdButtonRenderer extends JButton implements TableCellRenderer{
-	    public ThirdButtonRenderer() {
+	    /**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+		public ThirdButtonRenderer() {
 	      setOpaque(true);
 	    }
 	    public Component getTableCellRendererComponent(JTable table, Object value,
@@ -255,7 +287,12 @@ public class ListeFournisseurs extends JPanel {
 	    }
 	}
 	class ThirdButtonEditor extends DefaultCellEditor{
-	    public ThirdButtonEditor(JCheckBox checkBox) {
+	    /**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
+		public ThirdButtonEditor(JCheckBox checkBox) {
 			super(checkBox);
 			
 		}
