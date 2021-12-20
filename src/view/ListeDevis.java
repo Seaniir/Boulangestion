@@ -127,7 +127,8 @@ public class ListeDevis extends JPanel {
 				int n = JOptionPane.showConfirmDialog(null, "Etes vous sur de modifier ?","Modification",JOptionPane.YES_NO_OPTION);
 				if (n == JOptionPane.YES_OPTION) {
 					CommandeClientDAO commandeClientDAO = new CommandeClientDAO();
-					ConnectionUrlParser.Pair < CommandeClient, Client > pair = commandeClientDAO.findById((int) table.getValueAt(table.getSelectedRow(), 0));
+					ConnectionUrlParser.Pair < CommandeClient, Client > pair = 
+							commandeClientDAO.findById((int) table.getValueAt(table.getSelectedRow(), 0));
 					NouveauDevis.currentCommande = pair.left;
 					NouveauDevis.currentClient = pair.right;
 					NouveauDevis.modify = true;

@@ -19,9 +19,6 @@ import java.util.Vector;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
-import javax.swing.table.TableRowSorter;
-
 import com.mysql.cj.conf.ConnectionUrlParser;
 import controller.CommandeClientDAO;
 import controller.PanelsManager;
@@ -29,15 +26,10 @@ import model.Client;
 import model.CommandeClient;
 
 import javax.swing.JTable;
-import javax.swing.RowSorter;
-import javax.swing.SortOrder;
 
 public class HistoriqueCommandesVentes extends JPanel {
 	private JTable listingHistorique;
 
-	/**
-	 * Create the panel.
-	 */
 	public HistoriqueCommandesVentes() {
 		setBounds(0, 0, 1440, 900);
 		setBackground(new Color(254, 245, 232));

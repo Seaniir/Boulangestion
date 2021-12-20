@@ -220,7 +220,15 @@ public class NouveauClient extends JPanel {
 					String city_saisie = cityValue.getText();
 					String tel_saisie = telValue.getText();
 					String email_saisie = emailValue.getText();
-					Client nouveau = new Client(name_saisie,firstName_saisie,adress_saisie,zip_saisie,city_saisie,tel_saisie,email_saisie);
+					Client nouveau = new Client(
+							name_saisie,
+							firstName_saisie,
+							adress_saisie,
+							zip_saisie,
+							city_saisie,
+							tel_saisie,
+							email_saisie
+							);
 					if(!(Pattern.matches("^[a-zA-Z0-9_.-]+[@][a-zA-Z0-9-]+[.]+[a-zA-Z0-9]+$",email_saisie))) {
 						JOptionPane.showMessageDialog(null, "Mail invalide","Error",JOptionPane.ERROR_MESSAGE);
 					}else {

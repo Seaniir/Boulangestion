@@ -78,9 +78,9 @@ public class NouveauDevis extends JPanel {
 
 		JButton accueilBtn = new JButton("");
 		ImageIcon accueilImage = new ImageIcon("C:\\Users\\Quentin\\Downloads\\sign-out.png");
-		Image accueilImageImage = accueilImage.getImage(); // transform it
-		Image newimg4 = accueilImageImage.getScaledInstance(75, 75, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
-		accueilImage = new ImageIcon(newimg4); // transform it back
+		Image accueilImageImage = accueilImage.getImage();
+		Image newimg4 = accueilImageImage.getScaledInstance(75, 75, java.awt.Image.SCALE_SMOOTH);
+		accueilImage = new ImageIcon(newimg4);
 		accueilBtn.setIcon(accueilImage);
 		accueilBtn.setBounds(1370, 11, 40, 40);
 		panel_1.add(accueilBtn);
@@ -98,9 +98,9 @@ public class NouveauDevis extends JPanel {
 
 		JButton historiqueBtn = new JButton("");
 		ImageIcon imageIcon = new ImageIcon("C:\\Users\\Quentin\\Downloads\\history.png");
-		Image image = imageIcon.getImage(); // transform it
-		Image newimg = image.getScaledInstance(75, 75, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
-		imageIcon = new ImageIcon(newimg); // transform it back
+		Image image = imageIcon.getImage(); 
+		Image newimg = image.getScaledInstance(75, 75, java.awt.Image.SCALE_SMOOTH); 
+		imageIcon = new ImageIcon(newimg); 
 		historiqueBtn.setIcon(imageIcon);
 		historiqueBtn.setBounds(0, 11, 40, 40);
 		panel_1.add(historiqueBtn);
@@ -112,8 +112,8 @@ public class NouveauDevis extends JPanel {
 				}
 		);
 		ImageIcon imageClient = new ImageIcon("C:\\Users\\Quentin\\Downloads\\user.png");
-		Image imageClientImage = imageClient.getImage(); // transform it
-		Image newimg2 = imageClientImage.getScaledInstance(75, 75, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
+		Image imageClientImage = imageClient.getImage();
+		Image newimg2 = imageClientImage.getScaledInstance(75, 75, java.awt.Image.SCALE_SMOOTH); 
 		imageClient = new ImageIcon(newimg2);
 
 		JButton returnBtn = new JButton("");
@@ -129,9 +129,9 @@ public class NouveauDevis extends JPanel {
 			}
 		});
 		ImageIcon imageReturn = new ImageIcon("C:\\Users\\Quentin\\Downloads\\return.png");
-		Image imageReturnImage = imageReturn.getImage(); // transform it
-		Image newimg3 = imageReturnImage.getScaledInstance(75, 75, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
-		imageReturn = new ImageIcon(newimg3); // transform it back
+		Image imageReturnImage = imageReturn.getImage(); 
+		Image newimg3 = imageReturnImage.getScaledInstance(75, 75, java.awt.Image.SCALE_SMOOTH); 
+		imageReturn = new ImageIcon(newimg3); 
 		returnBtn.setBounds(127, 11, 40, 40);
 		returnBtn.setIcon(imageReturn);
 		panel_1.add(returnBtn);
@@ -223,7 +223,7 @@ public class NouveauDevis extends JPanel {
 		comboBox_1.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
-				if (e.getStateChange() == ItemEvent.SELECTED) { // Check if the value got selected, ignore if it has been deselected
+				if (e.getStateChange() == ItemEvent.SELECTED) {
 					for (Client client: listClients) {
 						if (client.getName().equals(e.getItem().toString())) {
 							currentClient.setName(client.getName());
@@ -416,9 +416,28 @@ public class NouveauDevis extends JPanel {
 					ex.printStackTrace();
 				}
 				if (modify)
-					commandeClientDAO.update(new CommandeClient(date, date, currentClient.getId(), table.getRowCount(), Float.parseFloat(prixTotal_label.getText()), true, "Devis", typePaiment, json), currentCommande.getId());
+					commandeClientDAO.update(new CommandeClient(
+							date,
+							date, 
+							currentClient.getId(),
+							table.getRowCount(), 
+							Float.parseFloat(prixTotal_label.getText()),
+							true, 
+							"Devis", 
+							typePaiment,
+							json),
+							currentCommande.getId());
 				else
-					commandeClientDAO.add(new CommandeClient(date, date, currentClient.getId(), table.getRowCount(), Float.parseFloat(prixTotal_label.getText()), true, "Devis", typePaiment, json));
+					commandeClientDAO.add(new CommandeClient(
+							date, 
+							date, 
+							currentClient.getId(), 
+							table.getRowCount(), 
+							Float.parseFloat(prixTotal_label.getText()),
+							true,
+							"Devis",
+							typePaiment,
+							json));
 			}
 		});
 		btnNewButton_1.setBackground(Color.ORANGE);
@@ -452,8 +471,10 @@ public class NouveauDevis extends JPanel {
 					int column = table.getSelectedColumn();
 					System.out.println(table.getColumnName(column));
 					if (table.getColumnName(column).equals("Quantité")) {
-						table.setValueAt(Float.parseFloat(table.getValueAt(row, 0).toString()) * (Float.parseFloat(table.getValueAt(row, 2).toString())), row, 3);
-						table.setValueAt(Float.parseFloat(table.getValueAt(row, 0).toString()) * (Float.parseFloat(table.getValueAt(row, 4).toString())), row, 5);
+						table.setValueAt(Float.parseFloat(table.getValueAt(row, 0).toString()) * 
+								(Float.parseFloat(table.getValueAt(row, 2).toString())), row, 3);
+						table.setValueAt(Float.parseFloat(table.getValueAt(row, 0).toString()) * 
+								(Float.parseFloat(table.getValueAt(row, 4).toString())), row, 5);
 						float prixTotal = 0;
 						for (int i = 0; i < table.getRowCount(); i++) {
 							prixTotal += Float.parseFloat(table.getValueAt(i, 5).toString());
