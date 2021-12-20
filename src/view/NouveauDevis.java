@@ -123,7 +123,7 @@ public class NouveauDevis extends JPanel {
 				currentCommande = new CommandeClient();
 				modify = false;
 				PanelsManager.contentPane.removeAll();
-				PanelsManager.contentPane.add(PanelsManager.switchToCommandesClientPanel());
+				PanelsManager.contentPane.add(PanelsManager.switchtoListeDevisPanel());
 				PanelsManager.contentPane.revalidate();
 				PanelsManager.contentPane.repaint();
 			}
@@ -416,9 +416,9 @@ public class NouveauDevis extends JPanel {
 					ex.printStackTrace();
 				}
 				if (modify)
-					commandeClientDAO.update(new CommandeClient(date, date, currentClient.getId(), table.getRowCount(), Float.parseFloat(prixTotal_label.getText()), true, "En cours", typePaiment, json), currentCommande.getId());
+					commandeClientDAO.update(new CommandeClient(date, date, currentClient.getId(), table.getRowCount(), Float.parseFloat(prixTotal_label.getText()), true, "Devis", typePaiment, json), currentCommande.getId());
 				else
-					commandeClientDAO.add(new CommandeClient(date, date, currentClient.getId(), table.getRowCount(), Float.parseFloat(prixTotal_label.getText()), true, "En cours", typePaiment, json));
+					commandeClientDAO.add(new CommandeClient(date, date, currentClient.getId(), table.getRowCount(), Float.parseFloat(prixTotal_label.getText()), true, "Devis", typePaiment, json));
 			}
 		});
 		btnNewButton_1.setBackground(Color.ORANGE);
