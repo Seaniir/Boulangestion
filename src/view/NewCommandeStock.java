@@ -57,6 +57,7 @@ public class NewCommandeStock extends JPanel {
 	private JLabel prixTotal_label;
 	JComboBox comboBox = new JComboBox();
 	ArrayList<Integer> idList = new ArrayList<Integer>();
+	ArrayList<Float> poidsList = new ArrayList<Float>();
 	/**
 	 * Create the panel.
 	 */
@@ -289,6 +290,7 @@ public class NewCommandeStock extends JPanel {
 					ArrayList < Produit > row = new ArrayList < Produit > ();
 					Produit produit = new Produit();
 					produit.setId(idList.get(i));
+					produit.setPoids(poidsList.get(i));
 					produit.setQuantite(Integer.parseInt(cmd.getValueAt(i, 0).toString()));
 					produit.setLibelle((String) cmd.getValueAt(i, 1));
 					produit.setPrixHT(Float.parseFloat(cmd.getValueAt(i, 2).toString()));
@@ -355,7 +357,10 @@ public class NewCommandeStock extends JPanel {
 					int row = cmd.getSelectedRow();
 					for (Produit article: listProduits) {
 						if (article.getLibelle().equals(e.getItem())) {
-							idList.add(article.getId());
+							idList.remove(cmd.getSelectedRow());
+							idList.add(cmd.getSelectedRow(),article.getId());
+							poidsList.remove(cmd.getSelectedRow());
+							poidsList.add(cmd.getSelectedRow(),article.getPoids());
 							cmd.setValueAt(article.getPrixHT(),row, 2);
 							cmd.setValueAt(article.getPrixTTC(),row, 4);
 							float prixTotal = 0;
@@ -397,6 +402,8 @@ public class NewCommandeStock extends JPanel {
 			ArrayList < ArrayList < Produit >> contactList = gson.fromJson(currentCmdStock.getProduits(), type);
 			for (ArrayList < Produit > produit: contactList) {
 				Vector vect = new Vector();
+				poidsList.add(produit.get(0).getPoids());
+				idList.add(produit.get(0).getId());
 				vect.add(produit.get(0).getQuantite());
 				vect.add(produit.get(0).getLibelle());
 				vect.add(produit.get(0).getPrixHT());
@@ -407,6 +414,7 @@ public class NewCommandeStock extends JPanel {
 			}
 		} else {
 			Vector vect = new Vector();
+			poidsList.add(listProduits.get(0).getPoids());
 			idList.add(listProduits.get(0).getId());
 			vect.add(0);
 			vect.add(listProduits.get(0).getLibelle());
@@ -426,6 +434,8 @@ public class NewCommandeStock extends JPanel {
 		List < Produit > listProduits = new ArrayList < > ();
 		listProduits.addAll(produitDAO.read());
 		Vector vect = new Vector();
+		poidsList.add(listProduits.get(0).getPoids());
+		idList.add(listProduits.get(0).getId());
 		vect.add(0);
 		vect.add(listProduits.get(0).getLibelle());
 		vect.add(listProduits.get(0).getPrixHT());

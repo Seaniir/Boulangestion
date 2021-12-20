@@ -65,7 +65,7 @@ public class CommandeStockDao implements IDao<CommandeStock>{
             req.setInt(1, 1);
             ResultSet rs = req.executeQuery();
             while(rs.next()) {
-            	//java.util.Date sqlDate = new java.sql.Date(rs.getDate("dateReception").getTime());
+            	
                 CommandeStock cmdStock = new CommandeStock(rs.getInt("id"),rs.getDate("dateReception"),rs.getInt("fk_idfournisseur"),rs.getInt("nbrArticles"),rs.getFloat("prixTotal"),rs.getString("produits"));
                 Fournisseur fournisseur = new Fournisseur(rs.getString("societe"));
 
@@ -76,10 +76,11 @@ public class CommandeStockDao implements IDao<CommandeStock>{
             e.printStackTrace();
         }
         return pair;
- }
+	}
+
 	@Override
 	public void update(CommandeStock cmdStock, int idCmdStock) {
-		//java.sql.Date sqlDate = new java.sql.Date(cmdStock.getDateReception().getTime());
+		
         try {
             PreparedStatement sql = connect.prepareStatement("UPDATE commandesstock SET dateReception=NOW(), fk_idfournisseur=?, nbrArticles=?, prixTotal=?, produits=? WHERE commandesstock.id=?");
             sql.setInt(1, cmdStock.getFk_idfournisseur());
@@ -98,9 +99,10 @@ public class CommandeStockDao implements IDao<CommandeStock>{
 	@Override
 	public void delete(int idToDelete) {
 		try {
-            PreparedStatement sql = connect.prepareStatement("DELETE FROM commandesstock WHERE id=?");
-            sql.setInt(1, idToDelete);
-            sql.executeUpdate();
+			PreparedStatement sql = connect.prepareStatement("UPDATE commandesstock SET isVisible=? WHERE id=?");
+			sql.setInt(1, 0);
+			sql.setInt(2, idToDelete);
+			sql.executeUpdate();
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -133,5 +135,5 @@ public class CommandeStockDao implements IDao<CommandeStock>{
 	        return pair;
 	 }
 	
-	//sort by id à faire
+	
 }

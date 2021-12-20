@@ -21,17 +21,24 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.RowSorter;
+import javax.swing.SortOrder;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 import com.mysql.cj.conf.ConnectionUrlParser;
 import com.mysql.cj.conf.ConnectionUrlParser.Pair;
 
+import controller.CommandeClientDAO;
 import controller.CommandeStockDao;
 import controller.FournisseurDao;
 import controller.PanelsManager;
+import model.Client;
+import model.CommandeClient;
 import model.CommandeStock;
 import model.Fournisseur;
 
@@ -115,6 +122,20 @@ public class CommandeStockView extends JPanel {
 		
 		listingCmdStock = new JTable();
 		listingCmdStock.setRowSelectionAllowed(false);
+//		listingCmdStock.addMouseListener(new MouseAdapter() {
+//			@Override
+//			public void mouseClicked(MouseEvent e) {
+//				int id = listingCmdStock.getSelectedRow();
+//				CommandeStockDao commandeStockDao = new CommandeStockDao();
+//				ConnectionUrlParser.Pair < CommandeStock, Fournisseur > pair = commandeStockDao.findById((Integer) listingCmdStock.getValueAt(id, 0));
+//				DetailsCommandeStock.currentCommande = pair.left;
+//				DetailsCommandeStock.currentFournisseur = pair.right;
+//				PanelsManager.contentPane.removeAll();
+//				PanelsManager.contentPane.add(PanelsManager.switchtoDetailsCommandeStock());
+//				PanelsManager.contentPane.repaint();
+//				PanelsManager.contentPane.revalidate();
+//			}
+//		});
 		scrollPane.setViewportView(listingCmdStock);
 		listingCmdStock.setRowHeight(100);
 		listingCmdStock.setModel(liste());
@@ -137,15 +158,18 @@ public class CommandeStockView extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				//pop-up de confirmation: si oui va sur la modification du fournisseur, si non, ne fait rien
-				if (JOptionPane.showConfirmDialog(null, "Etes-vous sûr de vouloir modifier?", "Attention",
-				        JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-					
-					NewFournisseur.modify = true;
+				int n = JOptionPane.showConfirmDialog(null, "Voulez-vous modifier cette commande ?", "Modifier", JOptionPane.YES_NO_OPTION);
+				if (n == JOptionPane.YES_OPTION) {
+					CommandeStockDao commandeStockDao = new CommandeStockDao();
+					ConnectionUrlParser.Pair < CommandeStock, Fournisseur > pair = commandeStockDao.findByIdPair((int) listingCmdStock.getValueAt(listingCmdStock.getSelectedRow(), 0));
+					NewCommandeStock.currentCmdStock = pair.left;
+					NewCommandeStock.currentFournisseur = pair.right;
+					NewCommandeStock.modify = true;
 					PanelsManager.contentPane.removeAll();
-					PanelsManager.contentPane.add(PanelsManager.switchToNewFournisseur());
-					PanelsManager.contentPane.repaint();
+					PanelsManager.contentPane.add(PanelsManager.switchtoNewCommandeStock());
 					PanelsManager.contentPane.revalidate();
-				}
+					PanelsManager.contentPane.repaint();
+				} 
 			}
 	    });
 		
@@ -154,9 +178,9 @@ public class CommandeStockView extends JPanel {
 	        {
 	        	//pop-up de confirmation: si oui va sur la suppression du fournisseur dans ma liste, pas dans la bdd, si non, ne fait rien
 				if (JOptionPane.showConfirmDialog(null, "Etes-vous sûr de vouloir supprimer?", "Attention",
-				        JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-					
-					
+			        JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+					CommandeStockDao commandeStockDao = new CommandeStockDao();
+					commandeStockDao.delete((int) listingCmdStock.getValueAt(listingCmdStock.getSelectedRow(), 0));
 					//rafraichi la page
 					PanelsManager.contentPane.removeAll();
 					PanelsManager.contentPane.add(PanelsManager.switchToListeFournisseurs());
@@ -182,11 +206,14 @@ public class CommandeStockView extends JPanel {
 		btnNewCmdStock.setBounds(470, 823, 499, 53);
 		add(btnNewCmdStock);
 		
-		JButton btnTri = new JButton("Tri par Fournisseur");
-		btnTri.setBackground(Color.WHITE);
-		btnTri.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		btnTri.setBounds(40, 762, 252, 46);
-		add(btnTri);
+		//Tri par ordre ascendant sur les colonnes de num de cmd, de societe et de date
+		TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(listingCmdStock.getModel());
+		listingCmdStock.setRowSorter(sorter);
+		List<RowSorter.SortKey> sortKeys = new ArrayList<>();
+		sortKeys.add(new RowSorter.SortKey(0, SortOrder.ASCENDING));
+		sortKeys.add(new RowSorter.SortKey(1, SortOrder.ASCENDING));
+        sortKeys.add(new RowSorter.SortKey(2, SortOrder.ASCENDING));
+        sorter.setSortKeys(sortKeys);
 	}
 
 	//remplissage du tableau
