@@ -82,7 +82,7 @@ public class ListeDevis extends JPanel {
 			
 			}
 		});
-		btnNewClient.setBackground(new Color(244, 164, 96));
+		btnNewClient.setBackground(new Color(242, 193, 102));
 		btnNewClient.setFont(new Font("Tahoma", Font.PLAIN, 25));
 		btnNewClient.setBounds(503, 914, 463, 43);
 		add(btnNewClient);
@@ -120,14 +120,6 @@ public class ListeDevis extends JPanel {
 		table.getColumn("Modifier").setCellEditor(new SecondButtonEditor(new JCheckBox()));
 		table.getColumn("Annuler").setCellRenderer(new ThirdButtonRenderer());
 		table.getColumn("Annuler").setCellEditor(new ThirdButtonEditor(new JCheckBox()));
-		
-		//Tri par ordre ascendant sur les colonnes de num de cmd, de societe et de date
-        TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(table.getModel());
-        table.setRowSorter(sorter);
-        List<RowSorter.SortKey> sortKeys = new ArrayList<>();
-        sortKeys.add(new RowSorter.SortKey(0, SortOrder.ASCENDING));
-        sortKeys.add(new RowSorter.SortKey(1, SortOrder.ASCENDING));
-        sorter.setSortKeys(sortKeys);
 		
 		// Lors du clic sur le bouton modifier il se passe: 
 		btnModify.addActionListener(new ActionListener() {

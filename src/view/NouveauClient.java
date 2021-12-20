@@ -205,7 +205,7 @@ public class NouveauClient extends JPanel {
 				}
 			});
 			btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 20));
-			btnNewButton.setBackground(new Color(255, 140, 0));
+			btnNewButton.setBackground(new Color(242, 193, 102));
 			btnNewButton.setBounds(168, 571, 155, 30);
 			panel_1.add(btnNewButton);	
 		} else {
@@ -245,7 +245,7 @@ public class NouveauClient extends JPanel {
 			});
 		
 		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		btnNewButton.setBackground(new Color(255, 140, 0));
+		btnNewButton.setBackground(new Color(242, 193, 102));
 		btnNewButton.setBounds(168, 571, 155, 30);
 		panel_1.add(btnNewButton);
 		}

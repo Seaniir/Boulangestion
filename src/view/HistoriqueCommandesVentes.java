@@ -110,14 +110,6 @@ public class HistoriqueCommandesVentes extends JPanel {
 		listingHistorique.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
 		listingHistorique.getColumnModel().getColumn(4).setCellRenderer(centerRenderer);
 		listingHistorique.getColumnModel().getColumn(5).setCellRenderer(centerRenderer);
-		
-		//Tri par ordre ascendant sur les colonnes de num de cmd, de societe et de date
-        TableRowSorter<TableModel> sorter = new TableRowSorter<TableModel>(listingHistorique.getModel());
-        listingHistorique.setRowSorter(sorter);
-        List<RowSorter.SortKey> sortKeys = new ArrayList<>();
-        sortKeys.add(new RowSorter.SortKey(0, SortOrder.ASCENDING));
-        sortKeys.add(new RowSorter.SortKey(1, SortOrder.ASCENDING));
-        sorter.setSortKeys(sortKeys);
 	}
 		// Les intitulés des colonnes du tableau
 	public DefaultTableModel liste() {
