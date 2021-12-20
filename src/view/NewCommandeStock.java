@@ -80,7 +80,7 @@ public class NewCommandeStock extends JPanel {
 				PanelsManager.contentPane.add(PanelsManager.switchtoCommandeStockView());
 				PanelsManager.contentPane.repaint();
 				PanelsManager.contentPane.revalidate();
-				//modify = false;
+				modify = false;
 			}
 		});
 		btnRetour.setIcon(new ImageIcon("C:\\Users\\fredb\\AFPA\\workspace-java\\Boulangestion\\projetBoulang\\arrow_left.png"));
@@ -101,6 +101,7 @@ public class NewCommandeStock extends JPanel {
 				PanelsManager.contentPane.add(PanelsManager.switchToAccueilMenu());
 				PanelsManager.contentPane.repaint();
 				PanelsManager.contentPane.revalidate();
+				modify = false;
 			}
 		});
 		btnAccueil.setIcon(new ImageIcon("C:\\Users\\fredb\\AFPA\\workspace-java\\Boulangestion\\projetBoulang\\exit.png"));
@@ -148,6 +149,7 @@ public class NewCommandeStock extends JPanel {
 		lblEmail.setBounds(11, 140, 72, 14);
 		infosFournisseur.add(lblEmail);
 		
+		//block info fournisseur:
 		JComboBox infoSociete = new JComboBox();
 		FournisseurDao fournisseurDao = new FournisseurDao();
 		List <Fournisseur> listSociete = new ArrayList < > ();
@@ -303,11 +305,20 @@ public class NewCommandeStock extends JPanel {
 				String json = new Gson().toJson(matrix);
 				
 				Date newDate = Date.from(now.atZone(ZoneId.systemDefault()).toInstant());
-				if (modify)
-					commandeStockDao.update(new CommandeStock(currentCmdStock.getId(),newDate, currentFournisseur.getId(), cmd.getRowCount(), Float.parseFloat(prixTotal_label.getText()), json), currentCmdStock.getId());
-				else
+				if (modify) {
+					commandeStockDao.update(new CommandeStock(currentCmdStock.getId(),newDate,
+							currentFournisseur.getId(), cmd.getRowCount(), Float.parseFloat(prixTotal_label.getText()),
+							json), currentCmdStock.getId());
+					modify = false;
+					//retour à la liste après la modif
+					PanelsManager.contentPane.removeAll();
+					PanelsManager.contentPane.add(PanelsManager.switchtoCommandeStockView());
+					PanelsManager.contentPane.repaint();
+					PanelsManager.contentPane.revalidate();
+				}else {
 					commandeStockDao.create(new CommandeStock(currentCmdStock.getId(),newDate, currentFournisseur.getId(), cmd.getRowCount(), Float.parseFloat(prixTotal_label.getText()), json));
-			}
+				}
+			}	
 		});
 		btnValider.setBackground(Color.ORANGE);
 		btnValider.setFont(new Font("Tahoma", Font.PLAIN, 25));
@@ -375,7 +386,7 @@ public class NewCommandeStock extends JPanel {
 		});
 		float prixTotal = 0;
 		for (int i = 0; i < cmd.getRowCount(); i++) {
-			prixTotal += Float.parseFloat(cmd.getValueAt(i, 4).toString());
+			prixTotal += Float.parseFloat(cmd.getValueAt(i, 5).toString());
 		}
 		prixTotal_label.setText(String.valueOf(prixTotal));
 	}

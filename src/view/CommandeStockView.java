@@ -31,14 +31,8 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 
 import com.mysql.cj.conf.ConnectionUrlParser;
-import com.mysql.cj.conf.ConnectionUrlParser.Pair;
-
-import controller.CommandeClientDAO;
 import controller.CommandeStockDao;
-import controller.FournisseurDao;
 import controller.PanelsManager;
-import model.Client;
-import model.CommandeClient;
 import model.CommandeStock;
 import model.Fournisseur;
 
@@ -66,10 +60,6 @@ public class CommandeStockView extends JPanel {
 		menu.setLayout(null);
 		
 		JButton btnFournisseur = new JButton("");
-		btnFournisseur.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
 		btnFournisseur.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -77,7 +67,6 @@ public class CommandeStockView extends JPanel {
 				PanelsManager.contentPane.add(PanelsManager.switchToListeFournisseurs());
 				PanelsManager.contentPane.repaint();
 				PanelsManager.contentPane.revalidate();
-				//modify = false;
 			}
 		});
 		btnFournisseur.setIcon(new ImageIcon("C:\\Users\\fredb\\AFPA\\workspace-java\\Boulangestion\\projetBoulang\\accountMenu.png"));
@@ -122,20 +111,20 @@ public class CommandeStockView extends JPanel {
 		
 		listingCmdStock = new JTable();
 		listingCmdStock.setRowSelectionAllowed(false);
-//		listingCmdStock.addMouseListener(new MouseAdapter() {
-//			@Override
-//			public void mouseClicked(MouseEvent e) {
-//				int id = listingCmdStock.getSelectedRow();
-//				CommandeStockDao commandeStockDao = new CommandeStockDao();
-//				ConnectionUrlParser.Pair < CommandeStock, Fournisseur > pair = commandeStockDao.findById((Integer) listingCmdStock.getValueAt(id, 0));
-//				DetailsCommandeStock.currentCommande = pair.left;
-//				DetailsCommandeStock.currentFournisseur = pair.right;
-//				PanelsManager.contentPane.removeAll();
-//				PanelsManager.contentPane.add(PanelsManager.switchtoDetailsCommandeStock());
-//				PanelsManager.contentPane.repaint();
-//				PanelsManager.contentPane.revalidate();
-//			}
-//		});
+		listingCmdStock.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				int id = listingCmdStock.getSelectedRow();
+				CommandeStockDao commandeStockDao = new CommandeStockDao();
+				ConnectionUrlParser.Pair < CommandeStock, Fournisseur > pair = commandeStockDao.findByIdPair((Integer) listingCmdStock.getValueAt(id, 0));
+				DetailsCommandeStock.currentCmdStock = pair.left;
+				DetailsCommandeStock.currentFournisseur = pair.right;
+				PanelsManager.contentPane.removeAll();
+				PanelsManager.contentPane.add(PanelsManager.switchtoDetailsCommandeStock());
+				PanelsManager.contentPane.repaint();
+				PanelsManager.contentPane.revalidate();
+			}
+		});
 		scrollPane.setViewportView(listingCmdStock);
 		listingCmdStock.setRowHeight(100);
 		listingCmdStock.setModel(liste());
@@ -183,7 +172,7 @@ public class CommandeStockView extends JPanel {
 					commandeStockDao.delete((int) listingCmdStock.getValueAt(listingCmdStock.getSelectedRow(), 0));
 					//rafraichi la page
 					PanelsManager.contentPane.removeAll();
-					PanelsManager.contentPane.add(PanelsManager.switchToListeFournisseurs());
+					PanelsManager.contentPane.add(PanelsManager.switchtoCommandeStockView());
 					PanelsManager.contentPane.repaint();
 					PanelsManager.contentPane.revalidate();
 				}
