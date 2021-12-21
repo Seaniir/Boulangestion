@@ -12,7 +12,6 @@ import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.lang.reflect.Type;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -21,7 +20,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 import java.util.Vector;
 import java.util.Date;
 
@@ -51,8 +49,7 @@ import controller.ProduitDAO;
 import model.CommandeStock;
 import model.Fournisseur;
 import model.Produit;
-import view.NouvelleCommandeClientView.ButtonEditor;
-import view.NouvelleCommandeClientView.ButtonRenderer;
+
 
 
 public class NewCommandeStock extends JPanel {
@@ -338,6 +335,18 @@ public class NewCommandeStock extends JPanel {
 		corps.add(btnValider);
 		
 		JButton btnAnnuler = new JButton("Annuler");
+		btnAnnuler.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (JOptionPane.showConfirmDialog(null, "Etes-vous sur de vouloir annuler?", "Attention",
+				        JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+					PanelsManager.contentPane.removeAll();
+					PanelsManager.contentPane.add(PanelsManager.switchtoCommandeStockView());
+					PanelsManager.contentPane.repaint();
+					PanelsManager.contentPane.revalidate();
+				}
+			}
+		});
 		btnAnnuler.setFont(new Font("Tahoma", Font.PLAIN, 25));
 		btnAnnuler.setBounds(1102, 630, 249, 56);
 		corps.add(btnAnnuler);

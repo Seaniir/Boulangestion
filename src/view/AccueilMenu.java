@@ -5,11 +5,14 @@ import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
+import controller.FournisseurDao;
 import controller.PanelsManager;
 
 import javax.swing.ImageIcon;
 import java.awt.*;
 import javax.swing.JMenuBar;
+import javax.swing.JOptionPane;
+
 import java.awt.Color;
 import java.awt.Font;
 import javax.swing.JButton;
@@ -170,10 +173,13 @@ public class AccueilMenu extends JPanel {
 		btnDeco.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				PanelsManager.contentPane.removeAll();
-				PanelsManager.contentPane.add(PanelsManager.switchToLoginPanel());
-				PanelsManager.contentPane.repaint();
-				PanelsManager.contentPane.revalidate();
+				if (JOptionPane.showConfirmDialog(null, "Etes-vous sur de vouloir vous deconnecter?", "Attention",
+				        JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+					PanelsManager.contentPane.removeAll();
+					PanelsManager.contentPane.add(PanelsManager.switchToLoginPanel());
+					PanelsManager.contentPane.repaint();
+					PanelsManager.contentPane.revalidate();
+				}
 			}
 		});
 		btnDeco.setIcon(new ImageIcon("C:\\Users\\fredb\\AFPA\\projetBoulang\\power_off.png"));
@@ -369,10 +375,10 @@ public class AccueilMenu extends JPanel {
 		btnFaq.setVisible(false);
 		panel.add(btnFaq);
 
-				JLabel lblNewLabel = new JLabel("");
-				lblNewLabel.setIcon(imageIcon);
-				lblNewLabel.setBounds(0, 0, 1440, 900);
-				panel.add(lblNewLabel);
+		JLabel lblNewLabel = new JLabel("");
+		lblNewLabel.setIcon(imageIcon);
+		lblNewLabel.setBounds(0, 0, 1440, 900);
+		panel.add(lblNewLabel);
 	}
 	
 	//methode pour rendre les sous-menus invisibles

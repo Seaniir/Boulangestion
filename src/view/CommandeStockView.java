@@ -134,8 +134,8 @@ public class CommandeStockView extends JPanel {
 		listingCmdStock.getColumnModel().getColumn(4).setCellRenderer(centerRenderer);
 		listingCmdStock.getColumn("Modifier").setCellRenderer(new ButtonRenderer());
 		listingCmdStock.getColumn("Modifier").setCellEditor(new ButtonEditor(new JCheckBox()));
-		listingCmdStock.getColumn("Annuler").setCellRenderer(new SecondButtonRenderer());
-		listingCmdStock.getColumn("Annuler").setCellEditor(new SecondButtonEditor(new JCheckBox()));
+		listingCmdStock.getColumn("Supprimer").setCellRenderer(new SecondButtonRenderer());
+		listingCmdStock.getColumn("Supprimer").setCellEditor(new SecondButtonEditor(new JCheckBox()));
 		
 		//bouton de colonne "modifier" qui redirige vers la commande à modifier
 		btnModifier.addActionListener(new ActionListener(){			        
@@ -197,7 +197,7 @@ public class CommandeStockView extends JPanel {
 
 	//remplissage du tableau
 	public DefaultTableModel liste() {
-		String [] col = {"N° Commande","Reçue le","Fournisseur","Nbr Articles", "Prix total TTC","Modifier", "Annuler"};
+		String [] col = {"N° Commande","Reçue le","Fournisseur","Nbr Articles", "Prix total TTC","Modifier", "Supprimer"};
 		DefaultTableModel tab = new DefaultTableModel(null, col);
 		CommandeStockDao cmdStockDao = new CommandeStockDao();
 		ConnectionUrlParser.Pair<ArrayList<CommandeStock>, ArrayList<Fournisseur>> pair = cmdStockDao.readPair();
@@ -262,7 +262,7 @@ public class CommandeStockView extends JPanel {
 	    }
 	    public Component getTableCellRendererComponent(JTable table, Object value,
 	    boolean isSelected, boolean hasFocus, int row, int column) {
-	    	setText((value == null) ? "Annuler" : value.toString());
+	    	setText((value == null) ? "Supprimer" : value.toString());
 			return this;
 	    }
 	}
@@ -280,7 +280,7 @@ public class CommandeStockView extends JPanel {
 	    
 	    public Component getTableCellEditorComponent(JTable table, Object value,
 	    boolean isSelected, int row, int column){
-	      label = (value == null) ? "Annuler" : value.toString();
+	      label = (value == null) ? "Supprimer" : value.toString();
 	      btnDelete.setText(label);
 	      return btnDelete;
 	    }
