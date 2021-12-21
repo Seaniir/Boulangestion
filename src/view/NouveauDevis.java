@@ -83,7 +83,7 @@ public class NouveauDevis extends JPanel {
 		add(panel_1);
 
 		JButton accueilBtn = new JButton("");
-		ImageIcon accueilImage = new ImageIcon("C:\\Users\\Quentin\\Downloads\\sign-out.png");
+		ImageIcon accueilImage = new ImageIcon("C:\\Users\\Julien\\workspace_java\\Boulangestion\\projetBoulang\\exit.png");
 		Image accueilImageImage = accueilImage.getImage();
 		Image newimg4 = accueilImageImage.getScaledInstance(75, 75, java.awt.Image.SCALE_SMOOTH);
 		accueilImage = new ImageIcon(newimg4);
@@ -103,7 +103,7 @@ public class NouveauDevis extends JPanel {
 		});
 
 		JButton historiqueBtn = new JButton("");
-		ImageIcon imageIcon = new ImageIcon("C:\\Users\\Quentin\\Downloads\\history.png");
+		ImageIcon imageIcon = new ImageIcon("C:\\Users\\Julien\\workspace_java\\Boulangestion\\projetBoulang\\historySm.png");
 		Image image = imageIcon.getImage(); 
 		Image newimg = image.getScaledInstance(75, 75, java.awt.Image.SCALE_SMOOTH); 
 		imageIcon = new ImageIcon(newimg); 
