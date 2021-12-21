@@ -109,7 +109,7 @@ public class ClotureCaisse extends JPanel {
 		menu.add(lblAccueil);
 
 		JPanel formulaire = new JPanel();
-		formulaire.setBackground(Color.ORANGE);
+		formulaire.setBackground(Color.WHITE);
 		formulaire.setBounds(265, 155, 911, 467);
 		add(formulaire);
 		formulaire.setLayout(null);
@@ -145,7 +145,7 @@ public class ClotureCaisse extends JPanel {
 		formulaire.add(totalClotureLabel);
 		
 		JButton btnNewButton = new JButton("Cl\u00F4turer la caisse");
-		btnNewButton.setBackground(Color.ORANGE);
+		btnNewButton.setBackground(new Color(242, 193, 102));
 		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 25));
 		btnNewButton.setBounds(578, 685, 335, 57);
 		add(btnNewButton);
@@ -159,11 +159,6 @@ public class ClotureCaisse extends JPanel {
 		lblNewLabel_4.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblNewLabel_4.setBounds(20, 11, 152, 28);
 		panel.add(lblNewLabel_4);
-
-		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setIcon(imageIcon);
-		lblNewLabel.setBounds(0, 0, 1440, 900);
-		add(lblNewLabel);
 
 		JLabel dateLabel = new JLabel("");
 		dateLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));

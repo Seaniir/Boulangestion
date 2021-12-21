@@ -35,7 +35,7 @@ public class ProduitsView extends JPanel {
 		setLayout(null);
 
 		JPanel panel = new JPanel();
-		panel.setBackground(new Color(255, 248, 220));
+		panel.setBackground(new Color(254, 245, 232));
 		panel.setBounds(0, 89, 1440, 811);
 		add(panel);
 		panel.setLayout(null);
@@ -74,7 +74,7 @@ public class ProduitsView extends JPanel {
 			PanelsManager.contentPane.repaint();
 		});
 		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 30));
-		btnNewButton.setBackground(new Color(255, 165, 0));
+		btnNewButton.setBackground(new Color(242, 193, 102));
 		btnNewButton.setForeground(new Color(0, 0, 0));
 		btnNewButton.setBounds(467, 663, 499, 53);
 		panel.add(btnNewButton);

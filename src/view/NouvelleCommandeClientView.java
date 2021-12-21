@@ -66,7 +66,7 @@ public class NouvelleCommandeClientView extends JPanel {
 
 		JPanel panel = new JPanel();
 		panel.setLayout(null);
-		panel.setBackground(new Color(255, 248, 220));
+		panel.setBackground(new Color(254, 245, 232));
 		panel.setBounds(0, 89, 1440, 811);
 		add(panel);
 
@@ -313,7 +313,7 @@ public class NouvelleCommandeClientView extends JPanel {
 			PanelsManager.contentPane.revalidate();
 			PanelsManager.contentPane.repaint();
 		});
-		btnNewButton_1.setBackground(Color.ORANGE);
+		btnNewButton_1.setBackground(new Color(242, 193, 102));
 		btnNewButton_1.setFont(new Font("Tahoma", Font.PLAIN, 25));
 		btnNewButton_1.setBounds(1102, 557, 249, 56);
 		panel.add(btnNewButton_1);

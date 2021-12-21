@@ -22,7 +22,7 @@ public class NouveauProduit extends JPanel {
 
 	public NouveauProduit() {
 		setBounds(0, 0, 1440, 900);
-		setBackground(new Color(255, 239, 213));
+		setBackground(new Color(254, 245, 232));
 		setLayout(null);
 
 		JPanel panel_1 = new JPanel();
@@ -92,13 +92,12 @@ public class NouveauProduit extends JPanel {
 		panel_1.add(poidsField);
 		poidsField.setColumns(10);
 		panel_1.add(poidsField);
-		
+		JButton btnNewButton = new JButton("Valider");
 		if (modify) {
 			// Pre-remplis les champs.
 			fillFields(currentProduit);
-			
 			// Form to update a client.
-			JButton btnNewButton = new JButton("Modifier");
+			btnNewButton.setText("Modifier");
 			btnNewButton.addActionListener(e -> {
 				ProduitDAO produitDAO = new ProduitDAO();
 				Produit nouveau = new Produit();
@@ -114,29 +113,24 @@ public class NouveauProduit extends JPanel {
 				PanelsManager.contentPane.add(PanelsManager.switchtoProduitsViewPanel());
 				PanelsManager.contentPane.repaint();
 				PanelsManager.contentPane.revalidate();
-
 			});
-			btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 20));
-			btnNewButton.setBackground(new Color(255, 140, 0));
-			btnNewButton.setBounds(168, 571, 155, 30);
-			panel_1.add(btnNewButton);	
 		} else {
 		// Form to create a.
-		JButton btnNewButton = new JButton("Valider");
+			btnNewButton.setText("Valider");
 		btnNewButton.addActionListener(e -> {
 			ProduitDAO produitDAO = new ProduitDAO();
 			produitDAO.add(new Produit(libelleField.getText(), fabricantField.getText(), Float.parseFloat(poidsField.getText()), Integer.parseInt(quantiteField.getText()), Float.parseFloat(HTField.getText()), Float.parseFloat(TTCField.getText())));
 		});
-
+	}
 		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		btnNewButton.setBackground(new Color(255, 140, 0));
+		btnNewButton.setBackground(new Color(242, 193, 102));
 		btnNewButton.setBounds(168, 571, 155, 30);
 		panel_1.add(btnNewButton);
-	}
 		JButton btnAnnuler = new JButton("Annuler");
 		btnAnnuler.addActionListener(e -> {
 			int n = JOptionPane.showConfirmDialog(null, "Etes vous sur de vouloir annuler ?","Annuler",JOptionPane.YES_NO_OPTION);
 			if (n == JOptionPane.YES_OPTION) {
+				modify = false;
 				PanelsManager.contentPane.removeAll();
 				PanelsManager.contentPane.add(PanelsManager.switchtoProduitsViewPanel());
 				PanelsManager.contentPane.repaint();
@@ -145,7 +139,7 @@ public class NouveauProduit extends JPanel {
 		});
 		btnAnnuler.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		btnAnnuler.setForeground(new Color(0, 0, 0));
-		btnAnnuler.setBackground(Color.GRAY);
+		btnAnnuler.setBackground(Color.LIGHT_GRAY);
 		btnAnnuler.setBounds(584, 576, 155, 30);
 		panel_1.add(btnAnnuler);
 		
@@ -158,10 +152,11 @@ public class NouveauProduit extends JPanel {
 		JButton btnRetour = new JButton("");
 		btnRetour.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				modify = false;
 				PanelsManager.contentPane.removeAll();
 				PanelsManager.contentPane.add(PanelsManager.switchtoProduitsViewPanel());
-				PanelsManager.contentPane.revalidate();
 				PanelsManager.contentPane.repaint();
+				PanelsManager.contentPane.revalidate();
 			}
 		});
 		btnRetour.setBounds(22, 11, 40, 40);
@@ -176,10 +171,11 @@ public class NouveauProduit extends JPanel {
 		JButton btnAccueil = new JButton("");
 		btnAccueil.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				modify = false;
 				PanelsManager.contentPane.removeAll();
 				PanelsManager.contentPane.add(PanelsManager.switchToAccueilMenu());
-				PanelsManager.contentPane.revalidate();
 				PanelsManager.contentPane.repaint();
+				PanelsManager.contentPane.revalidate();
 			}
 		});
 		btnAccueil.setBounds(1370, 11, 40, 40);

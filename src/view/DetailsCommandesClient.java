@@ -52,7 +52,7 @@ public class DetailsCommandesClient extends JPanel {
 
 		JPanel panel = new JPanel();
 		panel.setLayout(null);
-		panel.setBackground(new Color(255, 248, 220));
+		panel.setBackground(new Color(254, 245, 232));
 		panel.setBounds(0, 89, 1440, 811);
 		add(panel);
 
