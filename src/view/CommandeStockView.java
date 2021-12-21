@@ -5,6 +5,7 @@ import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -61,7 +62,9 @@ public class CommandeStockView extends JPanel {
 				PanelsManager.contentPane.revalidate();
 			}
 		});
-		btnFournisseur.setIcon(new ImageIcon("C:\\Users\\Quentin\\Documents\\GIT\\Boulangestion\\projetBoulang\\accountMenu.png"));
+
+		URL account = ClassLoader.getSystemResource("accountMenu.png");
+		btnFournisseur.setIcon(new ImageIcon(account));
 		btnFournisseur.setBounds(38, 11, 40, 40);
 		menu.add(btnFournisseur);
 		
@@ -81,7 +84,9 @@ public class CommandeStockView extends JPanel {
 				PanelsManager.contentPane.revalidate();
 			}
 		});
-		btnAccueil.setIcon(new ImageIcon("C:\\Users\\Quentin\\Documents\\GIT\\Boulangestion\\projetBoulang\\exit.png"));
+
+		URL exitURL = ClassLoader.getSystemResource("exit.png");
+		btnAccueil.setIcon(new ImageIcon(exitURL));
 		btnAccueil.setBounds(1370, 11, 40, 40);
 		menu.add(btnAccueil);
 		

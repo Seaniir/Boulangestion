@@ -12,6 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
@@ -56,8 +57,9 @@ public class HistoriqueCommandesVentes extends JPanel {
 				PanelsManager.contentPane.revalidate();
 			}
 		});
+		URL exitURL = ClassLoader.getSystemResource("exit.png");
 		btnAccueil.setBackground(Color.WHITE);
-		btnAccueil.setIcon(new ImageIcon("C:\\Users\\Quentin\\Documents\\GIT\\Boulangestion\\projetBoulang\\exit.png"));
+		btnAccueil.setIcon(new ImageIcon(exitURL));
 		btnAccueil.setBounds(1370, 11, 40, 40);
 		panel.add(btnAccueil);
 		

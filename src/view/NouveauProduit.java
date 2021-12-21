@@ -124,6 +124,10 @@ public class NouveauProduit extends JPanel {
 		btnNewButton.addActionListener(e -> {
 			ProduitDAO produitDAO = new ProduitDAO();
 			produitDAO.add(new Produit(libelleField.getText(), fabricantField.getText(), Float.parseFloat(poidsField.getText()), Integer.parseInt(quantiteField.getText()), Float.parseFloat(HTField.getText()), Float.parseFloat(TTCField.getText())));
+			PanelsManager.contentPane.removeAll();
+			PanelsManager.contentPane.add(PanelsManager.switchtoProduitsViewPanel());
+			PanelsManager.contentPane.repaint();
+			PanelsManager.contentPane.revalidate();
 		});
 	}
 		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 20));

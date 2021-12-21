@@ -41,6 +41,7 @@ public class Hub extends JFrame {
 			public void run() {
 				try {
 					Hub frame = new Hub();
+					frame.setTitle("Boulangestion");
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();

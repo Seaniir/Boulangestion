@@ -183,6 +183,18 @@ public class NouvelleCommandeClientView extends JPanel {
 		id_commande_label.setFont(new Font("Tahoma", Font.PLAIN, 22));
 		id_commande_label.setBounds(350, 100, 189, 37);
 		panel_3.add(id_commande_label);
+		
+		JLabel commandeIDLabel = new JLabel("Commande N\u00B0");
+		commandeIDLabel.setVisible(false);
+		commandeIDLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		commandeIDLabel.setBounds(447, 59, 141, 31);
+		panel_3.add(commandeIDLabel);
+		
+		JLabel idCommandeLabel = new JLabel("");
+		idCommandeLabel.setVisible(false);
+		idCommandeLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		idCommandeLabel.setBounds(579, 59, 46, 32);
+		panel_3.add(idCommandeLabel);
 
 		JLabel lblNewLabel_7 = new JLabel("Total :");
 
@@ -242,6 +254,9 @@ public class NouvelleCommandeClientView extends JPanel {
 		JButton btnNewButton_1 = new JButton();
 		if (modify) {
 			btnNewButton_1.setText("Modifier");
+			commandeIDLabel.setVisible(true);
+			idCommandeLabel.setVisible(true);
+			idCommandeLabel.setText(String.valueOf(currentCommande.getId()));
 		} else {
 			btnNewButton_1.setText("Valider");
 		}

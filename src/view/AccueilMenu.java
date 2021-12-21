@@ -22,6 +22,7 @@ import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 
 public class AccueilMenu extends JPanel {
 	/**
@@ -68,9 +69,10 @@ public class AccueilMenu extends JPanel {
 		panel.setBounds(0, 0, 1440, 900);
 		add(panel);
 		panel.setLayout(null);
+		URL imageUrl = ClassLoader.getSystemResource("bg.png");
 		BufferedImage img = null;
 		try {
-			img = ImageIO.read(new File("projetBoulang/bg.png"));
+			img = ImageIO.read(imageUrl);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -166,7 +168,8 @@ public class AccueilMenu extends JPanel {
 		btnAide.setBackground(new Color(196, 196, 196));
 		btnAide.setBounds(1161, 215, 161, 33);
 		panel.add(btnAide);
-		
+		URL deconnexionURL = ClassLoader.getSystemResource("power_off.png");
+
 		//bouton de deconnexion qui revient a la page de connexion
 		JButton btnDeco = new JButton("");
 		btnDeco.addMouseListener(new MouseAdapter() {
@@ -181,7 +184,7 @@ public class AccueilMenu extends JPanel {
 				}
 			}
 		});
-		btnDeco.setIcon(new ImageIcon("C:\\Users\\Quentin\\Documents\\GIT\\Boulangestion\\projetBoulang\\power_off.png"));
+		btnDeco.setIcon(new ImageIcon(deconnexionURL));
 		btnDeco.setBounds(1380, 840, 60, 60);
 		panel.add(btnDeco);
 		

@@ -11,6 +11,7 @@ import java.awt.event.ItemListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.lang.reflect.Type;
+import java.net.URL;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -83,11 +84,12 @@ public class NouveauDevis extends JPanel {
 		add(panel_1);
 
 		JButton accueilBtn = new JButton("");
-		ImageIcon accueilImage = new ImageIcon("C:\\Users\\Julien\\workspace_java\\Boulangestion\\projetBoulang\\exit.png");
+		URL exitURL = ClassLoader.getSystemResource("exit.png");
+		ImageIcon accueilImage = new ImageIcon(exitURL);
 		Image accueilImageImage = accueilImage.getImage();
 		Image newimg4 = accueilImageImage.getScaledInstance(75, 75, java.awt.Image.SCALE_SMOOTH);
 		accueilImage = new ImageIcon(newimg4);
-		accueilBtn.setIcon(new ImageIcon("C:\\Users\\Quentin\\Documents\\GIT\\Boulangestion\\projetBoulang\\exit.png"));
+		accueilBtn.setIcon(new ImageIcon(exitURL));
 		accueilBtn.setBounds(1365, 11, 40, 40);
 		panel_1.add(accueilBtn);
 		accueilBtn.addActionListener(new ActionListener() {
@@ -103,11 +105,12 @@ public class NouveauDevis extends JPanel {
 		});
 
 		JButton historiqueBtn = new JButton("");
-		ImageIcon imageIcon = new ImageIcon("C:\\Users\\Julien\\workspace_java\\Boulangestion\\projetBoulang\\historySm.png");
+		URL historiqueURL = ClassLoader.getSystemResource("history.png");
+		ImageIcon imageIcon = new ImageIcon(historiqueURL);
 		Image image = imageIcon.getImage(); 
 		Image newimg = image.getScaledInstance(75, 75, java.awt.Image.SCALE_SMOOTH); 
 		imageIcon = new ImageIcon(newimg); 
-		historiqueBtn.setIcon(new ImageIcon("C:\\Users\\Quentin\\Documents\\GIT\\Boulangestion\\projetBoulang\\history.png"));
+		historiqueBtn.setIcon(new ImageIcon(historiqueURL));
 		historiqueBtn.setBounds(10, 23, 40, 40);
 		panel_1.add(historiqueBtn);
 		button.addActionListener(
@@ -117,7 +120,8 @@ public class NouveauDevis extends JPanel {
 					}
 				}
 		);
-		ImageIcon imageClient = new ImageIcon("C:\\Users\\Quentin\\Downloads\\user.png");
+		URL clientURL = ClassLoader.getSystemResource("account.png");
+		ImageIcon imageClient = new ImageIcon(clientURL);
 		Image imageClientImage = imageClient.getImage();
 		Image newimg2 = imageClientImage.getScaledInstance(75, 75, java.awt.Image.SCALE_SMOOTH); 
 		imageClient = new ImageIcon(newimg2);
@@ -134,12 +138,13 @@ public class NouveauDevis extends JPanel {
 				PanelsManager.contentPane.repaint();
 			}
 		});
+		URL returnURL = ClassLoader.getSystemResource("arrow_left.png");
 		ImageIcon imageReturn = new ImageIcon("C:\\Users\\Quentin\\Downloads\\return.png");
 		Image imageReturnImage = imageReturn.getImage(); 
 		Image newimg3 = imageReturnImage.getScaledInstance(75, 75, java.awt.Image.SCALE_SMOOTH); 
 		imageReturn = new ImageIcon(newimg3); 
 		returnBtn.setBounds(100, 23, 40, 40);
-		returnBtn.setIcon(new ImageIcon("C:\\Users\\Quentin\\Documents\\GIT\\Boulangestion\\projetBoulang\\arrow_left.png"));
+		returnBtn.setIcon(new ImageIcon(returnURL));
 		panel_1.add(returnBtn);
 
 		JLabel lblNewLabel_9 = new JLabel("Historique");

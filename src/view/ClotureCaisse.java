@@ -35,6 +35,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
@@ -60,9 +61,11 @@ public class ClotureCaisse extends JPanel {
 		menu.setBackground(Color.WHITE);
 		menu.setBounds(0, 0, 1440, 90);
 		add(menu);
-		
+
+		URL retourURL = ClassLoader.getSystemResource("arrow_left.png");
+
 		JButton btnRetour = new JButton("");
-		btnRetour.setIcon(new ImageIcon("C:\\Users\\Quentin\\Documents\\GIT\\Boulangestion\\projetBoulang\\arrow_left.png"));
+		btnRetour.setIcon(new ImageIcon(retourURL));
 		btnRetour.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				PanelsManager.contentPane.removeAll();
@@ -79,9 +82,10 @@ public class ClotureCaisse extends JPanel {
 		lblRetour.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		lblRetour.setBounds(10, 62, 63, 18);
 		menu.add(lblRetour);
-		
+
+		URL exitURL = ClassLoader.getSystemResource("exit.png");
 		JButton btnAccueil = new JButton("");
-		btnAccueil.setIcon(new ImageIcon("C:\\Users\\Quentin\\Documents\\GIT\\Boulangestion\\projetBoulang\\exit.png"));
+		btnAccueil.setIcon(new ImageIcon(exitURL));
 		btnAccueil.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				PanelsManager.contentPane.removeAll();

@@ -14,6 +14,7 @@ import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 
 public class Login extends JPanel {
 	private JTextField loginValue;
@@ -26,10 +27,10 @@ public class Login extends JPanel {
 		setBackground(new Color(255, 239, 213));
 		setBounds(0,0,1440,900);
 		setLayout(null);
-
+		URL imageUrl = ClassLoader.getSystemResource("bg.png");
 		BufferedImage img = null;
 		try {
-			img = ImageIO.read(new File("projetBoulang/bg.png"));
+			img = ImageIO.read(imageUrl);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

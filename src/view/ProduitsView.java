@@ -176,10 +176,10 @@ public class ProduitsView extends JPanel {
 	public DefaultTableModel liste() {
 
 		String[] col = {
-				"Libellé",
+				"Libelle",
 				"Fabricant",
 				"Poids (kg)",
-				"Quantité",
+				"Quantite",
 				"Prix HT",
 				"Prix TTC",
 				"Modifier",

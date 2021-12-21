@@ -12,6 +12,7 @@ import controller.PanelsManager;
 import model.Client;
 
 import java.awt.Font;
+import java.net.URL;
 import java.util.regex.Pattern;
 
 import javax.swing.JTextField;
@@ -64,7 +65,8 @@ public class NouveauClient extends JPanel {
 			}
 		});
 		btnBack.setBackground(Color.WHITE);
-		btnBack.setIcon(new ImageIcon("C:\\Users\\Quentin\\Documents\\GIT\\Boulangestion\\projetBoulang\\arrow_left.png"));
+		URL returnURL = ClassLoader.getSystemResource("arrow_left.png");
+		btnBack.setIcon(new ImageIcon(returnURL));
 		btnBack.setBounds(22, 11, 40, 40);
 		panel.add(btnBack);
 		
@@ -78,8 +80,9 @@ public class NouveauClient extends JPanel {
 				modify = false;
 			}
 		});
+		URL exitURL = ClassLoader.getSystemResource("exit.png");
 		btnAccueil.setBackground(Color.WHITE);
-		btnAccueil.setIcon(new ImageIcon("C:\\Users\\Quentin\\Documents\\GIT\\Boulangestion\\projetBoulang\\exit.png"));
+		btnAccueil.setIcon(new ImageIcon(exitURL));
 		btnAccueil.setBounds(1370, 11, 40, 40);
 		panel.add(btnAccueil);
 		
