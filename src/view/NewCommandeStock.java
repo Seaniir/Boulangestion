@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,7 +12,6 @@ import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.lang.reflect.Type;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -20,22 +20,24 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 import java.util.Vector;
 import java.util.Date;
 
 import javax.swing.DefaultCellEditor;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -49,13 +51,20 @@ import model.Fournisseur;
 import model.Produit;
 
 
+
 public class NewCommandeStock extends JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	static public boolean modify = false;
 	static Fournisseur currentFournisseur = new Fournisseur();
 	static CommandeStock currentCmdStock = new CommandeStock();
 	private JTable cmd;
 	private JLabel prixTotal_label;
-	JComboBox comboBox = new JComboBox();
+	private JLabel id_commande_label;
+	JButton btnSupprimer = new JButton();
+	JComboBox<String> comboBox = new JComboBox<>();
 	ArrayList<Integer> idList = new ArrayList<Integer>();
 	ArrayList<Float> poidsList = new ArrayList<Float>();
 	/**
@@ -135,7 +144,7 @@ public class NewCommandeStock extends JPanel {
 		corps.add(infosFournisseur);
 		infosFournisseur.setLayout(null);
 		
-		JLabel lblSociete = new JLabel("Société :");
+		JLabel lblSociete = new JLabel("Societe :");
 		lblSociete.setBounds(11, 26, 57, 14);
 		infosFournisseur.add(lblSociete);
 
@@ -152,7 +161,7 @@ public class NewCommandeStock extends JPanel {
 		infosFournisseur.add(lblEmail);
 		
 		//block info fournisseur:
-		JComboBox infoSociete = new JComboBox();
+		JComboBox<String> infoSociete = new JComboBox<>();
 		FournisseurDao fournisseurDao = new FournisseurDao();
 		List <Fournisseur> listSociete = new ArrayList < > ();
 		listSociete.addAll(fournisseurDao.read());
@@ -189,7 +198,8 @@ public class NewCommandeStock extends JPanel {
 		infoSociete.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
-				if (e.getStateChange() == ItemEvent.SELECTED) { // Check if the value got selected, ignore if it has been deselected
+				if (e.getStateChange() == ItemEvent.SELECTED) { 
+					// Check if the value got selected, ignore if it has been deselected
 					for (Fournisseur fournisseur: listSociete) {
 						if (fournisseur.getSociete().equals(e.getItem().toString())) {
 							currentFournisseur.setId(fournisseur.getId());
@@ -217,7 +227,7 @@ public class NewCommandeStock extends JPanel {
 		corps.add(datePanel);
 		datePanel.setLayout(null);
 
-		JLabel lblDateReception = new JLabel("Date de réception :");
+		JLabel lblDateReception = new JLabel("Date de reception :");
 		lblDateReception.setFont(new Font("Tahoma", Font.PLAIN, 22));
 		lblDateReception.setBounds(10, 11, 189, 37);
 		datePanel.add(lblDateReception);
@@ -236,10 +246,13 @@ public class NewCommandeStock extends JPanel {
 		created_at_label.setBounds(271, 11, 189, 37);
 		datePanel.add(created_at_label);
 		
-		JLabel id_commande_label = new JLabel("");
+		id_commande_label = new JLabel("");
 		id_commande_label.setHorizontalAlignment(SwingConstants.CENTER);
 		id_commande_label.setFont(new Font("Tahoma", Font.PLAIN, 22));
 		id_commande_label.setBounds(349, 117, 99, 37);
+		if(modify) {
+			id_commande_label.setText(String.valueOf(currentCmdStock.getId()));
+		}
 		datePanel.add(id_commande_label);
 		
 		JLabel lblTotal = new JLabel("Total :");
@@ -308,7 +321,7 @@ public class NewCommandeStock extends JPanel {
 						Float.parseFloat(prixTotal_label.getText()), json),
 						currentCmdStock.getId());
 					modify = false;
-					//retour à la liste après la modif
+					//retour a la liste apres la modif
 					PanelsManager.contentPane.removeAll();
 					PanelsManager.contentPane.add(PanelsManager.switchtoCommandeStockView());
 					PanelsManager.contentPane.repaint();
@@ -326,6 +339,18 @@ public class NewCommandeStock extends JPanel {
 		corps.add(btnValider);
 		
 		JButton btnAnnuler = new JButton("Annuler");
+		btnAnnuler.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (JOptionPane.showConfirmDialog(null, "Etes-vous sur de vouloir annuler?", "Attention",
+				        JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+					PanelsManager.contentPane.removeAll();
+					PanelsManager.contentPane.add(PanelsManager.switchtoCommandeStockView());
+					PanelsManager.contentPane.repaint();
+					PanelsManager.contentPane.revalidate();
+				}
+			}
+		});
 		btnAnnuler.setFont(new Font("Tahoma", Font.PLAIN, 25));
 		btnAnnuler.setBounds(1102, 630, 249, 56);
 		corps.add(btnAnnuler);
@@ -338,13 +363,15 @@ public class NewCommandeStock extends JPanel {
 		cmd.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
 		cmd.getColumnModel().getColumn(4).setCellRenderer(centerRenderer);
 		cmd.getColumnModel().getColumn(5).setCellRenderer(centerRenderer);
+		cmd.getColumn("Supprimer").setCellRenderer(new ButtonRenderer());
+		cmd.getColumn("Supprimer").setCellEditor(new ButtonEditor(new JCheckBox()));
 		cmd.addPropertyChangeListener("tableCellEditor", new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
 				if (evt.getNewValue() == null) {
 					int row = cmd.getSelectedRow();
 					int column = cmd.getSelectedColumn();
-					if (cmd.getColumnName(column).equals("Quantité")) {
+					if (cmd.getColumnName(column).equals("Quantite")) {
 						cmd.setValueAt(Float.parseFloat(cmd.getValueAt(row, 0).toString())
 							* (Float.parseFloat(cmd.getValueAt(row, 2).toString())), row, 3);
 						cmd.setValueAt(Float.parseFloat(cmd.getValueAt(row, 0).toString())
@@ -358,6 +385,20 @@ public class NewCommandeStock extends JPanel {
 				}
 			}
 		});
+		btnSupprimer.addActionListener(
+				event -> {
+					int n = JOptionPane.showConfirmDialog(null, "Voulez-vous supprimer ce produit ?",
+						"Supprimer", JOptionPane.YES_NO_OPTION);
+					if (n == JOptionPane.YES_OPTION) {
+						((DefaultTableModel)cmd.getModel()).removeRow(cmd.getSelectedRow());
+						float prixTotal12 = 0;
+						for (int i = 0; i < cmd.getRowCount(); i++) {
+							prixTotal12 += Float.parseFloat(cmd.getValueAt(i, 5).toString());
+						}
+						prixTotal_label.setText(Float.toString(prixTotal12));
+					}
+				}
+		);
 		comboBox.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
@@ -395,12 +436,13 @@ public class NewCommandeStock extends JPanel {
 	//remplissage du tableau en fonction de modify
 	public DefaultTableModel liste() {
 		String[] col = {
-				"Quantité",
-				"Libellé",
+				"Quantite",
+				"Libelle",
 				"Prix Unitaire HT",
 				"Prix total HT",
 				"Prix Unitaire TTC",
-				"Prix total TTC"
+				"Prix total TTC",
+				"Supprimer"
 		};
 		DefaultTableModel tab = new DefaultTableModel(null, col);
 
@@ -459,7 +501,33 @@ public class NewCommandeStock extends JPanel {
 		model.addRow(vect);
 		cmd.setModel(model);
 	}
+	static class ButtonRenderer extends JButton implements TableCellRenderer {
+		public ButtonRenderer() {
+			setOpaque(true);
+		}
+		public Component getTableCellRendererComponent(JTable table, Object value,
+													   boolean isSelected, boolean hasFocus, int row, int column) {
+			setText((value == null) ? "Supprimer" : value.toString());
+			return this;
+		}
+	}
 
+	class ButtonEditor extends DefaultCellEditor {
+		private String label;
+
+		public ButtonEditor(JCheckBox checkBox) {
+			super(checkBox);
+		}
+		public Component getTableCellEditorComponent(JTable table, Object value,
+													 boolean isSelected, int row, int column) {
+			label = (value == null) ? "Supprimer" : value.toString();
+			btnSupprimer.setText(label);
+			return btnSupprimer;
+		}
+		public Object getCellEditorValue() {
+			return label;
+		}
+	}
 	public class DateLabelFormatter extends JFormattedTextField.AbstractFormatter {
 		/**
 		 * 

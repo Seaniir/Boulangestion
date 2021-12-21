@@ -5,11 +5,14 @@ import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
+import controller.FournisseurDao;
 import controller.PanelsManager;
 
 import javax.swing.ImageIcon;
 import java.awt.*;
 import javax.swing.JMenuBar;
+import javax.swing.JOptionPane;
+
 import java.awt.Color;
 import java.awt.Font;
 import javax.swing.JButton;
@@ -54,7 +57,7 @@ public class AccueilMenu extends JPanel {
 		setLayout(null);
 		
 		JPanel panel = new JPanel();
-		//les sous-menus disparaissent quand on clique n'importe o� dans la page
+		//les sous-menus disparaissent quand on clique n'importe ou dans la page
 		panel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -154,14 +157,13 @@ public class AccueilMenu extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				setSsBtnFalse();
-				btnAide.setBackground(new Color(253, 232, 202));
+				btnAide.setBackground(new Color(196, 196, 196));
 				btnDoc.setVisible(true);
 				btnFaq.setVisible(true);
 			}
 		});
 		btnAide.setFont(new Font("Tahoma", Font.PLAIN, 22));
-		btnAide.setBackground(new Color(242, 193, 102));
-		//btnAide.setBorder(new RoundedBorder(10));
+		btnAide.setBackground(new Color(196, 196, 196));
 		btnAide.setBounds(1161, 215, 161, 33);
 		panel.add(btnAide);
 		
@@ -170,10 +172,13 @@ public class AccueilMenu extends JPanel {
 		btnDeco.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				PanelsManager.contentPane.removeAll();
-				PanelsManager.contentPane.add(PanelsManager.switchToLoginPanel());
-				PanelsManager.contentPane.repaint();
-				PanelsManager.contentPane.revalidate();
+				if (JOptionPane.showConfirmDialog(null, "Etes-vous sur de vouloir vous deconnecter?", "Attention",
+				        JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+					PanelsManager.contentPane.removeAll();
+					PanelsManager.contentPane.add(PanelsManager.switchToLoginPanel());
+					PanelsManager.contentPane.repaint();
+					PanelsManager.contentPane.revalidate();
+				}
 			}
 		});
 		btnDeco.setIcon(new ImageIcon("C:\\Users\\fredb\\AFPA\\projetBoulang\\power_off.png"));
@@ -189,7 +194,7 @@ public class AccueilMenu extends JPanel {
 
 		btnVenteDirecte = new JButton("Vente directe");
 		btnVenteDirecte.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		btnVenteDirecte.setBackground(new Color(242, 193, 102));
+		btnVenteDirecte.setBackground(new Color(196, 196, 196));
 		btnVenteDirecte.setBounds(114, 284, 161, 33);
 		btnVenteDirecte.setVisible(false);
 		panel.add(btnVenteDirecte);
@@ -260,7 +265,7 @@ public class AccueilMenu extends JPanel {
 
 		btnStatistiques = new JButton("Statistiques");
 		btnStatistiques.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		btnStatistiques.setBackground(new Color(242, 193, 102));
+		btnStatistiques.setBackground(new Color(196, 196, 196));
 		btnStatistiques.setBounds(370, 352, 161, 33);
 		btnStatistiques.setVisible(false);
 		panel.add(btnStatistiques);
@@ -346,33 +351,23 @@ public class AccueilMenu extends JPanel {
 		panel.add(btnFournisseurs);
 
 		btnDoc = new JButton("Documentation");
-		btnDoc.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-			}
-		});
 		btnDoc.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		btnDoc.setBackground(new Color(242, 193, 102));
+		btnDoc.setBackground(new Color(196, 196, 196));
 		btnDoc.setBounds(1161, 284, 161, 33);
 		btnDoc.setVisible(false);
 		panel.add(btnDoc);
 
 		btnFaq = new JButton("FAQ");
-		btnFaq.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-			}
-		});
 		btnFaq.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		btnFaq.setBackground(new Color(242, 193, 102));
+		btnFaq.setBackground(new Color(196, 196, 196));
 		btnFaq.setBounds(1161, 352, 161, 33);
 		btnFaq.setVisible(false);
 		panel.add(btnFaq);
 
-				JLabel lblNewLabel = new JLabel("");
-				lblNewLabel.setIcon(imageIcon);
-				lblNewLabel.setBounds(0, 0, 1440, 900);
-				panel.add(lblNewLabel);
+		JLabel lblNewLabel = new JLabel("");
+		lblNewLabel.setIcon(imageIcon);
+		lblNewLabel.setBounds(0, 0, 1440, 900);
+		panel.add(lblNewLabel);
 	}
 	
 	//methode pour rendre les sous-menus invisibles

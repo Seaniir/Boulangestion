@@ -31,7 +31,7 @@ public class NouveauProduit extends JPanel {
 		add(panel_1);
 		panel_1.setLayout(null);
 
-		JLabel lblName = new JLabel("Libell\u00E9 :");
+		JLabel lblName = new JLabel("Libelle :");
 		lblName.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblName.setBounds(28, 110, 130, 35);
 		panel_1.add(lblName);
@@ -46,7 +46,7 @@ public class NouveauProduit extends JPanel {
 		lblNewLabel_2_2.setBounds(28, 331, 130, 35);
 		panel_1.add(lblNewLabel_2_2);
 
-		JLabel quantiteLabel = new JLabel("Quantit\u00E9 :");
+		JLabel quantiteLabel = new JLabel("Quantite :");
 		quantiteLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		quantiteLabel.setBounds(405, 331, 130, 35);
 		panel_1.add(quantiteLabel);
@@ -114,6 +114,10 @@ public class NouveauProduit extends JPanel {
 				PanelsManager.contentPane.repaint();
 				PanelsManager.contentPane.revalidate();
 			});
+			btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 20));
+			btnNewButton.setBackground(new Color(242, 193, 102));
+			btnNewButton.setBounds(168, 571, 155, 30);
+			panel_1.add(btnNewButton);	
 		} else {
 		// Form to create a.
 			btnNewButton.setText("Valider");
@@ -139,7 +143,7 @@ public class NouveauProduit extends JPanel {
 		});
 		btnAnnuler.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		btnAnnuler.setForeground(new Color(0, 0, 0));
-		btnAnnuler.setBackground(Color.LIGHT_GRAY);
+		btnAnnuler.setBackground(new Color(196, 196, 196));
 		btnAnnuler.setBounds(584, 576, 155, 30);
 		panel_1.add(btnAnnuler);
 		
