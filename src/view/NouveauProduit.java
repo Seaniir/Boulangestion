@@ -20,7 +20,7 @@ public class NouveauProduit extends JPanel {
 
 	public NouveauProduit() {
 		setBounds(0, 0, 1440, 900);
-		setBackground(new Color(255, 239, 213));
+		setBackground(new Color(254, 245, 232));
 		setLayout(null);
 
 		JPanel panel = new JPanel();
@@ -73,7 +73,7 @@ public class NouveauProduit extends JPanel {
 		add(panel_1);
 		panel_1.setLayout(null);
 
-		JLabel lblName = new JLabel("Libell\u00E9 :");
+		JLabel lblName = new JLabel("Libelle :");
 		lblName.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblName.setBounds(28, 110, 130, 35);
 		panel_1.add(lblName);
@@ -88,7 +88,7 @@ public class NouveauProduit extends JPanel {
 		lblNewLabel_2_2.setBounds(28, 331, 130, 35);
 		panel_1.add(lblNewLabel_2_2);
 
-		JLabel quantiteLabel = new JLabel("Quantit\u00E9 :");
+		JLabel quantiteLabel = new JLabel("Quantite :");
 		quantiteLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		quantiteLabel.setBounds(405, 331, 130, 35);
 		panel_1.add(quantiteLabel);
@@ -159,7 +159,7 @@ public class NouveauProduit extends JPanel {
 
 			});
 			btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 20));
-			btnNewButton.setBackground(new Color(255, 140, 0));
+			btnNewButton.setBackground(new Color(242, 193, 102));
 			btnNewButton.setBounds(168, 571, 155, 30);
 			panel_1.add(btnNewButton);	
 		} else {
@@ -171,7 +171,7 @@ public class NouveauProduit extends JPanel {
 		});
 
 		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		btnNewButton.setBackground(new Color(255, 140, 0));
+		btnNewButton.setBackground(new Color(242, 193, 102));
 		btnNewButton.setBounds(168, 571, 155, 30);
 		panel_1.add(btnNewButton);
 	}
@@ -187,7 +187,7 @@ public class NouveauProduit extends JPanel {
 		});
 		btnAnnuler.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		btnAnnuler.setForeground(new Color(0, 0, 0));
-		btnAnnuler.setBackground(Color.GRAY);
+		btnAnnuler.setBackground(new Color(196, 196, 196));
 		btnAnnuler.setBounds(584, 576, 155, 30);
 		panel_1.add(btnAnnuler);
 	}
