@@ -62,6 +62,7 @@ public class NewCommandeStock extends JPanel {
 	static CommandeStock currentCmdStock = new CommandeStock();
 	private JTable cmd;
 	private JLabel prixTotal_label;
+	private JLabel id_commande_label;
 	JButton btnSupprimer = new JButton();
 	JComboBox<String> comboBox = new JComboBox<>();
 	ArrayList<Integer> idList = new ArrayList<Integer>();
@@ -245,10 +246,13 @@ public class NewCommandeStock extends JPanel {
 		created_at_label.setBounds(271, 11, 189, 37);
 		datePanel.add(created_at_label);
 		
-		JLabel id_commande_label = new JLabel("");
+		id_commande_label = new JLabel("");
 		id_commande_label.setHorizontalAlignment(SwingConstants.CENTER);
 		id_commande_label.setFont(new Font("Tahoma", Font.PLAIN, 22));
 		id_commande_label.setBounds(349, 117, 99, 37);
+		if(modify) {
+			id_commande_label.setText(String.valueOf(currentCmdStock.getId()));
+		}
 		datePanel.add(id_commande_label);
 		
 		JLabel lblTotal = new JLabel("Total :");

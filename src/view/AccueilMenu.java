@@ -164,7 +164,6 @@ public class AccueilMenu extends JPanel {
 		});
 		btnAide.setFont(new Font("Tahoma", Font.PLAIN, 22));
 		btnAide.setBackground(new Color(242, 193, 102));
-		//btnAide.setBorder(new RoundedBorder(10));
 		btnAide.setBounds(1161, 215, 161, 33);
 		panel.add(btnAide);
 		

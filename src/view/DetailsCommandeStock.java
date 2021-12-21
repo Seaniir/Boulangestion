@@ -51,7 +51,7 @@ public class DetailsCommandeStock extends JPanel {
 	static CommandeStock currentCmdStock = new CommandeStock();
 	private JTable table_1;
 	JButton button = new JButton();
-	JComboBox comboBox = new JComboBox();
+	JComboBox<String> comboBox = new JComboBox<>();
 	JLabel prixTotal_label = new JLabel();
 	/**
 	 * Create the panel.
