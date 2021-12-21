@@ -67,7 +67,7 @@ public class AccueilMenu extends JPanel {
 		panel.setLayout(null);
 		BufferedImage img = null;
 		try {
-			img = ImageIO.read(new File("C:\\Users\\Quentin\\Downloads\\projetBoulang\\ApplicationFrameHost_9xgfw1hOm4.png"));
+			img = ImageIO.read(new File("C:\\Users\\Julien\\workspace_java\\Boulangestion\\projetBoulang\\ApplicationFrameHost_9xgfw1hOm4.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

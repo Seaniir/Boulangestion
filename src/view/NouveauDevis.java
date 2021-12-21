@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -26,6 +27,7 @@ import java.util.Vector;
 import javax.swing.DefaultCellEditor;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
@@ -37,6 +39,7 @@ import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
@@ -52,6 +55,8 @@ import controller.ProduitDAO;
 import model.Client;
 import model.CommandeClient;
 import model.Produit;
+import view.NouvelleCommandeClientView.ButtonEditor;
+import view.NouvelleCommandeClientView.ButtonRenderer;
 
 public class NouveauDevis extends JPanel {
 	static public boolean modify = false;
@@ -59,6 +64,7 @@ public class NouveauDevis extends JPanel {
 	static CommandeClient currentCommande = new CommandeClient();
 	private JTable table;
 	JButton button = new JButton();
+	JButton btnSupprimer = new JButton();
 	JComboBox comboBox = new JComboBox();
 	JLabel prixTotal_label = new JLabel();
 	ArrayList<Integer> idList = new ArrayList<Integer>();
@@ -178,11 +184,11 @@ public class NouveauDevis extends JPanel {
 		lblNewLabel_3.setBounds(10, 64, 57, 14);
 		panel_2.add(lblNewLabel_3);
 
-		JLabel lblNewLabel_4 = new JLabel("T\u00E9l\u00E9phone :");
+		JLabel lblNewLabel_4 = new JLabel("Telephone :");
 		lblNewLabel_4.setBounds(10, 110, 72, 14);
 		panel_2.add(lblNewLabel_4);
 
-		JLabel lblNewLabel_5 = new JLabel("Pr\u00E9nom :");
+		JLabel lblNewLabel_5 = new JLabel("Prenom :");
 		lblNewLabel_5.setBounds(237, 26, 78, 14);
 		panel_2.add(lblNewLabel_5);
 
@@ -294,7 +300,7 @@ public class NouveauDevis extends JPanel {
 		prixTotal_label.setBounds(38, 11, 125, 77);
 		panel_4.add(prixTotal_label);
 
-		JLabel lblNewLabel_8 = new JLabel("M\u00E9thode de paiment");
+		JLabel lblNewLabel_8 = new JLabel("Methode de paiment");
 		lblNewLabel_8.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblNewLabel_8.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_8.setBounds(1128, 381, 208, 25);
@@ -305,7 +311,7 @@ public class NouveauDevis extends JPanel {
 		panel.add(panel_5);
 		panel_5.setLayout(null);
 
-		JRadioButton rdbtnNewRadioButton = new JRadioButton("Esp\u00E8ces");
+		JRadioButton rdbtnNewRadioButton = new JRadioButton("Especes");
 		rdbtnNewRadioButton.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		rdbtnNewRadioButton.setBounds(18, 22, 109, 23);
 
@@ -353,7 +359,7 @@ public class NouveauDevis extends JPanel {
 
 		String strDate = null;
 		if (modify) {
-			if (currentCommande.getTypePaiment().equals("Espèces")) {
+			if (currentCommande.getTypePaiment().equals("Especes")) {
 				rdbtnNewRadioButton.setSelected(true);
 			} else if (currentCommande.getTypePaiment().equals("Carte banquaire")) {
 				rdbtnNewRadioButton_1.setSelected(true);
@@ -382,7 +388,7 @@ public class NouveauDevis extends JPanel {
 				CommandeClientDAO commandeClientDAO = new CommandeClientDAO();
 				String typePaiment = "";
 				if (rdbtnNewRadioButton.isSelected()) {
-					typePaiment = "Espèces";
+					typePaiment = "Especes";
 				} else if (rdbtnNewRadioButton_1.isSelected()) {
 					typePaiment = "Carte banquaire";
 				}
@@ -401,7 +407,6 @@ public class NouveauDevis extends JPanel {
 					produit.setPrixTTC(Float.parseFloat(table.getValueAt(i, 4).toString()));
 					produit.setQuantite(Integer.parseInt(table.getValueAt(i, 0).toString()));
 					produit.setLibelle((String) table.getValueAt(i, 1));
-					//produit.setPrixUnitaire((Float) table.getValueAt(i, 2));
 					row.add(produit);
 					matrix.add(row);
 				}
@@ -463,6 +468,8 @@ public class NouveauDevis extends JPanel {
 		table.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
 		table.getColumnModel().getColumn(4).setCellRenderer(centerRenderer);
 		table.getColumnModel().getColumn(5).setCellRenderer(centerRenderer);
+		table.getColumn("Supprimer").setCellRenderer(new ButtonRenderer());
+		table.getColumn("Supprimer").setCellEditor(new ButtonEditor(new JCheckBox()));
 		table.addPropertyChangeListener("tableCellEditor", new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
@@ -486,10 +493,23 @@ public class NouveauDevis extends JPanel {
 				}
 			}
 		});
+		btnSupprimer.addActionListener(
+				event -> {
+					int n = JOptionPane.showConfirmDialog(null, "Voulez-vous supprimer ce produit ?", "Supprimer", JOptionPane.YES_NO_OPTION);
+					if (n == JOptionPane.YES_OPTION) {
+						((DefaultTableModel)table.getModel()).removeRow(table.getSelectedRow());
+						float prixTotal12 = 0;
+						for (int i = 0; i < table.getRowCount(); i++) {
+							prixTotal12 += Float.parseFloat(table.getValueAt(i, 5).toString());
+						}
+						prixTotal_label.setText(Float.toString(prixTotal12));
+					}
+				}
+		);
 		comboBox.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
-				if (e.getStateChange() == ItemEvent.SELECTED) { // Check if the value got selected, ignore if it has been deselected
+				if (e.getStateChange() == ItemEvent.SELECTED) {
 					ProduitDAO produitDAO = new ProduitDAO();
 					List < Produit > listProduits = new ArrayList < > ();
 					listProduits.addAll(produitDAO.read());
@@ -518,7 +538,8 @@ public class NouveauDevis extends JPanel {
 				"Prix Unitaire HT",
 				"Prix total HT",
 				"Prix Unitaire TTC",
-				"Prix total TTC"
+				"Prix total TTC",
+				"Supprimer"
 		};
 		DefaultTableModel tab = new DefaultTableModel(null, col);
 
@@ -572,7 +593,33 @@ public class NouveauDevis extends JPanel {
 		model.addRow(vect);
 		table.setModel(model);
 	}
+	static class ButtonRenderer extends JButton implements TableCellRenderer {
+		public ButtonRenderer() {
+			setOpaque(true);
+		}
+		public Component getTableCellRendererComponent(JTable table, Object value,
+													   boolean isSelected, boolean hasFocus, int row, int column) {
+			setText((value == null) ? "Supprimer" : value.toString());
+			return this;
+		}
+	}
 
+	class ButtonEditor extends DefaultCellEditor {
+		private String label;
+
+		public ButtonEditor(JCheckBox checkBox) {
+			super(checkBox);
+		}
+		public Component getTableCellEditorComponent(JTable table, Object value,
+													 boolean isSelected, int row, int column) {
+			label = (value == null) ? "Supprimer" : value.toString();
+			btnSupprimer.setText(label);
+			return btnSupprimer;
+		}
+		public Object getCellEditorValue() {
+			return label;
+		}
+	}
 	public class DateLabelFormatter extends JFormattedTextField.AbstractFormatter {
 
 		private String datePattern = "dd/MM/yyy";
