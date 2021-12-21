@@ -13,20 +13,14 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-
 import com.mysql.cj.conf.ConnectionUrlParser;
-import com.mysql.cj.conf.ConnectionUrlParser.Pair;
-
-import controller.ClientDao;
 import controller.CommandeClientDAO;
-import controller.HistoriqueCommandesVentesDao;
 import controller.PanelsManager;
 import model.Client;
 import model.CommandeClient;
@@ -36,24 +30,21 @@ import javax.swing.JTable;
 public class HistoriqueCommandesVentes extends JPanel {
 	private JTable listingHistorique;
 
-	/**
-	 * Create the panel.
-	 */
 	public HistoriqueCommandesVentes() {
 		setBounds(0, 0, 1440, 900);
-		setBackground(new Color(255, 235, 205));
+		setBackground(new Color(254, 245, 232));
 		setLayout(null);
 		// Panel TOP
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.WHITE);
-		panel.setBounds(0, 0, 1440, 131);
+		panel.setBounds(0, 0, 1440, 94);
 		add(panel);
 		panel.setLayout(null);
 		
 		JLabel lblAccueil = new JLabel("Accueil");
 		lblAccueil.setHorizontalAlignment(SwingConstants.CENTER);
 		lblAccueil.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblAccueil.setBounds(1270, 102, 160, 19);
+		lblAccueil.setBounds(1355, 62, 63, 18);
 		panel.add(lblAccueil);
 		
 		JButton btnAccueil = new JButton("");
@@ -67,12 +58,10 @@ public class HistoriqueCommandesVentes extends JPanel {
 		});
 		btnAccueil.setBackground(Color.WHITE);
 		btnAccueil.setIcon(new ImageIcon("C:\\Users\\Julien\\Desktop\\projetBoulang\\exit.png"));
-		btnAccueil.setBounds(1270, 10, 160, 82);
+		btnAccueil.setBounds(1370, 11, 40, 40);
 		panel.add(btnAccueil);
 		
 		// Panel Historique
-		
-		
 		JPanel listing = new JPanel();
 		listing.setBackground(new Color(255, 255, 255));
 		listing.setBounds(264, 155, 912, 706);
@@ -82,10 +71,7 @@ public class HistoriqueCommandesVentes extends JPanel {
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(0, 0, 912, 706);
 		listing.add(scrollPane);
-		
-		/*HistoriqueCommandesVentesDao hcv = new HistoriqueCommandesVentesDao();
-		ConnectionUrlParser.Pair<CommandeClient, Client> pair = hcv.read();
-		System.out.println(pair);*/
+
 		// La mise en forme du tableau 
 		listingHistorique = new JTable();
 		listingHistorique.setRowSelectionAllowed(false);
@@ -93,11 +79,9 @@ public class HistoriqueCommandesVentes extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				int id = listingHistorique.getSelectedRow();
-
-				//int article_id = (int) listingHistorique.getModel().getValueAt(id, 0);
-
 				CommandeClientDAO commandeClientDAO = new CommandeClientDAO();
-				ConnectionUrlParser.Pair < CommandeClient, Client > pair = commandeClientDAO.findById((Integer) listingHistorique.getValueAt(id, 0));
+				ConnectionUrlParser.Pair < CommandeClient, Client > pair = 
+						commandeClientDAO.findById((Integer) listingHistorique.getValueAt(id, 0));
 				DetailsCommandesClient.currentCommande = pair.left;
 				DetailsCommandesClient.currentClient = pair.right;
 				PanelsManager.contentPane.removeAll();
@@ -130,15 +114,10 @@ public class HistoriqueCommandesVentes extends JPanel {
 				"Paiement"
 		};
 		DefaultTableModel tab = new DefaultTableModel(null, col);
-		
 		// Les données du tableau 
-		HistoriqueCommandesVentesDao hcv = new HistoriqueCommandesVentesDao();
-		List<CommandeClient> cC = new ArrayList<>();
-		List<Client> c = new ArrayList<>();
-		
-		ConnectionUrlParser.Pair<ArrayList<CommandeClient>, ArrayList<Client>> pair = hcv.read();
-		int i = 0;
-		for (CommandeClient cx : pair.left) {
+		CommandeClientDAO hcv = new CommandeClientDAO();
+		ConnectionUrlParser.Pair<ArrayList<CommandeClient>, ArrayList<Client>> pair = hcv.readPairHisto();
+		for (int i = 0; i < pair.left.size();i++) {
 			Vector vect = new Vector();
 			vect.add(pair.left.get(i).getId());
 			vect.add(pair.left.get(i).getWithdrawal_at());
@@ -147,15 +126,7 @@ public class HistoriqueCommandesVentes extends JPanel {
 			vect.add(pair.left.get(i).getPrixTotal());
 			vect.add(pair.left.get(i).getTypePaiment());
 			tab.addRow(vect);
-			i++;
 		}
-		
-			
-			
-		
-		
-		
-		 
 		return tab;
 	}	
 }

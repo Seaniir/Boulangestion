@@ -14,7 +14,8 @@ public class Client {
 
 	public Client(){};
 	
-	public Client(String name, String firstName, String adress, int zip, String city, String tel, String email) {
+	public Client(String name, String firstName, String adress, int zip, String
+			city, String tel, String email) {
 		super();
 		this.name = name;
 		this.firstName = firstName;
@@ -25,7 +26,8 @@ public class Client {
 		this.email = email;
 	}
 	
-	public Client(int id, String name, String firstName, String adress, int zip, String city, String tel,
+	public Client(int id, String name, String firstName, String adress, int zip
+			, String city, String tel,
 			String email) {
 		super();
 		this.id = id;
@@ -46,7 +48,7 @@ public class Client {
 		this.id = id;
 	}
 
-	// Getter Setter
+	// Getter
 	public String getName() {
 		return name;
 	}
@@ -68,7 +70,7 @@ public class Client {
 	public String getEmail() {
 		return email;
 	}
-	
+	// Setter
 	public void setName(String name) {
 		this.name = name;
 	}

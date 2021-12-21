@@ -32,25 +32,25 @@ public class NouveauClient extends JPanel {
 	
 	public NouveauClient() {
 		setBounds(0, 0, 1440, 900);
-		setBackground(new Color(255, 239, 213));
+		setBackground(new Color(254, 245, 232));
 		setLayout(null);
 		
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.WHITE);
-		panel.setBounds(0, 0, 1440, 131);
+		panel.setBounds(0, 0, 1440, 90);
 		add(panel);
 		panel.setLayout(null);
 		
 		JLabel lblNewLabel = new JLabel("Retour");
 		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setBounds(10, 102, 160, 19);
+		lblNewLabel.setBounds(10, 62, 63, 18);
 		panel.add(lblNewLabel);
 		
 		JLabel lblAccueil = new JLabel("Accueil");
 		lblAccueil.setHorizontalAlignment(SwingConstants.CENTER);
 		lblAccueil.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblAccueil.setBounds(1270, 102, 160, 19);
+		lblAccueil.setBounds(1355, 62, 63, 18);
 		panel.add(lblAccueil);
 		
 		JButton btnBack = new JButton("");
@@ -65,7 +65,7 @@ public class NouveauClient extends JPanel {
 		});
 		btnBack.setBackground(Color.WHITE);
 		btnBack.setIcon(new ImageIcon("C:\\Users\\Julien\\Desktop\\projetBoulang\\arrow_left.png"));
-		btnBack.setBounds(10, 10, 160, 82);
+		btnBack.setBounds(10, 10, 40, 40);
 		panel.add(btnBack);
 		
 		JButton btnAccueil = new JButton("");
@@ -80,7 +80,7 @@ public class NouveauClient extends JPanel {
 		});
 		btnAccueil.setBackground(Color.WHITE);
 		btnAccueil.setIcon(new ImageIcon("C:\\Users\\Julien\\Desktop\\projetBoulang\\exit.png"));
-		btnAccueil.setBounds(1270, 10, 160, 82);
+		btnAccueil.setBounds(1370, 11, 40, 40);
 		panel.add(btnAccueil);
 		
 		JPanel panel_1 = new JPanel();
@@ -178,7 +178,14 @@ public class NouveauClient extends JPanel {
 					String tel_saisie = telValue.getText();
 					String email_saisie = emailValue.getText();
 					
-					Client nouveau = new Client(name_saisie,firstName_saisie,adress_saisie,zip_saisie,city_saisie,tel_saisie,email_saisie);
+					Client nouveau = new Client(
+							name_saisie,
+							firstName_saisie,
+							adress_saisie,
+							zip_saisie,
+							city_saisie,
+							tel_saisie,
+							email_saisie);
 					clientDaoModified.update(nouveau, ClientDao.currentClient.getId());
 					btnNewButton.setText("Valider");
 					nameValue.setText("");
@@ -198,7 +205,7 @@ public class NouveauClient extends JPanel {
 				}
 			});
 			btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 20));
-			btnNewButton.setBackground(new Color(255, 140, 0));
+			btnNewButton.setBackground(new Color(242, 193, 102));
 			btnNewButton.setBounds(168, 571, 155, 30);
 			panel_1.add(btnNewButton);	
 		} else {
@@ -213,7 +220,15 @@ public class NouveauClient extends JPanel {
 					String city_saisie = cityValue.getText();
 					String tel_saisie = telValue.getText();
 					String email_saisie = emailValue.getText();
-					Client nouveau = new Client(name_saisie,firstName_saisie,adress_saisie,zip_saisie,city_saisie,tel_saisie,email_saisie);
+					Client nouveau = new Client(
+							name_saisie,
+							firstName_saisie,
+							adress_saisie,
+							zip_saisie,
+							city_saisie,
+							tel_saisie,
+							email_saisie
+							);
 					if(!(Pattern.matches("^[a-zA-Z0-9_.-]+[@][a-zA-Z0-9-]+[.]+[a-zA-Z0-9]+$",email_saisie))) {
 						JOptionPane.showMessageDialog(null, "Mail invalide","Error",JOptionPane.ERROR_MESSAGE);
 					}else {
@@ -228,7 +243,7 @@ public class NouveauClient extends JPanel {
 							cityValue.setText("");
 							telValue.setText("");
 							emailValue.setText("");
-							clientDao.inscription(nouveau);
+							clientDao.create(nouveau);
 						}else {
 							JOptionPane.showMessageDialog(null, "Mail existe deja","Error",JOptionPane.ERROR_MESSAGE);
 							
@@ -238,7 +253,7 @@ public class NouveauClient extends JPanel {
 			});
 		
 		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 20));
-		btnNewButton.setBackground(new Color(255, 140, 0));
+		btnNewButton.setBackground(new Color(242, 193, 102));
 		btnNewButton.setBounds(168, 571, 155, 30);
 		panel_1.add(btnNewButton);
 		}

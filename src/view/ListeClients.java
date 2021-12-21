@@ -20,6 +20,8 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
 import controller.ClientDao;
 import controller.IDao;
@@ -27,6 +29,8 @@ import controller.PanelsManager;
 import model.Client;
 
 import javax.swing.JTable;
+import javax.swing.RowSorter;
+import javax.swing.SortOrder;
 import javax.swing.JScrollPane;
 
 public class ListeClients extends JPanel {
@@ -36,16 +40,13 @@ public class ListeClients extends JPanel {
 	JButton btnDelete = new JButton();
 	JButton btnBrowsingHistory = new JButton();
 	
-	/**
-	 * Create the panel.
-	 */
 	public ListeClients() {
 		setBounds(0, 0, 1440, 900);
-		setBackground(new Color(255, 235, 205));
+		setBackground(new Color(254, 245, 232));
 		setLayout(null);
 		
 		JPanel panel = new JPanel();
-		panel.setBounds(0, 0, 1440, 131);
+		panel.setBounds(0, 0, 1440, 90);
 		panel.setBackground(Color.WHITE);
 		add(panel);
 		panel.setLayout(null);
@@ -53,7 +54,7 @@ public class ListeClients extends JPanel {
 		JLabel lblAccueil = new JLabel("Accueil");
 		lblAccueil.setHorizontalAlignment(SwingConstants.CENTER);
 		lblAccueil.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblAccueil.setBounds(1270, 102, 160, 19);
+		lblAccueil.setBounds(1355, 62, 63, 18);
 		panel.add(lblAccueil);
 		
 		JButton btnAccueil = new JButton("");
@@ -67,7 +68,7 @@ public class ListeClients extends JPanel {
 		});
 		btnAccueil.setBackground(Color.WHITE);
 		btnAccueil.setIcon(new ImageIcon("C:\\Users\\Julien\\Desktop\\projetBoulang\\exit.png"));
-		btnAccueil.setBounds(1270, 10, 160, 82);
+		btnAccueil.setBounds(1370, 11, 40, 40);
 		panel.add(btnAccueil);
 		// Ajouter un client
 		
@@ -81,7 +82,7 @@ public class ListeClients extends JPanel {
 			
 			}
 		});
-		btnNewClient.setBackground(new Color(244, 164, 96));
+		btnNewClient.setBackground(new Color(242, 193, 102));
 		btnNewClient.setFont(new Font("Tahoma", Font.PLAIN, 25));
 		btnNewClient.setBounds(503, 914, 463, 43);
 		add(btnNewClient);
@@ -165,7 +166,7 @@ public class ListeClients extends JPanel {
 			}
 		});
 	}
-		// Remplir ma table avec la DB --- Si rajouter colonne ne pas oublier ICI
+		// Les intitulés des colonnes du tableau
 		public DefaultTableModel liste() {
 			String [] col = {"N° Client",
 					"Nom",
@@ -177,6 +178,7 @@ public class ListeClients extends JPanel {
 					"Historique",
 					"Supprimer"
 			};
+			// Les données du tableau
 			DefaultTableModel tab = new DefaultTableModel(null, col);
 			
 			ClientDao clientDao = new ClientDao();
@@ -198,7 +200,7 @@ public class ListeClients extends JPanel {
 		}	
 	
 		
-	// Class pour les boutons dans le JTable.Comment faire plus propre ?  
+	// Class pour les boutons dans le JTable 
 	class ButtonRenderer extends JButton implements TableCellRenderer{
 			public ButtonRenderer() {
 				setOpaque(true);

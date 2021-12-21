@@ -18,36 +18,35 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.RowSorter;
+import javax.swing.SortOrder;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 
-import controller.ClientDao;
+import com.mysql.cj.conf.ConnectionUrlParser;
+
+import controller.CommandeClientDAO;
 import controller.PanelsManager;
 import model.Client;
-import view.ListeClients.ButtonEditor;
-import view.ListeClients.ButtonRenderer;
-import view.ListeClients.SecondButtonEditor;
-import view.ListeClients.SecondButtonRenderer;
-import view.ListeClients.ThirdButtonEditor;
-import view.ListeClients.ThirdButtonRenderer;
+import model.CommandeClient;
 
 public class ListeDevis extends JPanel {
-	private JTable listingClients;
+	private JTable table;
+	JButton btnValidate = new JButton();
 	JButton btnModify = new JButton();
 	JButton btnDelete = new JButton();
-	JButton btnBrowsingHistory = new JButton();
-	/**
-	 * Create the panel.
-	 */
+	
 	public ListeDevis() {
 		setBounds(0, 0, 1440, 900);
-		setBackground(new Color(255, 235, 205));
+		setBackground(new Color(254, 245, 232));
 		setLayout(null);
 		
 		JPanel panel = new JPanel();
-		panel.setBounds(0, 0, 1440, 131);
+		panel.setBounds(0, 0, 1440, 94);
 		panel.setBackground(Color.WHITE);
 		add(panel);
 		panel.setLayout(null);
@@ -55,7 +54,7 @@ public class ListeDevis extends JPanel {
 		JLabel lblAccueil = new JLabel("Accueil");
 		lblAccueil.setHorizontalAlignment(SwingConstants.CENTER);
 		lblAccueil.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblAccueil.setBounds(1270, 102, 160, 19);
+		lblAccueil.setBounds(1355, 62, 63, 18);
 		panel.add(lblAccueil);
 		
 		JButton btnAccueil = new JButton("");
@@ -69,21 +68,21 @@ public class ListeDevis extends JPanel {
 		});
 		btnAccueil.setBackground(Color.WHITE);
 		btnAccueil.setIcon(new ImageIcon("C:\\Users\\Julien\\Desktop\\projetBoulang\\exit.png"));
-		btnAccueil.setBounds(1270, 10, 160, 82);
+		btnAccueil.setBounds(1370, 11, 40, 40);
 		panel.add(btnAccueil);
 		// Ajouter un client
 		
-		JButton btnNewClient = new JButton("Nouveau Client");
+		JButton btnNewClient = new JButton("Nouveau Devis");
 		btnNewClient.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				PanelsManager.contentPane.removeAll();
-				PanelsManager.contentPane.add(PanelsManager.switchToNouveauClientPanel());
+				PanelsManager.contentPane.add(PanelsManager.switchtoNouveauDevisPanel());
 				PanelsManager.contentPane.repaint();
 				PanelsManager.contentPane.revalidate();
 			
 			}
 		});
-		btnNewClient.setBackground(new Color(244, 164, 96));
+		btnNewClient.setBackground(new Color(242, 193, 102));
 		btnNewClient.setFont(new Font("Tahoma", Font.PLAIN, 25));
 		btnNewClient.setBounds(503, 914, 463, 43);
 		add(btnNewClient);
@@ -99,44 +98,48 @@ public class ListeDevis extends JPanel {
 		scrollPane.setBounds(0, 0, 912, 706);
 		listing.add(scrollPane);
 		
-		listingClients = new JTable();
-		listingClients.setRowSelectionAllowed(false);
-		scrollPane.setViewportView(listingClients);
-		listingClients.setRowHeight(100);
-		listingClients.setModel(liste());
+		table = new JTable();
+		table.setRowSelectionAllowed(false);
+		scrollPane.setViewportView(table);
+		table.setRowHeight(100);
+		table.setModel(liste());
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 		centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-		listingClients.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
-		listingClients.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
-		listingClients.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
-		listingClients.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
-		listingClients.getColumnModel().getColumn(4).setCellRenderer(centerRenderer);
-		listingClients.getColumnModel().getColumn(5).setCellRenderer(centerRenderer);
-		listingClients.getColumnModel().getColumn(6).setCellRenderer(centerRenderer);
+		table.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
+		table.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
+		table.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
+		table.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
+		table.getColumnModel().getColumn(4).setCellRenderer(centerRenderer);
+		table.getColumnModel().getColumn(5).setCellRenderer(centerRenderer);
+		table.getColumnModel().getColumn(6).setCellRenderer(centerRenderer);
 		
-		listingClients.getColumn("Modifier").setCellRenderer(new ButtonRenderer());
-		listingClients.getColumn("Modifier").setCellEditor(new ButtonEditor(new JCheckBox()));
-		listingClients.getColumn("Historique").setCellRenderer(new SecondButtonRenderer());
-		listingClients.getColumn("Historique").setCellEditor(new SecondButtonEditor(new JCheckBox()));
-		listingClients.getColumn("Supprimer").setCellRenderer(new ThirdButtonRenderer());
-		listingClients.getColumn("Supprimer").setCellEditor(new ThirdButtonEditor(new JCheckBox()));
+		
+		table.getColumn("Valider").setCellRenderer(new ButtonRenderer());
+		table.getColumn("Valider").setCellEditor(new ButtonEditor(new JCheckBox()));
+		table.getColumn("Modifier").setCellRenderer(new SecondButtonRenderer());
+		table.getColumn("Modifier").setCellEditor(new SecondButtonEditor(new JCheckBox()));
+		table.getColumn("Annuler").setCellRenderer(new ThirdButtonRenderer());
+		table.getColumn("Annuler").setCellEditor(new ThirdButtonEditor(new JCheckBox()));
 		
 		// Lors du clic sur le bouton modifier il se passe: 
 		btnModify.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int n = JOptionPane.showConfirmDialog(null, "Etes vous sur de modifier ?","Modification",JOptionPane.YES_NO_OPTION);
 				if (n == JOptionPane.YES_OPTION) {
-					NouveauClient.modify = true;
-					ClientDao clientDao = new ClientDao();
-					clientDao.findById((int)listingClients.getValueAt(listingClients.getSelectedRow(),0));
+					CommandeClientDAO commandeClientDAO = new CommandeClientDAO();
+					ConnectionUrlParser.Pair < CommandeClient, Client > pair = 
+							commandeClientDAO.findById((int) table.getValueAt(table.getSelectedRow(), 0));
+					NouveauDevis.currentCommande = pair.left;
+					NouveauDevis.currentClient = pair.right;
+					NouveauDevis.modify = true;
+	
 					PanelsManager.contentPane.removeAll();
-					PanelsManager.contentPane.add(PanelsManager.switchToNouveauClientPanel());
+					PanelsManager.contentPane.add(PanelsManager.switchtoNouveauDevisPanel());
 					PanelsManager.contentPane.repaint();
 					PanelsManager.contentPane.revalidate();
 				} else if (n == JOptionPane.NO_OPTION) {
 					
-				}
-					
+				}	
 			}
 		});
 		
@@ -144,10 +147,10 @@ public class ListeDevis extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				int n = JOptionPane.showConfirmDialog(null, "Etes vous sur de supprimer ?","Suppression",JOptionPane.YES_NO_OPTION);
 				if (n == JOptionPane.YES_OPTION) {
-					ClientDao clientDao = new ClientDao();
-					clientDao.delete((int) listingClients.getValueAt(listingClients.getSelectedRow(), 0));
+					CommandeClientDAO ccDao = new CommandeClientDAO();
+					ccDao.delete((int) table.getValueAt(table.getSelectedRow(), 0));
 					PanelsManager.contentPane.removeAll();
-					PanelsManager.contentPane.add(PanelsManager.switchToListeClientsPanel());
+					PanelsManager.contentPane.add(PanelsManager.switchtoListeDevisPanel());
 					PanelsManager.contentPane.repaint();
 					PanelsManager.contentPane.revalidate();
 				} else if (n == JOptionPane.NO_OPTION) {
@@ -157,17 +160,24 @@ public class ListeDevis extends JPanel {
 			}
 		});
 		
-		btnBrowsingHistory.addActionListener(new ActionListener() {
+		btnValidate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				int n = JOptionPane.showConfirmDialog(null, "Etes vous sur de passer ce devis en valider ?","Validation",JOptionPane.YES_NO_OPTION);
+				if (n == JOptionPane.YES_OPTION) {
+					CommandeClientDAO ccDao = new CommandeClientDAO();
+					ccDao.archive((int) table.getValueAt(table.getSelectedRow(), 0));
 					PanelsManager.contentPane.removeAll();
-					PanelsManager.contentPane.add(PanelsManager.switchToCommandesClientPanel());
+					PanelsManager.contentPane.add(PanelsManager.switchtoListeDevisPanel());
 					PanelsManager.contentPane.repaint();
 					PanelsManager.contentPane.revalidate();
+				} else if (n == JOptionPane.NO_OPTION) {
+					
+				}
+				
 			}
 		});
 	}
-		// Remplir ma table avec la DB --- Si rajouter colonne ne pas oublier ICI
+		// Intitulé des colonnes
 		public DefaultTableModel liste() {
 			String [] col = {
 					"N° Devis",
@@ -177,38 +187,33 @@ public class ListeDevis extends JPanel {
 					"Prix total TTC",
 					"Valider", 
 					"Modifier",
-					"Annuler",
-					
+					"Annuler",		
 			};
 			DefaultTableModel tab = new DefaultTableModel(null, col);
-			
-			ClientDao clientDao = new ClientDao();
-			List<Client> listClients = new ArrayList<>();
-			listClients.addAll(clientDao.read());
-			for (Client client : listClients) {
+			// Les données du tableau 
+			CommandeClientDAO hcv = new CommandeClientDAO();
+			ConnectionUrlParser.Pair<ArrayList<CommandeClient>, ArrayList<Client>> pair = 
+					hcv.readPairDevis();
+			for (int i = 0; i < pair.left.size(); i++) {
 				Vector vect = new Vector();
-				 vect.add(client.getId());
-				 vect.add(client.getName());
-				 vect.add(client.getFirstName());
-				 vect.add(client.getAdress()+" "+client.getZip()+" "+client.getCity());
-				 vect.add(client.getTel());
-				 vect.add(client.getEmail());
-				 
-				 tab.addRow(vect);
+				vect.add(pair.left.get(i).getId());
+				vect.add(pair.left.get(i).getWithdrawal_at());
+				vect.add(pair.right.get(i).getFirstName()+" "+pair.right.get(i).getName());
+				vect.add(pair.left.get(i).getNbrArticles());
+				vect.add(pair.left.get(i).getPrixTotal());
+				tab.addRow(vect);
 			}
 			return tab;
-		
 		}	
-	
 		
-	// Class pour les boutons dans le JTable.Comment faire plus propre ?  
+	// Class qui créer les boutons dans la JTable  
 	class ButtonRenderer extends JButton implements TableCellRenderer{
 			public ButtonRenderer() {
 				setOpaque(true);
 			}
 			public Component getTableCellRendererComponent(JTable table, Object value,
 														   boolean isSelected, boolean hasFocus, int row, int column) {
-				setText((value == null) ? "Modify" : value.toString());
+				setText((value == null) ? "Valider" : value.toString());
 				return this;
 			}
 	}
@@ -222,9 +227,9 @@ public class ListeDevis extends JPanel {
 		public Component getTableCellEditorComponent(JTable table, Object value,
 													 boolean isSelected, int row, int column)
 		{
-			label = (value == null) ? "Modify" : value.toString();
-			btnModify.setText(label);
-			return btnModify;
+			label = (value == null) ? "Valider" : value.toString();
+			btnValidate.setText(label);
+			return btnValidate;
 		}
 		public Object getCellEditorValue()
 		{
@@ -238,7 +243,7 @@ public class ListeDevis extends JPanel {
 	    }
 	    public Component getTableCellRendererComponent(JTable table, Object value,
 	    boolean isSelected, boolean hasFocus, int row, int column) {
-	    	setText((value == null) ? "Historique" : value.toString());
+	    	setText((value == null) ? "Modifier" : value.toString());
 			return this;
 	    }
 	}
@@ -249,10 +254,10 @@ public class ListeDevis extends JPanel {
 		private String label;
 	    public Component getTableCellEditorComponent(JTable table, Object value,
 	    boolean isSelected, int row, int column){
-	      label = (value == null) ? "Historique" : value.toString();
-	      btnBrowsingHistory.setText(label);
+	      label = (value == null) ? "Modifier" : value.toString();
+	      btnModify.setText(label);
 	      
-	      return btnBrowsingHistory;
+	      return btnModify;
 	    }
 	    public Object getCellEditorValue() 
 	    {
@@ -267,20 +272,18 @@ public class ListeDevis extends JPanel {
 	    }
 	    public Component getTableCellRendererComponent(JTable table, Object value,
 	    boolean isSelected, boolean hasFocus, int row, int column) {
-	    	setText((value == null) ? "Supprimer" : value.toString());
+	    	setText((value == null) ? "Annuler" : value.toString());
 			return this;
 	    }
 	}
 	class ThirdButtonEditor extends DefaultCellEditor{
 	    public ThirdButtonEditor(JCheckBox checkBox) {
 			super(checkBox);
-			
 		}
 		private String label;
-	    
 	    public Component getTableCellEditorComponent(JTable table, Object value,
 	    boolean isSelected, int row, int column){
-	      label = (value == null) ? "Supprimer" : value.toString();
+	      label = (value == null) ? "Annuler" : value.toString();
 	      btnDelete.setText(label);
 	      return btnDelete;
 	    }
