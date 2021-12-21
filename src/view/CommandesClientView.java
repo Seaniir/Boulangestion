@@ -23,8 +23,8 @@ public class CommandesClientView extends JPanel {
 		setLayout(null);
 
 		JPanel panel = new JPanel();
-		panel.setBackground(new Color(255, 248, 220));
-		panel.setBounds(0, 100, 1440, 800);
+		panel.setBackground(new Color(254, 245, 232));
+		panel.setBounds(0, 89, 1440, 811);
 		add(panel);
 		panel.setLayout(null);
 
@@ -61,10 +61,48 @@ public class CommandesClientView extends JPanel {
 			PanelsManager.contentPane.repaint();
 		});
 		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 30));
-		btnNewButton.setBackground(new Color(255, 165, 0));
+		btnNewButton.setBackground(new Color(242, 193, 102));
 		btnNewButton.setForeground(new Color(0, 0, 0));
 		btnNewButton.setBounds(467, 663, 499, 53);
 		panel.add(btnNewButton);
+		
+		JPanel menu = new JPanel();
+		menu.setLayout(null);
+		menu.setBackground(Color.WHITE);
+		menu.setBounds(0, 0, 1440, 90);
+		add(menu);
+		
+		JButton btnRetour = new JButton("");
+		btnRetour.addActionListener(e -> {
+			PanelsManager.contentPane.removeAll();
+			PanelsManager.contentPane.add(PanelsManager.switchToAccueilMenu());
+			PanelsManager.contentPane.revalidate();
+			PanelsManager.contentPane.repaint();
+		});
+		btnRetour.setBounds(22, 11, 40, 40);
+		menu.add(btnRetour);
+		
+		JLabel lblRetour = new JLabel("Retour");
+		lblRetour.setHorizontalAlignment(SwingConstants.CENTER);
+		lblRetour.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblRetour.setBounds(10, 62, 63, 18);
+		menu.add(lblRetour);
+		
+		JButton btnAccueil = new JButton("");
+		btnAccueil.addActionListener(e -> {
+			PanelsManager.contentPane.removeAll();
+			PanelsManager.contentPane.add(PanelsManager.switchToAccueilMenu());
+			PanelsManager.contentPane.revalidate();
+			PanelsManager.contentPane.repaint();
+		});
+		btnAccueil.setBounds(1370, 11, 40, 40);
+		menu.add(btnAccueil);
+		
+		JLabel lblAccueil = new JLabel("Accueil");
+		lblAccueil.setHorizontalAlignment(SwingConstants.CENTER);
+		lblAccueil.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblAccueil.setBounds(1355, 62, 63, 18);
+		menu.add(lblAccueil);
 		btnModifier.addActionListener(
 				event -> {
 					int n = JOptionPane.showConfirmDialog(null,
@@ -128,47 +166,7 @@ public class CommandesClientView extends JPanel {
 		table.getColumn("Annuler").setCellEditor(new SecondButtonEditor(new JCheckBox()));
 		table.getColumn("Archiver").setCellRenderer(new ThirdButtonRenderer());
 		table.getColumn("Archiver").setCellEditor(new ThirdButtonEditor(new JCheckBox()));
-		JPanel panel_1 = new JPanel();
-		panel_1.setBackground(new Color(255, 255, 255));
-		panel_1.setBounds(0, 0, 1440, 99);
-		add(panel_1);
-		panel_1.setLayout(null);
-		ImageIcon imageIcon = new ImageIcon("C:\\Users\\Quentin\\Downloads\\history.png");
-		Image image = imageIcon.getImage();
-		Image newimg = image.getScaledInstance(75, 75, java.awt.Image.SCALE_SMOOTH);
-		imageIcon = new ImageIcon(newimg);
-
-		JButton accueilBtn = new JButton("");
 		ImageIcon imageIcon1 = new ImageIcon("C:\\Users\\Quentin\\Downloads\\sign-out.png");
-		Image image1 = imageIcon1.getImage();
-		Image newimg1 = image1.getScaledInstance(75, 75, java.awt.Image.SCALE_SMOOTH);
-		accueilBtn.addActionListener(e -> {
-			PanelsManager.contentPane.removeAll();
-			PanelsManager.contentPane.add(PanelsManager.switchToAccueilMenu());
-			PanelsManager.contentPane.revalidate();
-			PanelsManager.contentPane.repaint();
-		});
-		imageIcon1 = new ImageIcon(newimg1);
-
-		JLabel lblNewLabel = new JLabel("Historique");
-		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel.setBounds(0, 74, 127, 25);
-		panel_1.add(lblNewLabel);
-
-		JLabel lblAccueil = new JLabel("Accueil");
-		lblAccueil.setHorizontalAlignment(SwingConstants.CENTER);
-		lblAccueil.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		lblAccueil.setBounds(1323, 74, 127, 25);
-		panel_1.add(lblAccueil);
-		accueilBtn.setIcon(imageIcon1);
-		accueilBtn.setBounds(1333, 0, 107, 76);
-		panel_1.add(accueilBtn);
-
-		JButton historiqueBtn = new JButton("");
-		historiqueBtn.setIcon(imageIcon);
-		historiqueBtn.setBounds(0, 0, 127, 76);
-		panel_1.add(historiqueBtn);
 	}
 
 	public DefaultTableModel liste() {
@@ -292,5 +290,4 @@ public class CommandesClientView extends JPanel {
 			return label;
 		}
 	}
-
 }

@@ -55,23 +55,6 @@ public class ClotureCaisse extends JPanel {
 		setBounds(0, 0, 1440, 900);
 		setLayout(null);
 
-		JPanel menu = new JPanel();
-		menu.setBackground(new Color(255, 255, 255));
-		menu.setBounds(0, 0, 1440, 90);
-		add(menu);
-		menu.setLayout(null);
-
-		JButton btnAccueil = new JButton("");
-		btnAccueil.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				PanelsManager.contentPane.removeAll();
-				PanelsManager.contentPane.add(PanelsManager.switchToAccueilMenu());
-				PanelsManager.contentPane.repaint();
-				PanelsManager.contentPane.revalidate();
-			}
-		});
-
 		BufferedImage img = null;
 		try {
 			img = ImageIO.read(new File(
@@ -83,19 +66,50 @@ public class ClotureCaisse extends JPanel {
 				Image.SCALE_SMOOTH);
 		ImageIcon imageIcon = new ImageIcon(dimg);
 		
-		btnAccueil.setIcon(new ImageIcon(
-				"C:\\Users\\fredb\\AFPA\\workspace-java\\Boulangestion\\projetBoulang\\exit.png"));
+		JPanel menu = new JPanel();
+		menu.setLayout(null);
+		menu.setBackground(Color.WHITE);
+		menu.setBounds(0, 0, 1440, 90);
+		add(menu);
+		
+		JButton btnRetour = new JButton("");
+		btnRetour.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				PanelsManager.contentPane.removeAll();
+				PanelsManager.contentPane.add(PanelsManager.switchToAccueilMenu());
+				PanelsManager.contentPane.revalidate();
+				PanelsManager.contentPane.repaint();
+			}
+		});
+		btnRetour.setBounds(22, 11, 40, 40);
+		menu.add(btnRetour);
+		
+		JLabel lblRetour = new JLabel("Retour");
+		lblRetour.setHorizontalAlignment(SwingConstants.CENTER);
+		lblRetour.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblRetour.setBounds(10, 62, 63, 18);
+		menu.add(lblRetour);
+		
+		JButton btnAccueil = new JButton("");
+		btnAccueil.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				PanelsManager.contentPane.removeAll();
+				PanelsManager.contentPane.add(PanelsManager.switchToAccueilMenu());
+				PanelsManager.contentPane.revalidate();
+				PanelsManager.contentPane.repaint();
+			}
+		});
 		btnAccueil.setBounds(1370, 11, 40, 40);
 		menu.add(btnAccueil);
-
-		JLabel lblNewLabel_1 = new JLabel("Accueil");
-		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		lblNewLabel_1.setBounds(1355, 62, 63, 18);
-		menu.add(lblNewLabel_1);
+		
+		JLabel lblAccueil = new JLabel("Accueil");
+		lblAccueil.setHorizontalAlignment(SwingConstants.CENTER);
+		lblAccueil.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblAccueil.setBounds(1355, 62, 63, 18);
+		menu.add(lblAccueil);
 
 		JPanel formulaire = new JPanel();
-		formulaire.setBackground(Color.ORANGE);
+		formulaire.setBackground(Color.WHITE);
 		formulaire.setBounds(265, 155, 911, 467);
 		add(formulaire);
 		formulaire.setLayout(null);
@@ -131,7 +145,7 @@ public class ClotureCaisse extends JPanel {
 		formulaire.add(totalClotureLabel);
 		
 		JButton btnNewButton = new JButton("Cl\u00F4turer la caisse");
-		btnNewButton.setBackground(Color.ORANGE);
+		btnNewButton.setBackground(new Color(242, 193, 102));
 		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 25));
 		btnNewButton.setBounds(578, 685, 335, 57);
 		add(btnNewButton);
@@ -145,11 +159,6 @@ public class ClotureCaisse extends JPanel {
 		lblNewLabel_4.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblNewLabel_4.setBounds(20, 11, 152, 28);
 		panel.add(lblNewLabel_4);
-
-		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setIcon(imageIcon);
-		lblNewLabel.setBounds(0, 0, 1440, 900);
-		add(lblNewLabel);
 
 		JLabel dateLabel = new JLabel("");
 		dateLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));

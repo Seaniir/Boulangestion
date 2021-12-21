@@ -27,6 +27,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.*;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class NouvelleCommandeClientView extends JPanel {
 	static public boolean modify = false;
@@ -46,80 +48,26 @@ public class NouvelleCommandeClientView extends JPanel {
 	public NouvelleCommandeClientView() {
 		setBounds(0, 0, 1440, 900);
 		setLayout(null);
-
-		JPanel panel_1 = new JPanel();
-		panel_1.setLayout(null);
-		panel_1.setBackground(Color.WHITE);
-		panel_1.setBounds(0, 0, 1440, 99);
-		add(panel_1);
-
-		JButton accueilBtn = new JButton("");
 		ImageIcon accueilImage = new ImageIcon("C:\\Users\\Quentin\\Downloads\\sign-out.png");
 		Image accueilImageImage = accueilImage.getImage();
 		Image newimg4 = accueilImageImage.getScaledInstance(75, 75, java.awt.Image.SCALE_SMOOTH);
 		accueilImage = new ImageIcon(newimg4);
-		accueilBtn.setIcon(accueilImage);
-		accueilBtn.setBounds(1333, 0, 107, 75);
-		panel_1.add(accueilBtn);
-		accueilBtn.addActionListener(e -> {
-			currentClient = new Client();
-			currentCommande = new CommandeClient();
-			modify = false;
-			PanelsManager.contentPane.removeAll();
-			PanelsManager.contentPane.add(PanelsManager.switchToAccueilMenu());
-			PanelsManager.contentPane.revalidate();
-			PanelsManager.contentPane.repaint();
-		});
-
-		JButton historiqueBtn = new JButton("");
 		ImageIcon imageIcon = new ImageIcon("C:\\Users\\Quentin\\Downloads\\history.png");
 		Image image = imageIcon.getImage();
 		Image newimg = image.getScaledInstance(75, 75, java.awt.Image.SCALE_SMOOTH);
 		imageIcon = new ImageIcon(newimg);
-		historiqueBtn.setIcon(imageIcon);
-		historiqueBtn.setBounds(0, 0, 127, 75);
-		panel_1.add(historiqueBtn);
 		button.addActionListener(
 				event -> JOptionPane.showMessageDialog(null, "Do you want to modify this line?")
 		);
-
-		JButton returnBtn = new JButton("");
-		returnBtn.addActionListener(e -> {
-			currentClient = new Client();
-			currentCommande = new CommandeClient();
-			modify = false;
-			PanelsManager.contentPane.removeAll();
-			PanelsManager.contentPane.add(PanelsManager.switchToCommandesClientPanel());
-			PanelsManager.contentPane.revalidate();
-			PanelsManager.contentPane.repaint();
-		});
 		ImageIcon imageReturn = new ImageIcon("C:\\Users\\Quentin\\Downloads\\return.png");
 		Image imageReturnImage = imageReturn.getImage();
 		Image newimg3 = imageReturnImage.getScaledInstance(75, 75, java.awt.Image.SCALE_SMOOTH);
 		imageReturn = new ImageIcon(newimg3);
-		returnBtn.setBounds(127, 0, 127, 75);
-		returnBtn.setIcon(imageReturn);
-		panel_1.add(returnBtn);
-
-		JLabel lblNewLabel_9 = new JLabel("Historique");
-		lblNewLabel_9.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_9.setBounds(0, 74, 127, 25);
-		panel_1.add(lblNewLabel_9);
-
-		JLabel lblNewLabel_10 = new JLabel("Retour");
-		lblNewLabel_10.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_10.setBounds(127, 74, 127, 25);
-		panel_1.add(lblNewLabel_10);
-
-		JLabel lblNewLabel_11 = new JLabel("Accueil");
-		lblNewLabel_11.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_11.setBounds(1333, 74, 107, 25);
-		panel_1.add(lblNewLabel_11);
 
 		JPanel panel = new JPanel();
 		panel.setLayout(null);
-		panel.setBackground(new Color(255, 248, 220));
-		panel.setBounds(0, 100, 1440, 800);
+		panel.setBackground(new Color(254, 245, 232));
+		panel.setBounds(0, 89, 1440, 811);
 		add(panel);
 
 		JLabel lblNewLabel_1 = new JLabel("Client");
@@ -360,13 +308,25 @@ public class NouvelleCommandeClientView extends JPanel {
 				commandeClientDAO.update(new CommandeClient(date, date, currentClient.getId(), table.getRowCount(), Float.parseFloat(prixTotal_label.getText()), true, "En cours", typePaiment, json), currentCommande.getId());
 			else
 				commandeClientDAO.add(new CommandeClient(date, date, currentClient.getId(), table.getRowCount(), Float.parseFloat(prixTotal_label.getText()), true, "En cours", typePaiment, json));
+			PanelsManager.contentPane.removeAll();
+			PanelsManager.contentPane.add(PanelsManager.switchToCommandesClientPanel());
+			PanelsManager.contentPane.revalidate();
+			PanelsManager.contentPane.repaint();
 		});
-		btnNewButton_1.setBackground(Color.ORANGE);
+		btnNewButton_1.setBackground(new Color(242, 193, 102));
 		btnNewButton_1.setFont(new Font("Tahoma", Font.PLAIN, 25));
 		btnNewButton_1.setBounds(1102, 557, 249, 56);
 		panel.add(btnNewButton_1);
 
 		JButton btnNewButton_1_1 = new JButton("Annuler");
+		btnNewButton_1_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				PanelsManager.contentPane.removeAll();
+				PanelsManager.contentPane.add(PanelsManager.switchToCommandesClientPanel());
+				PanelsManager.contentPane.revalidate();
+				PanelsManager.contentPane.repaint();
+			}
+		});
 		btnNewButton_1_1.setFont(new Font("Tahoma", Font.PLAIN, 25));
 		btnNewButton_1_1.setBounds(1102, 630, 249, 56);
 		panel.add(btnNewButton_1_1);
@@ -376,6 +336,48 @@ public class NouvelleCommandeClientView extends JPanel {
 			System.out.println(table.getValueAt(i, 5));
 		}
 		prixTotal_label.setText(String.valueOf(prixTotal));
+		
+		JPanel menu = new JPanel();
+		menu.setLayout(null);
+		menu.setBackground(Color.WHITE);
+		menu.setBounds(0, -1, 1440, 90);
+		add(menu);
+		
+		JButton btnRetour = new JButton("");
+		btnRetour.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				PanelsManager.contentPane.removeAll();
+				PanelsManager.contentPane.add(PanelsManager.switchToCommandesClientPanel());
+				PanelsManager.contentPane.revalidate();
+				PanelsManager.contentPane.repaint();
+			}
+		});
+		btnRetour.setBounds(22, 11, 40, 40);
+		menu.add(btnRetour);
+		
+		JLabel lblRetour = new JLabel("Retour");
+		lblRetour.setHorizontalAlignment(SwingConstants.CENTER);
+		lblRetour.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblRetour.setBounds(10, 62, 63, 18);
+		menu.add(lblRetour);
+		
+		JButton btnAccueil = new JButton("");
+		btnAccueil.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				PanelsManager.contentPane.removeAll();
+				PanelsManager.contentPane.add(PanelsManager.switchToAccueilMenu());
+				PanelsManager.contentPane.revalidate();
+				PanelsManager.contentPane.repaint();
+			}
+		});
+		btnAccueil.setBounds(1370, 11, 40, 40);
+		menu.add(btnAccueil);
+		
+		JLabel lblAccueil = new JLabel("Accueil");
+		lblAccueil.setHorizontalAlignment(SwingConstants.CENTER);
+		lblAccueil.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		lblAccueil.setBounds(1355, 62, 63, 18);
+		menu.add(lblAccueil);
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 		centerRenderer.setHorizontalAlignment(JLabel.CENTER);
 		table.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
@@ -391,7 +393,7 @@ public class NouvelleCommandeClientView extends JPanel {
 				int row = table.getSelectedRow();
 				int column = table.getSelectedColumn();
 				System.out.println(table.getColumnName(column));
-				if (table.getColumnName(column).equals("QuantitÃ©")) {
+				if (table.getColumnName(column).equals("Quantite")) {
 					table.setValueAt(Float.parseFloat(table.getValueAt(row, 0).toString()) * (Float.parseFloat(table.getValueAt(row, 2).toString())), row, 3);
 					table.setValueAt(Float.parseFloat(table.getValueAt(row, 0).toString()) * (Float.parseFloat(table.getValueAt(row, 4).toString())), row, 5);
 					float prixTotal1 = 0;
@@ -444,7 +446,7 @@ public class NouvelleCommandeClientView extends JPanel {
 
 	public DefaultTableModel liste() {
 		String[] col = {
-				"Quantité",
+				"Quantite",
 				"Libellé",
 				"Prix Unitaire HT",
 				"Prix total HT",
