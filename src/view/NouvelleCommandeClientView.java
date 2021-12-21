@@ -143,11 +143,11 @@ public class NouvelleCommandeClientView extends JPanel {
 		lblNewLabel_3.setBounds(10, 64, 57, 14);
 		panel_2.add(lblNewLabel_3);
 
-		JLabel lblNewLabel_4 = new JLabel("T\u00E9l\u00E9phone :");
+		JLabel lblNewLabel_4 = new JLabel("Telephone :");
 		lblNewLabel_4.setBounds(10, 110, 72, 14);
 		panel_2.add(lblNewLabel_4);
 
-		JLabel lblNewLabel_5 = new JLabel("Pr\u00E9nom :");
+		JLabel lblNewLabel_5 = new JLabel("Prenom :");
 		lblNewLabel_5.setBounds(237, 26, 78, 14);
 		panel_2.add(lblNewLabel_5);
 
@@ -249,7 +249,7 @@ public class NouvelleCommandeClientView extends JPanel {
 		prixTotal_label.setBounds(38, 11, 125, 77);
 		panel_4.add(prixTotal_label);
 
-		JLabel lblNewLabel_8 = new JLabel("M\u00E9thode de paiment");
+		JLabel lblNewLabel_8 = new JLabel("Methode de paiment");
 		lblNewLabel_8.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		lblNewLabel_8.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel_8.setBounds(1128, 381, 208, 25);
@@ -260,7 +260,7 @@ public class NouvelleCommandeClientView extends JPanel {
 		panel.add(panel_5);
 		panel_5.setLayout(null);
 
-		JRadioButton rdbtnNewRadioButton = new JRadioButton("Esp\u00E8ces");
+		JRadioButton rdbtnNewRadioButton = new JRadioButton("Especes");
 		rdbtnNewRadioButton.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		rdbtnNewRadioButton.setBounds(18, 22, 109, 23);
 
@@ -296,7 +296,7 @@ public class NouvelleCommandeClientView extends JPanel {
 
 		String strDate = null;
 		if (modify) {
-			if (currentCommande.getTypePaiment().equals("Espèces")) {
+			if (currentCommande.getTypePaiment().equals("Especes")) {
 				rdbtnNewRadioButton.setSelected(true);
 			} else if (currentCommande.getTypePaiment().equals("Carte banquaire")) {
 				rdbtnNewRadioButton_1.setSelected(true);
