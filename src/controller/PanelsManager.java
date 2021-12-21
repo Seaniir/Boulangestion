@@ -22,6 +22,7 @@ public class PanelsManager {
     public static JPanel switchtoDetailsCommandeStock(){return new DetailsCommandeStock();}
     public static JPanel switchtoProduitsViewPanel(){return new ProduitsView();}
     public static JPanel switchtoNouveauDevisPanel(){return new NouveauDevis();}
+    public static JPanel switchtoDetailsDevisPanel(){return new DetailsDevis();}
     public static JPanel switchtoListeDevisPanel(){return new ListeDevis();}
     public static JPanel switchtoNewProduitViewPanel(){return new NouveauProduit();}
     public static JPanel switchToClotureCaissePanel(){return new ClotureCaisse();}
