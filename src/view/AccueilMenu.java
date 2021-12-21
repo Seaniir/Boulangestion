@@ -30,13 +30,11 @@ public class AccueilMenu extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private final JLabel lblBoulangestion = new JLabel("\u00A9 2021 Boulangestion");
 	private JButton btnVente;
-	private JButton btnVenteDirecte;
 	private JButton btnDevis;
 	private JButton btnCmdClients;
 	private JButton btnHistoriqueVC;
 	private JButton btnCompta;
 	private JButton btnClotureCaisse;
-	private JButton btnStatistiques;
 	private JButton btnClients;
 	private JButton btnListeClients;
 	private JButton btnNewClient;
@@ -44,9 +42,6 @@ public class AccueilMenu extends JPanel {
 	private JButton btnCmdStock;
 	private JButton btnProduits;
 	private JButton btnFournisseurs;
-	private JButton btnAide;
-	private JButton btnDoc;
-	private	JButton btnFaq;
 	
 	/**
 	 * Create the panel.
@@ -95,7 +90,6 @@ public class AccueilMenu extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 				setSsBtnFalse();
 				btnVente.setBackground(new Color(253, 232, 202));
-				btnVenteDirecte.setVisible(true);
 				btnDevis.setVisible(true);
 				btnCmdClients.setVisible(true);
 				btnHistoriqueVC.setVisible(true);
@@ -110,12 +104,11 @@ public class AccueilMenu extends JPanel {
 				setSsBtnFalse();
 				btnCompta.setBackground(new Color(253, 232, 202));
 				btnClotureCaisse.setVisible(true);
-				btnStatistiques.setVisible(true);
 			}
 		});
 		btnCompta.setFont(new Font("Tahoma", Font.PLAIN, 22));
 		btnCompta.setBackground(new Color(242, 193, 102));
-		btnCompta.setBounds(370, 215, 161, 33);
+		btnCompta.setBounds(477, 215, 161, 33);
 		panel.add(btnCompta);
 
 		//menu clients
@@ -131,7 +124,7 @@ public class AccueilMenu extends JPanel {
 		});
 		btnClients.setFont(new Font("Tahoma", Font.PLAIN, 22));
 		btnClients.setBackground(new Color(242, 193, 102));
-		btnClients.setBounds(641, 215, 161, 33);
+		btnClients.setBounds(811, 215, 161, 33);
 		panel.add(btnClients);
 
 		//menu stocks
@@ -148,24 +141,8 @@ public class AccueilMenu extends JPanel {
 		});
 		btnStocks.setFont(new Font("Tahoma", Font.PLAIN, 22));
 		btnStocks.setBackground(new Color(242, 193, 102));
-		btnStocks.setBounds(914, 215, 161, 33);
+		btnStocks.setBounds(1143, 215, 161, 33);
 		panel.add(btnStocks);
-
-		//menu aide
-		btnAide = new JButton("Aide");
-		btnAide.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				setSsBtnFalse();
-				btnAide.setBackground(new Color(196, 196, 196));
-				btnDoc.setVisible(true);
-				btnFaq.setVisible(true);
-			}
-		});
-		btnAide.setFont(new Font("Tahoma", Font.PLAIN, 22));
-		btnAide.setBackground(new Color(196, 196, 196));
-		btnAide.setBounds(1161, 215, 161, 33);
-		panel.add(btnAide);
 		
 		//bouton de deconnexion qui revient a la page de connexion
 		JButton btnDeco = new JButton("");
@@ -189,15 +166,8 @@ public class AccueilMenu extends JPanel {
 		
 		btnVente.setFont(new Font("Tahoma", Font.PLAIN, 22));
 		btnVente.setBackground(new Color(242, 193, 102));
-		btnVente.setBounds(114, 215, 161, 33);
+		btnVente.setBounds(129, 215, 161, 33);
 		panel.add(btnVente);
-
-		btnVenteDirecte = new JButton("Vente directe");
-		btnVenteDirecte.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		btnVenteDirecte.setBackground(new Color(196, 196, 196));
-		btnVenteDirecte.setBounds(114, 284, 161, 33);
-		btnVenteDirecte.setVisible(false);
-		panel.add(btnVenteDirecte);
 
 		btnDevis = new JButton("Devis");
 		btnDevis.addMouseListener(new MouseAdapter() {
@@ -211,7 +181,7 @@ public class AccueilMenu extends JPanel {
 		});
 		btnDevis.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		btnDevis.setBackground(new Color(242, 193, 102));
-		btnDevis.setBounds(114, 352, 161, 33);
+		btnDevis.setBounds(129, 284, 161, 33);
 		btnDevis.setVisible(false);
 		panel.add(btnDevis);
 
@@ -227,7 +197,7 @@ public class AccueilMenu extends JPanel {
 		});
 		btnCmdClients.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		btnCmdClients.setBackground(new Color(242, 193, 102));
-		btnCmdClients.setBounds(114, 424, 161, 33);
+		btnCmdClients.setBounds(129, 352, 161, 33);
 		btnCmdClients.setVisible(false);
 		panel.add(btnCmdClients);
 
@@ -243,7 +213,7 @@ public class AccueilMenu extends JPanel {
 		});
 		btnHistoriqueVC.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		btnHistoriqueVC.setBackground(new Color(242, 193, 102));
-		btnHistoriqueVC.setBounds(114, 496, 161, 33);
+		btnHistoriqueVC.setBounds(129, 424, 161, 33);
 		btnHistoriqueVC.setVisible(false);
 		panel.add(btnHistoriqueVC);
 
@@ -259,16 +229,9 @@ public class AccueilMenu extends JPanel {
 		});
 		btnClotureCaisse.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		btnClotureCaisse.setBackground(new Color(242, 193, 102));
-		btnClotureCaisse.setBounds(370, 284, 161, 33);
+		btnClotureCaisse.setBounds(477, 284, 161, 33);
 		btnClotureCaisse.setVisible(false);
 		panel.add(btnClotureCaisse);
-
-		btnStatistiques = new JButton("Statistiques");
-		btnStatistiques.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		btnStatistiques.setBackground(new Color(196, 196, 196));
-		btnStatistiques.setBounds(370, 352, 161, 33);
-		btnStatistiques.setVisible(false);
-		panel.add(btnStatistiques);
 
 		btnListeClients = new JButton("Liste clients");
 		btnListeClients.addMouseListener(new MouseAdapter() {
@@ -282,7 +245,7 @@ public class AccueilMenu extends JPanel {
 		});
 		btnListeClients.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		btnListeClients.setBackground(new Color(242, 193, 102));
-		btnListeClients.setBounds(641, 284, 161, 33);
+		btnListeClients.setBounds(811, 284, 161, 33);
 		btnListeClients.setVisible(false);
 		panel.add(btnListeClients);
 
@@ -298,7 +261,7 @@ public class AccueilMenu extends JPanel {
 		});
 		btnNewClient.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		btnNewClient.setBackground(new Color(242, 193, 102));
-		btnNewClient.setBounds(641, 352, 161, 33);
+		btnNewClient.setBounds(811, 352, 161, 33);
 		btnNewClient.setVisible(false);
 		panel.add(btnNewClient);
 
@@ -314,7 +277,7 @@ public class AccueilMenu extends JPanel {
 		});
 		btnCmdStock.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		btnCmdStock.setBackground(new Color(242, 193, 102));
-		btnCmdStock.setBounds(914, 284, 161, 33);
+		btnCmdStock.setBounds(1143, 284, 161, 33);
 		btnCmdStock.setVisible(false);
 		panel.add(btnCmdStock);
 
@@ -330,7 +293,7 @@ public class AccueilMenu extends JPanel {
 		});
 		btnProduits.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		btnProduits.setBackground(new Color(242, 193, 102));
-		btnProduits.setBounds(914, 352, 161, 33);
+		btnProduits.setBounds(1143, 352, 161, 33);
 		btnProduits.setVisible(false);
 		panel.add(btnProduits);
 
@@ -346,23 +309,9 @@ public class AccueilMenu extends JPanel {
 		});
 		btnFournisseurs.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		btnFournisseurs.setBackground(new Color(242, 193, 102));
-		btnFournisseurs.setBounds(914, 424, 161, 33);
+		btnFournisseurs.setBounds(1143, 424, 161, 33);
 		btnFournisseurs.setVisible(false);
 		panel.add(btnFournisseurs);
-
-		btnDoc = new JButton("Documentation");
-		btnDoc.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		btnDoc.setBackground(new Color(196, 196, 196));
-		btnDoc.setBounds(1161, 284, 161, 33);
-		btnDoc.setVisible(false);
-		panel.add(btnDoc);
-
-		btnFaq = new JButton("FAQ");
-		btnFaq.setFont(new Font("Tahoma", Font.PLAIN, 18));
-		btnFaq.setBackground(new Color(196, 196, 196));
-		btnFaq.setBounds(1161, 352, 161, 33);
-		btnFaq.setVisible(false);
-		panel.add(btnFaq);
 
 		JLabel lblNewLabel = new JLabel("");
 		lblNewLabel.setIcon(imageIcon);
@@ -373,13 +322,11 @@ public class AccueilMenu extends JPanel {
 	//methode pour rendre les sous-menus invisibles
 	public void setSsBtnFalse() {
 		btnVente.setBackground(new Color(242, 193, 102));
-		btnVenteDirecte.setVisible(false);
 		btnDevis.setVisible(false);
 		btnCmdClients.setVisible(false);
 		btnHistoriqueVC.setVisible(false);
 		btnCompta.setBackground(new Color(242, 193, 102));
 		btnClotureCaisse.setVisible(false);
-		btnStatistiques.setVisible(false);
 		btnClients.setBackground(new Color(242, 193, 102));
 		btnListeClients.setVisible(false);
 		btnNewClient.setVisible(false);
@@ -387,8 +334,5 @@ public class AccueilMenu extends JPanel {
 		btnCmdStock.setVisible(false);
 		btnProduits.setVisible(false);
 		btnFournisseurs.setVisible(false);
-		btnAide.setBackground(new Color(242, 193, 102));
-		btnFaq.setVisible(false);
-		btnDoc.setVisible(false);
 	}
 }

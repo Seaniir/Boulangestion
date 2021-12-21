@@ -229,6 +229,10 @@ public class NewFournisseur extends JPanel {
 					//ajoute le fournisseur à la bdd
 					fournisseurDao.create(nouveau);
 					clearFields();
+					PanelsManager.contentPane.removeAll();
+					PanelsManager.contentPane.add(PanelsManager.switchToListeFournisseurs());
+					PanelsManager.contentPane.repaint();
+					PanelsManager.contentPane.revalidate();
 				}
 			});
 		}else {
@@ -273,6 +277,10 @@ public class NewFournisseur extends JPanel {
 						"Annulation", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 					clearFields();
 					modify = false;
+					PanelsManager.contentPane.removeAll();
+					PanelsManager.contentPane.add(PanelsManager.switchToListeFournisseurs());
+					PanelsManager.contentPane.repaint();
+					PanelsManager.contentPane.revalidate();
 				}
 			}
 		});

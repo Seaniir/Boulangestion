@@ -131,7 +131,7 @@ public class ListeFournisseurs extends JPanel {
 	        public void actionPerformed(ActionEvent event)
 	        {
 	        	PanelsManager.contentPane.removeAll();
-				PanelsManager.contentPane.add(PanelsManager.switchToLambdaPanel());
+				PanelsManager.contentPane.add(PanelsManager.switchtoCommandeStockView());
 				PanelsManager.contentPane.repaint();
 				PanelsManager.contentPane.revalidate();
 	        }
