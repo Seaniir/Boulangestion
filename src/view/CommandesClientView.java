@@ -1,36 +1,23 @@
 package view;
 
 import com.mysql.cj.conf.ConnectionUrlParser;
-import controller.CommandeClientDAO;
-import controller.PanelsManager;
-import model.Client;
-import model.CommandeClient;
+import controller.*;
+import model.*;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
+import javax.swing.table.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
+import java.awt.event.*;
+import java.text.*;
+import java.util.*;
 import java.util.List;
-import java.util.Vector;
 
 public class CommandesClientView extends JPanel {
 
-	private JTable table;
+	private final JTable table;
 	JButton btnModifier = new JButton();
 	JButton btnAnnuler = new JButton();
 	JButton btnArchiver = new JButton();
-	/**
-	 * Create the panel.
-	 */
 	public CommandesClientView() {
 		setBounds(0, 0, 1440, 900);
 		setLayout(null);
@@ -44,7 +31,6 @@ public class CommandesClientView extends JPanel {
 		JScrollPane scrollPane = new JScrollPane();
 		panel.add(scrollPane);
 		scrollPane.setBounds(21, 11, 1388, 622);
-
 		table = new JTable();
 		table.setRowSelectionAllowed(false);
 		table.addMouseListener(new MouseAdapter() {
@@ -52,7 +38,8 @@ public class CommandesClientView extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 				int id = table.getSelectedRow();
 				CommandeClientDAO commandeClientDAO = new CommandeClientDAO();
-				ConnectionUrlParser.Pair < CommandeClient, Client > pair = commandeClientDAO.findById((Integer) table.getValueAt(id, 0));
+				ConnectionUrlParser.Pair < CommandeClient, Client > pair =
+						commandeClientDAO.findById((Integer) table.getValueAt(id, 0));
 				DetailsCommandesClient.currentCommande = pair.left;
 				DetailsCommandesClient.currentClient = pair.right;
 				PanelsManager.contentPane.removeAll();
@@ -67,13 +54,11 @@ public class CommandesClientView extends JPanel {
 		table.setModel(liste());
 
 		JButton btnNewButton = new JButton("Nouvelle Commande");
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				PanelsManager.contentPane.removeAll();
-				PanelsManager.contentPane.add(PanelsManager.switchToNouvelleCommandePanel());
-				PanelsManager.contentPane.revalidate();
-				PanelsManager.contentPane.repaint();
-			}
+		btnNewButton.addActionListener(e -> {
+			PanelsManager.contentPane.removeAll();
+			PanelsManager.contentPane.add(PanelsManager.switchToNouvelleCommandePanel());
+			PanelsManager.contentPane.revalidate();
+			PanelsManager.contentPane.repaint();
 		});
 		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 30));
 		btnNewButton.setBackground(new Color(255, 165, 0));
@@ -81,59 +66,52 @@ public class CommandesClientView extends JPanel {
 		btnNewButton.setBounds(467, 663, 499, 53);
 		panel.add(btnNewButton);
 		btnModifier.addActionListener(
-				new ActionListener() {
-					public void actionPerformed(ActionEvent event) {
-						int n = JOptionPane.showConfirmDialog(null, "Voulez-vous modifier cette commande ?", "Modifier", JOptionPane.YES_NO_OPTION);
-						if (n == JOptionPane.YES_OPTION) {
-							CommandeClientDAO commandeClientDAO = new CommandeClientDAO();
-							ConnectionUrlParser.Pair < CommandeClient, Client > pair = commandeClientDAO.findById((int) table.getValueAt(table.getSelectedRow(), 0));
-							NouvelleCommandeClientView.currentCommande = pair.left;
-							NouvelleCommandeClientView.currentClient = pair.right;
-							NouvelleCommandeClientView.modify = true;
-							PanelsManager.contentPane.removeAll();
-							PanelsManager.contentPane.add(PanelsManager.switchToNouvelleCommandePanel());
-							PanelsManager.contentPane.revalidate();
-							PanelsManager.contentPane.repaint();
-						} else {
-
-						}
+				event -> {
+					int n = JOptionPane.showConfirmDialog(null,
+							"Voulez-vous modifier cette commande ?", "Modifier", JOptionPane.YES_NO_OPTION);
+					if (n == JOptionPane.YES_OPTION) {
+						CommandeClientDAO commandeClientDAO = new CommandeClientDAO();
+						ConnectionUrlParser.Pair < CommandeClient, Client > pair =
+								commandeClientDAO.findById((int) table.getValueAt(table.getSelectedRow(), 0));
+						NouvelleCommandeClientView.currentCommande = pair.left;
+						NouvelleCommandeClientView.currentClient = pair.right;
+						NouvelleCommandeClientView.modify = true;
+						PanelsManager.contentPane.removeAll();
+						PanelsManager.contentPane.add(PanelsManager.switchToNouvelleCommandePanel());
+						PanelsManager.contentPane.revalidate();
+						PanelsManager.contentPane.repaint();
 					}
 				}
 		);
 		btnAnnuler.addActionListener(
-				new ActionListener() {
-					public void actionPerformed(ActionEvent event) {
-						int n = JOptionPane.showConfirmDialog(null, "Voulez-vous annuler cette commande ?", "Annuler", JOptionPane.YES_NO_OPTION);
-						if (n == JOptionPane.YES_OPTION) {
-							CommandeClientDAO commandeClientDAO = new CommandeClientDAO();
-							commandeClientDAO.delete((int) table.getValueAt(table.getSelectedRow(), 0));
-							PanelsManager.contentPane.removeAll();
-							PanelsManager.contentPane.add(PanelsManager.switchToCommandesClientPanel());
-							PanelsManager.contentPane.revalidate();
-							PanelsManager.contentPane.repaint();
-						} else {
-
-						}
+				event -> {
+					int n = JOptionPane.showConfirmDialog(null,
+							"Voulez-vous annuler cette commande ?", "Annuler", JOptionPane.YES_NO_OPTION);
+					if (n == JOptionPane.YES_OPTION) {
+						CommandeClientDAO commandeClientDAO = new CommandeClientDAO();
+						commandeClientDAO.delete((int) table.getValueAt(table.getSelectedRow(), 0));
+						PanelsManager.contentPane.removeAll();
+						PanelsManager.contentPane.add(PanelsManager.switchToCommandesClientPanel());
+						PanelsManager.contentPane.revalidate();
+						PanelsManager.contentPane.repaint();
 					}
 				}
 		);
 		btnArchiver.addActionListener(
-				new ActionListener() {
-					public void actionPerformed(ActionEvent event) {
-						int n = JOptionPane.showConfirmDialog(null, "Voulez-vous archiver cette commande ?", "Archiver", JOptionPane.YES_NO_OPTION);
-						if (n == JOptionPane.YES_OPTION) {
-							CommandeClientDAO commandeClientDAO = new CommandeClientDAO();
-							commandeClientDAO.archive((int) table.getValueAt(table.getSelectedRow(), 0));
-							PanelsManager.contentPane.removeAll();
-							PanelsManager.contentPane.add(PanelsManager.switchToCommandesClientPanel());
-							PanelsManager.contentPane.revalidate();
-							PanelsManager.contentPane.repaint();
-						} else {
-
-						}
+				event -> {
+					int n = JOptionPane.showConfirmDialog(null,
+							"Voulez-vous archiver cette commande ?", "Archiver", JOptionPane.YES_NO_OPTION);
+					if (n == JOptionPane.YES_OPTION) {
+						CommandeClientDAO commandeClientDAO = new CommandeClientDAO();
+						commandeClientDAO.archive((int) table.getValueAt(table.getSelectedRow(), 0));
+						PanelsManager.contentPane.removeAll();
+						PanelsManager.contentPane.add(PanelsManager.switchToCommandesClientPanel());
+						PanelsManager.contentPane.revalidate();
+						PanelsManager.contentPane.repaint();
 					}
 				}
 		);
+
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
 		centerRenderer.setHorizontalAlignment(JLabel.CENTER);
 		table.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
@@ -156,23 +134,21 @@ public class CommandesClientView extends JPanel {
 		add(panel_1);
 		panel_1.setLayout(null);
 		ImageIcon imageIcon = new ImageIcon("C:\\Users\\Quentin\\Downloads\\history.png");
-		Image image = imageIcon.getImage(); // transform it
-		Image newimg = image.getScaledInstance(75, 75, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
-		imageIcon = new ImageIcon(newimg); // transform it back
+		Image image = imageIcon.getImage();
+		Image newimg = image.getScaledInstance(75, 75, java.awt.Image.SCALE_SMOOTH);
+		imageIcon = new ImageIcon(newimg);
 
 		JButton accueilBtn = new JButton("");
 		ImageIcon imageIcon1 = new ImageIcon("C:\\Users\\Quentin\\Downloads\\sign-out.png");
-		Image image1 = imageIcon1.getImage(); // transform it
-		Image newimg1 = image1.getScaledInstance(75, 75, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
-		accueilBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				PanelsManager.contentPane.removeAll();
-				PanelsManager.contentPane.add(PanelsManager.switchToAccueilMenu());
-				PanelsManager.contentPane.revalidate();
-				PanelsManager.contentPane.repaint();
-			}
+		Image image1 = imageIcon1.getImage();
+		Image newimg1 = image1.getScaledInstance(75, 75, java.awt.Image.SCALE_SMOOTH);
+		accueilBtn.addActionListener(e -> {
+			PanelsManager.contentPane.removeAll();
+			PanelsManager.contentPane.add(PanelsManager.switchToAccueilMenu());
+			PanelsManager.contentPane.revalidate();
+			PanelsManager.contentPane.repaint();
 		});
-		imageIcon1 = new ImageIcon(newimg1); // transform it back
+		imageIcon1 = new ImageIcon(newimg1);
 
 		JLabel lblNewLabel = new JLabel("Historique");
 		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 18));
@@ -193,11 +169,9 @@ public class CommandesClientView extends JPanel {
 		historiqueBtn.setIcon(imageIcon);
 		historiqueBtn.setBounds(0, 0, 127, 76);
 		panel_1.add(historiqueBtn);
-
 	}
 
 	public DefaultTableModel liste() {
-
 		String[] col = {
 				"ID",
 				"Date création",
@@ -212,12 +186,10 @@ public class CommandesClientView extends JPanel {
 				"Annuler"
 		};
 		DefaultTableModel tab = new DefaultTableModel(null, col);
-
 		CommandeClientDAO commandeClientDAO = new CommandeClientDAO();
-		List < CommandeClient > listArticle = new ArrayList < > ();
-		listArticle.addAll(commandeClientDAO.read());
+		List<CommandeClient> listArticle = new ArrayList<>(commandeClientDAO.read());
 		for (CommandeClient article: listArticle) {
-			Vector vect = new Vector();
+			Vector<java.io.Serializable> vect = new Vector<>();
 			DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 			Date dateObj = article.getCreated_at();
 			String created_at = df.format(dateObj);
@@ -237,7 +209,7 @@ public class CommandesClientView extends JPanel {
 		return tab;
 	}
 
-	class ButtonRenderer extends JButton implements TableCellRenderer {
+	static class ButtonRenderer extends JButton implements TableCellRenderer {
 		public ButtonRenderer() {
 			setOpaque(true);
 		}
@@ -261,11 +233,11 @@ public class CommandesClientView extends JPanel {
 			return btnModifier;
 		}
 		public Object getCellEditorValue() {
-			return new String(label);
+			return label;
 		}
 	}
 
-	class SecondButtonRenderer extends JButton implements TableCellRenderer {
+	static class SecondButtonRenderer extends JButton implements TableCellRenderer {
 		public SecondButtonRenderer() {
 			setOpaque(true);
 		}
@@ -289,11 +261,11 @@ public class CommandesClientView extends JPanel {
 			return btnAnnuler;
 		}
 		public Object getCellEditorValue() {
-			return new String(label);
+			return label;
 		}
 	}
 
-	class ThirdButtonRenderer extends JButton implements TableCellRenderer {
+	static class ThirdButtonRenderer extends JButton implements TableCellRenderer {
 		public ThirdButtonRenderer() {
 			setOpaque(true);
 		}
@@ -317,7 +289,7 @@ public class CommandesClientView extends JPanel {
 			return btnArchiver;
 		}
 		public Object getCellEditorValue() {
-			return new String(label);
+			return label;
 		}
 	}
 

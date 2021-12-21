@@ -1,33 +1,19 @@
 package view;
 
-import javax.swing.JPanel;
-import java.awt.Color;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.ImageIcon;
-import javax.swing.SwingConstants;
-
-import controller.ClientDao;
 import controller.PanelsManager;
 import controller.ProduitDAO;
-import model.Client;
 import model.Produit;
 
-import java.awt.Font;
-import java.util.regex.Pattern;
-
-import javax.swing.JTextField;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+import javax.swing.*;
+import java.awt.*;
 
 public class NouveauProduit extends JPanel {
-	private JTextField libelleField;
-	private JTextField fabricantField;
-	private JTextField TTCField;
-	private JTextField quantiteField;
-	private JTextField HTField;
-	private JTextField poidsField;
+	private final JTextField libelleField;
+	private final JTextField fabricantField;
+	private final JTextField TTCField;
+	private final JTextField quantiteField;
+	private final JTextField HTField;
+	private final JTextField poidsField;
 
 	public static boolean modify = false;
 	public static Produit currentProduit = null;
@@ -56,14 +42,12 @@ public class NouveauProduit extends JPanel {
 		panel.add(lblAccueil);
 
 		JButton btnBack = new JButton("");
-		btnBack.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				PanelsManager.contentPane.removeAll();
-				PanelsManager.contentPane.add(PanelsManager.switchtoProduitsViewPanel());
-				PanelsManager.contentPane.repaint();
-				PanelsManager.contentPane.revalidate();
-				modify = false;
-			}
+		btnBack.addActionListener(e -> {
+			PanelsManager.contentPane.removeAll();
+			PanelsManager.contentPane.add(PanelsManager.switchtoProduitsViewPanel());
+			PanelsManager.contentPane.repaint();
+			PanelsManager.contentPane.revalidate();
+			modify = false;
 		});
 		btnBack.setBackground(Color.WHITE);
 		btnBack.setIcon(new ImageIcon("C:\\Users\\Julien\\Desktop\\projetBoulang\\arrow_left.png"));
@@ -71,14 +55,12 @@ public class NouveauProduit extends JPanel {
 		panel.add(btnBack);
 
 		JButton btnAccueil = new JButton("");
-		btnAccueil.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				PanelsManager.contentPane.removeAll();
-				PanelsManager.contentPane.add(PanelsManager.switchToAccueilMenu());
-				PanelsManager.contentPane.repaint();
-				PanelsManager.contentPane.revalidate();
-				modify = false;
-			}
+		btnAccueil.addActionListener(e -> {
+			PanelsManager.contentPane.removeAll();
+			PanelsManager.contentPane.add(PanelsManager.switchToAccueilMenu());
+			PanelsManager.contentPane.repaint();
+			PanelsManager.contentPane.revalidate();
+			modify = false;
 		});
 		btnAccueil.setBackground(Color.WHITE);
 		btnAccueil.setIcon(new ImageIcon("C:\\Users\\Julien\\Desktop\\projetBoulang\\exit.png"));
@@ -153,30 +135,28 @@ public class NouveauProduit extends JPanel {
 		poidsField.setColumns(10);
 		panel_1.add(poidsField);
 		
-		if (modify == true) {
+		if (modify) {
 			// Pre-remplis les champs.
 			fillFields(currentProduit);
 			
 			// Form to update a client.
 			JButton btnNewButton = new JButton("Modifier");
-			btnNewButton.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					ProduitDAO produitDAO = new ProduitDAO();
-					Produit nouveau = new Produit();
-					nouveau.setLibelle(libelleField.getText());
-					nouveau.setFabricant(fabricantField.getText());
-					nouveau.setPoids(Float.parseFloat(poidsField.getText()));
-					nouveau.setQuantite(Integer.parseInt(quantiteField.getText()));
-					nouveau.setPrixHT(Float.parseFloat(HTField.getText()));
-					nouveau.setPrixTTC(Float.parseFloat(TTCField.getText()));
-					produitDAO.update(nouveau, currentProduit.getId());
-					modify = false;
-					PanelsManager.contentPane.removeAll();
-					PanelsManager.contentPane.add(PanelsManager.switchtoProduitsViewPanel());
-					PanelsManager.contentPane.repaint();
-					PanelsManager.contentPane.revalidate();
-					
-				}
+			btnNewButton.addActionListener(e -> {
+				ProduitDAO produitDAO = new ProduitDAO();
+				Produit nouveau = new Produit();
+				nouveau.setLibelle(libelleField.getText());
+				nouveau.setFabricant(fabricantField.getText());
+				nouveau.setPoids(Float.parseFloat(poidsField.getText()));
+				nouveau.setQuantite(Integer.parseInt(quantiteField.getText()));
+				nouveau.setPrixHT(Float.parseFloat(HTField.getText()));
+				nouveau.setPrixTTC(Float.parseFloat(TTCField.getText()));
+				produitDAO.update(nouveau, currentProduit.getId());
+				modify = false;
+				PanelsManager.contentPane.removeAll();
+				PanelsManager.contentPane.add(PanelsManager.switchtoProduitsViewPanel());
+				PanelsManager.contentPane.repaint();
+				PanelsManager.contentPane.revalidate();
+
 			});
 			btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 20));
 			btnNewButton.setBackground(new Color(255, 140, 0));
@@ -185,11 +165,9 @@ public class NouveauProduit extends JPanel {
 		} else {
 		// Form to create a.
 		JButton btnNewButton = new JButton("Valider");
-		btnNewButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				ProduitDAO produitDAO = new ProduitDAO();
-				produitDAO.add(new Produit(libelleField.getText(), fabricantField.getText(), Float.parseFloat(poidsField.getText()), Integer.parseInt(quantiteField.getText()), Float.parseFloat(HTField.getText()), Float.parseFloat(TTCField.getText())));
-			}
+		btnNewButton.addActionListener(e -> {
+			ProduitDAO produitDAO = new ProduitDAO();
+			produitDAO.add(new Produit(libelleField.getText(), fabricantField.getText(), Float.parseFloat(poidsField.getText()), Integer.parseInt(quantiteField.getText()), Float.parseFloat(HTField.getText()), Float.parseFloat(TTCField.getText())));
 		});
 
 		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 20));
@@ -197,25 +175,14 @@ public class NouveauProduit extends JPanel {
 		btnNewButton.setBounds(168, 571, 155, 30);
 		panel_1.add(btnNewButton);
 	}
-
-		
-		
-		
-		
 		JButton btnAnnuler = new JButton("Annuler");
-		btnAnnuler.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				int n = JOptionPane.showConfirmDialog(null, "Etes vous sur de vouloir annuler ?","Annuler",JOptionPane.YES_NO_OPTION);
-				if (n == JOptionPane.YES_OPTION) {
-					PanelsManager.contentPane.removeAll();
-					PanelsManager.contentPane.add(PanelsManager.switchtoProduitsViewPanel());
-					PanelsManager.contentPane.repaint();
-					PanelsManager.contentPane.revalidate();
-				} else if (n == JOptionPane.NO_OPTION) {
-					
-				} else {
-
-				}
+		btnAnnuler.addActionListener(e -> {
+			int n = JOptionPane.showConfirmDialog(null, "Etes vous sur de vouloir annuler ?","Annuler",JOptionPane.YES_NO_OPTION);
+			if (n == JOptionPane.YES_OPTION) {
+				PanelsManager.contentPane.removeAll();
+				PanelsManager.contentPane.add(PanelsManager.switchtoProduitsViewPanel());
+				PanelsManager.contentPane.repaint();
+				PanelsManager.contentPane.revalidate();
 			}
 		});
 		btnAnnuler.setFont(new Font("Tahoma", Font.PLAIN, 20));
@@ -224,6 +191,7 @@ public class NouveauProduit extends JPanel {
 		btnAnnuler.setBounds(584, 576, 155, 30);
 		panel_1.add(btnAnnuler);
 	}
+
 	// Method pour remplir les champs
 	public void fillFields(Produit produit) {
 		libelleField.setText(produit.getLibelle());

@@ -1,44 +1,30 @@
 package view;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
 import com.google.gson.reflect.TypeToken;
-import controller.ClientDao;
-import controller.CommandeClientDAO;
 import controller.PanelsManager;
 import controller.ProduitDAO;
 import model.Client;
 import model.CommandeClient;
 import model.Produit;
-import org.jdatepicker.impl.JDatePanelImpl;
-import org.jdatepicker.impl.JDatePickerImpl;
-import org.jdatepicker.impl.UtilDateModel;
 
 import javax.swing.*;
+import javax.swing.table.*;
 import java.awt.*;
-import java.awt.event.*;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.lang.reflect.Type;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.*;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellRenderer;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 
 public class DetailsCommandesClient extends JPanel {
 	static CommandeClient currentCommande = new CommandeClient();
 	static Client currentClient = new Client();
-	private JTable table_1;
 	JButton button = new JButton();
-	JComboBox comboBox = new JComboBox();
-	JLabel prixTotal_label = new JLabel();
+	JComboBox<String> comboBox = new JComboBox<>();
+	JLabel prixTotal_label;
 
 	/**
 	 * Create the panel.
@@ -55,54 +41,42 @@ public class DetailsCommandesClient extends JPanel {
 
 		JButton accueilBtn = new JButton("");
 		ImageIcon accueilImage = new ImageIcon("C:\\Users\\Quentin\\Downloads\\sign-out.png");
-		Image accueilImageImage = accueilImage.getImage(); // transform it
-		Image newimg4 = accueilImageImage.getScaledInstance(75, 75, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
-		accueilImage = new ImageIcon(newimg4); // transform it back
+		Image accueilImageImage = accueilImage.getImage();
+		Image newimg4 = accueilImageImage.getScaledInstance(75, 75, java.awt.Image.SCALE_SMOOTH);
+		accueilImage = new ImageIcon(newimg4);
 		accueilBtn.setIcon(accueilImage);
 		accueilBtn.setBounds(1333, 0, 107, 75);
 		panel_1.add(accueilBtn);
-		accueilBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				PanelsManager.contentPane.removeAll();
-				PanelsManager.contentPane.add(PanelsManager.switchToAccueilMenu());
-				PanelsManager.contentPane.revalidate();
-				PanelsManager.contentPane.repaint();
-			}
+		accueilBtn.addActionListener(e -> {
+			PanelsManager.contentPane.removeAll();
+			PanelsManager.contentPane.add(PanelsManager.switchToAccueilMenu());
+			PanelsManager.contentPane.revalidate();
+			PanelsManager.contentPane.repaint();
 		});
 
 		JButton historiqueBtn = new JButton("");
 		ImageIcon imageIcon = new ImageIcon("C:\\Users\\Quentin\\Downloads\\history.png");
-		Image image = imageIcon.getImage(); // transform it
-		Image newimg = image.getScaledInstance(75, 75, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
-		imageIcon = new ImageIcon(newimg); // transform it back
+		Image image = imageIcon.getImage();
+		Image newimg = image.getScaledInstance(75, 75, java.awt.Image.SCALE_SMOOTH);
+		imageIcon = new ImageIcon(newimg);
 		historiqueBtn.setIcon(imageIcon);
 		historiqueBtn.setBounds(0, 0, 127, 75);
 		panel_1.add(historiqueBtn);
 		button.addActionListener(
-				new ActionListener() {
-					public void actionPerformed(ActionEvent event) {
-						JOptionPane.showMessageDialog(null, "Do you want to modify this line?");
-					}
-				}
+				event -> JOptionPane.showMessageDialog(null, "Do you want to modify this line?")
 		);
-		ImageIcon imageClient = new ImageIcon("C:\\Users\\Quentin\\Downloads\\user.png");
-		Image imageClientImage = imageClient.getImage(); // transform it
-		Image newimg2 = imageClientImage.getScaledInstance(75, 75, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
-		imageClient = new ImageIcon(newimg2);
 
 		JButton returnBtn = new JButton("");
-		returnBtn.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				PanelsManager.contentPane.removeAll();
-				PanelsManager.contentPane.add(PanelsManager.switchToCommandesClientPanel());
-				PanelsManager.contentPane.revalidate();
-				PanelsManager.contentPane.repaint();
-			}
+		returnBtn.addActionListener(e -> {
+			PanelsManager.contentPane.removeAll();
+			PanelsManager.contentPane.add(PanelsManager.switchToCommandesClientPanel());
+			PanelsManager.contentPane.revalidate();
+			PanelsManager.contentPane.repaint();
 		});
 		ImageIcon imageReturn = new ImageIcon("C:\\Users\\Quentin\\Downloads\\return.png");
-		Image imageReturnImage = imageReturn.getImage(); // transform it
-		Image newimg3 = imageReturnImage.getScaledInstance(75, 75, java.awt.Image.SCALE_SMOOTH); // scale it the smooth way
-		imageReturn = new ImageIcon(newimg3); // transform it back
+		Image imageReturnImage = imageReturn.getImage();
+		Image newimg3 = imageReturnImage.getScaledInstance(75, 75, java.awt.Image.SCALE_SMOOTH);
+		imageReturn = new ImageIcon(newimg3);
 		returnBtn.setBounds(127, 0, 127, 75);
 		returnBtn.setIcon(imageReturn);
 		panel_1.add(returnBtn);
@@ -156,9 +130,6 @@ public class DetailsCommandesClient extends JPanel {
 		JLabel lblNewLabel_5 = new JLabel("Pr\u00E9nom :");
 		lblNewLabel_5.setBounds(237, 26, 78, 14);
 		panel_2.add(lblNewLabel_5);
-		ClientDao clientDao = new ClientDao();
-		List < Client > listClients = new ArrayList < > ();
-		listClients.addAll(clientDao.read());
 
 		JLabel adresseLabel = new JLabel("");
 		adresseLabel.setBounds(80, 55, 229, 33);
@@ -250,22 +221,14 @@ public class DetailsCommandesClient extends JPanel {
 		rdbtnNewRadioButton_1.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		rdbtnNewRadioButton_1.setBounds(18, 48, 132, 23);
 
-		rdbtnNewRadioButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				rdbtnNewRadioButton_1.setSelected(false);
-			}
-		});
+		rdbtnNewRadioButton.addActionListener(e -> rdbtnNewRadioButton_1.setSelected(false));
 
-		rdbtnNewRadioButton_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				rdbtnNewRadioButton.setSelected(false);
-			}
-		});
+		rdbtnNewRadioButton_1.addActionListener(e -> rdbtnNewRadioButton.setSelected(false));
 
 		panel_5.add(rdbtnNewRadioButton);
 		panel_5.add(rdbtnNewRadioButton_1);
 
-		table_1 = new JTable();
+		JTable table_1 = new JTable();
 		table_1.setEnabled(false);
 		table_1.setRowSelectionAllowed(false);
 		scrollPane.setViewportView(table_1);
@@ -290,7 +253,6 @@ public class DetailsCommandesClient extends JPanel {
 		DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 		String strDate = dateFormat.format(date);
 		withdrawal_at_label.setText(strDate);
-		UtilDateModel model = new UtilDateModel();
 		Properties p = new Properties();
 		p.put("text.today", "Today");
 		p.put("text.month", "Month");
@@ -317,8 +279,7 @@ public class DetailsCommandesClient extends JPanel {
 		DefaultTableModel tab = new DefaultTableModel(null, col);
 
 		ProduitDAO produitDAO = new ProduitDAO();
-		List < Produit > listProduits = new ArrayList < > ();
-		listProduits.addAll(produitDAO.read());
+		List<Produit> listProduits = new ArrayList<>(produitDAO.read());
 		for (Produit article: listProduits) {
 			comboBox.addItem(article.getLibelle());
 		}
@@ -326,7 +287,7 @@ public class DetailsCommandesClient extends JPanel {
 		Type type = new TypeToken < ArrayList < ArrayList < Produit >>> () {}.getType();
 		ArrayList < ArrayList < Produit >> productsList = gson.fromJson(currentCommande.getProduits(), type);
 		for (ArrayList < Produit > produit: productsList) {
-			Vector vect = new Vector();
+			Vector<java.io.Serializable> vect = new Vector<>();
 			vect.add(produit.get(0).getQuantite());
 			vect.add(produit.get(0).getLibelle());
 			vect.add(produit.get(0).getPrixHT());
@@ -340,25 +301,4 @@ public class DetailsCommandesClient extends JPanel {
 
 	}
 
-	public class DateLabelFormatter extends JFormattedTextField.AbstractFormatter {
-
-		private String datePattern = "dd/MM/yyy";
-		private SimpleDateFormat dateFormatter = new SimpleDateFormat(datePattern);
-
-		@Override
-		public Object stringToValue(String text) throws ParseException {
-			return dateFormatter.parseObject(text);
-		}
-
-		@Override
-		public String valueToString(Object value) throws ParseException {
-			if (value != null) {
-				Calendar cal = (Calendar) value;
-				return dateFormatter.format(cal.getTime());
-			}
-
-			return "";
-		}
-
-	}
 }

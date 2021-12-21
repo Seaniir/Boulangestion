@@ -13,6 +13,7 @@ public class CommandeClient
     private String status;
     private String typePaiment;
     private String produits;
+    private boolean cloturee;
 
         public CommandeClient() {
             super();
@@ -30,6 +31,14 @@ public class CommandeClient
             this.typePaiment = typePaiment;
             this.produits = produits;
         }
+
+    public boolean isCloturee() {
+        return cloturee;
+    }
+
+    public void setCloturee(boolean cloturee) {
+        this.cloturee = cloturee;
+    }
 
     public int getId() {
         return id;
