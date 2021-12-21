@@ -70,7 +70,7 @@ public class AccueilMenu extends JPanel {
 		panel.setLayout(null);
 		BufferedImage img = null;
 		try {
-			img = ImageIO.read(new File("C:\\Users\\Julien\\workspace_java\\Boulangestion\\projetBoulang\\ApplicationFrameHost_9xgfw1hOm4.png"));
+			img = ImageIO.read(new File("projetBoulang/bg.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -181,7 +181,7 @@ public class AccueilMenu extends JPanel {
 				}
 			}
 		});
-		btnDeco.setIcon(new ImageIcon("C:\\Users\\fredb\\AFPA\\projetBoulang\\power_off.png"));
+		btnDeco.setIcon(new ImageIcon("C:\\Users\\Quentin\\Documents\\GIT\\Boulangestion\\projetBoulang\\power_off.png"));
 		btnDeco.setBounds(1380, 840, 60, 60);
 		panel.add(btnDeco);
 		

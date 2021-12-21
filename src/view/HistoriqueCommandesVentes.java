@@ -57,7 +57,7 @@ public class HistoriqueCommandesVentes extends JPanel {
 			}
 		});
 		btnAccueil.setBackground(Color.WHITE);
-		btnAccueil.setIcon(new ImageIcon("C:\\Users\\Julien\\Desktop\\projetBoulang\\exit.png"));
+		btnAccueil.setIcon(new ImageIcon("C:\\Users\\Quentin\\Documents\\GIT\\Boulangestion\\projetBoulang\\exit.png"));
 		btnAccueil.setBounds(1370, 11, 40, 40);
 		panel.add(btnAccueil);
 		

@@ -87,8 +87,8 @@ public class NouveauDevis extends JPanel {
 		Image accueilImageImage = accueilImage.getImage();
 		Image newimg4 = accueilImageImage.getScaledInstance(75, 75, java.awt.Image.SCALE_SMOOTH);
 		accueilImage = new ImageIcon(newimg4);
-		accueilBtn.setIcon(accueilImage);
-		accueilBtn.setBounds(1370, 11, 40, 40);
+		accueilBtn.setIcon(new ImageIcon("C:\\Users\\Quentin\\Documents\\GIT\\Boulangestion\\projetBoulang\\exit.png"));
+		accueilBtn.setBounds(1365, 11, 40, 40);
 		panel_1.add(accueilBtn);
 		accueilBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -107,8 +107,8 @@ public class NouveauDevis extends JPanel {
 		Image image = imageIcon.getImage(); 
 		Image newimg = image.getScaledInstance(75, 75, java.awt.Image.SCALE_SMOOTH); 
 		imageIcon = new ImageIcon(newimg); 
-		historiqueBtn.setIcon(imageIcon);
-		historiqueBtn.setBounds(0, 11, 40, 40);
+		historiqueBtn.setIcon(new ImageIcon("C:\\Users\\Quentin\\Documents\\GIT\\Boulangestion\\projetBoulang\\history.png"));
+		historiqueBtn.setBounds(10, 23, 40, 40);
 		panel_1.add(historiqueBtn);
 		button.addActionListener(
 				new ActionListener() {
@@ -138,8 +138,8 @@ public class NouveauDevis extends JPanel {
 		Image imageReturnImage = imageReturn.getImage(); 
 		Image newimg3 = imageReturnImage.getScaledInstance(75, 75, java.awt.Image.SCALE_SMOOTH); 
 		imageReturn = new ImageIcon(newimg3); 
-		returnBtn.setBounds(127, 11, 40, 40);
-		returnBtn.setIcon(imageReturn);
+		returnBtn.setBounds(100, 23, 40, 40);
+		returnBtn.setIcon(new ImageIcon("C:\\Users\\Quentin\\Documents\\GIT\\Boulangestion\\projetBoulang\\arrow_left.png"));
 		panel_1.add(returnBtn);
 
 		JLabel lblNewLabel_9 = new JLabel("Historique");
@@ -149,7 +149,7 @@ public class NouveauDevis extends JPanel {
 
 		JLabel lblNewLabel_10 = new JLabel("Retour");
 		lblNewLabel_10.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_10.setBounds(127, 74, 63, 18);
+		lblNewLabel_10.setBounds(88, 74, 63, 18);
 		panel_1.add(lblNewLabel_10);
 
 		JLabel lblNewLabel_11 = new JLabel("Accueil");

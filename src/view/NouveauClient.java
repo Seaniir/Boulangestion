@@ -64,8 +64,8 @@ public class NouveauClient extends JPanel {
 			}
 		});
 		btnBack.setBackground(Color.WHITE);
-		btnBack.setIcon(new ImageIcon("C:\\Users\\Julien\\workspace_java\\Boulangestion\\projetBoulang\\arrow_left.png"));
-		btnBack.setBounds(10, 10, 40, 40);
+		btnBack.setIcon(new ImageIcon("C:\\Users\\Quentin\\Documents\\GIT\\Boulangestion\\projetBoulang\\arrow_left.png"));
+		btnBack.setBounds(22, 11, 40, 40);
 		panel.add(btnBack);
 		
 		JButton btnAccueil = new JButton("");
@@ -79,7 +79,7 @@ public class NouveauClient extends JPanel {
 			}
 		});
 		btnAccueil.setBackground(Color.WHITE);
-		btnAccueil.setIcon(new ImageIcon("C:\\Users\\Julien\\workspace_java\\Boulangestion\\projetBoulang\\exit.png"));
+		btnAccueil.setIcon(new ImageIcon("C:\\Users\\Quentin\\Documents\\GIT\\Boulangestion\\projetBoulang\\exit.png"));
 		btnAccueil.setBounds(1370, 11, 40, 40);
 		panel.add(btnAccueil);
 		

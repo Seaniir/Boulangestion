@@ -29,7 +29,7 @@ public class Login extends JPanel {
 
 		BufferedImage img = null;
 		try {
-			img = ImageIO.read(new File("C:\\Users\\Julien\\workspace_java\\Boulangestion\\projetBoulang\\ApplicationFrameHost_9xgfw1hOm4.png"));
+			img = ImageIO.read(new File("projetBoulang/bg.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

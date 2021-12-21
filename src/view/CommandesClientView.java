@@ -73,6 +73,7 @@ public class CommandesClientView extends JPanel {
 		add(menu);
 		
 		JButton btnRetour = new JButton("");
+		btnRetour.setIcon(new ImageIcon("C:\\Users\\Quentin\\Documents\\GIT\\Boulangestion\\projetBoulang\\arrow_left.png"));
 		btnRetour.addActionListener(e -> {
 			PanelsManager.contentPane.removeAll();
 			PanelsManager.contentPane.add(PanelsManager.switchToAccueilMenu());
@@ -89,6 +90,7 @@ public class CommandesClientView extends JPanel {
 		menu.add(lblRetour);
 		
 		JButton btnAccueil = new JButton("");
+		btnAccueil.setIcon(new ImageIcon("C:\\Users\\Quentin\\Documents\\GIT\\Boulangestion\\projetBoulang\\exit.png"));
 		btnAccueil.addActionListener(e -> {
 			PanelsManager.contentPane.removeAll();
 			PanelsManager.contentPane.add(PanelsManager.switchToAccueilMenu());

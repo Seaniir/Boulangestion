@@ -36,7 +36,7 @@ public class ClientDao implements IDao<Client> {
 	public void create(Client client) {
 		try {
 			PreparedStatement sql = connect.prepareStatement("INSERT INTO"+ 
-		"clients (nom,prenom,adresse,zip,ville,telephone,email) VALUES"
+		" clients (nom,prenom,adresse,zip,ville,telephone,email) VALUES"
 					+"(?,?,?,?,?,?,?)");
 			
 			sql.setString(1, client.getName());
@@ -84,7 +84,7 @@ public class ClientDao implements IDao<Client> {
 	public void update(Client client, int idClient) {
 		try {
 			PreparedStatement sql = connect.prepareStatement("UPDATE clients"+
-		"SET nom=?, prenom=?, adresse=?, zip=?, ville=?, telephone=?, email=?"+
+		" SET nom=?, prenom=?, adresse=?, zip=?, ville=?, telephone=?, email=?"+
 					"WHERE clients.id=?");
 			sql.setString(1, client.getName());
 			sql.setString(2, client.getFirstName());

@@ -61,8 +61,7 @@ public class CommandeStockView extends JPanel {
 				PanelsManager.contentPane.revalidate();
 			}
 		});
-		btnFournisseur.setIcon(new ImageIcon
-				("C:\\Users\\fredb\\AFPA\\workspace-java\\Boulangestion\\projetBoulang\\accountMenu.png"));
+		btnFournisseur.setIcon(new ImageIcon("C:\\Users\\Quentin\\Documents\\GIT\\Boulangestion\\projetBoulang\\accountMenu.png"));
 		btnFournisseur.setBounds(38, 11, 40, 40);
 		menu.add(btnFournisseur);
 		
@@ -82,8 +81,7 @@ public class CommandeStockView extends JPanel {
 				PanelsManager.contentPane.revalidate();
 			}
 		});
-		btnAccueil.setIcon(new ImageIcon
-			("C:\\Users\\fredb\\AFPA\\workspace-java\\Boulangestion\\projetBoulang\\exit.png"));
+		btnAccueil.setIcon(new ImageIcon("C:\\Users\\Quentin\\Documents\\GIT\\Boulangestion\\projetBoulang\\exit.png"));
 		btnAccueil.setBounds(1370, 11, 40, 40);
 		menu.add(btnAccueil);
 		

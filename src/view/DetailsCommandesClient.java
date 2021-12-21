@@ -215,6 +215,7 @@ public class DetailsCommandesClient extends JPanel {
 		add(menu);
 		
 		JButton btnRetour = new JButton("");
+		btnRetour.setIcon(new ImageIcon("C:\\Users\\Quentin\\Documents\\GIT\\Boulangestion\\projetBoulang\\arrow_left.png"));
 		btnRetour.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				PanelsManager.contentPane.removeAll();
@@ -233,6 +234,7 @@ public class DetailsCommandesClient extends JPanel {
 		menu.add(lblRetour);
 		
 		JButton btnAccueil = new JButton("");
+		btnAccueil.setIcon(new ImageIcon("C:\\Users\\Quentin\\Documents\\GIT\\Boulangestion\\projetBoulang\\exit.png"));
 		btnAccueil.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				PanelsManager.contentPane.removeAll();

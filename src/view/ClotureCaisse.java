@@ -54,17 +54,6 @@ public class ClotureCaisse extends JPanel {
 
 		setBounds(0, 0, 1440, 900);
 		setLayout(null);
-
-		BufferedImage img = null;
-		try {
-			img = ImageIO.read(new File(
-					"C:\\Users\\Quentin\\Downloads\\projetBoulang\\ApplicationFrameHost_9xgfw1hOm4.png"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		Image dimg = img.getScaledInstance(1440, 900,
-				Image.SCALE_SMOOTH);
-		ImageIcon imageIcon = new ImageIcon(dimg);
 		
 		JPanel menu = new JPanel();
 		menu.setLayout(null);
@@ -73,6 +62,7 @@ public class ClotureCaisse extends JPanel {
 		add(menu);
 		
 		JButton btnRetour = new JButton("");
+		btnRetour.setIcon(new ImageIcon("C:\\Users\\Quentin\\Documents\\GIT\\Boulangestion\\projetBoulang\\arrow_left.png"));
 		btnRetour.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				PanelsManager.contentPane.removeAll();
@@ -91,6 +81,7 @@ public class ClotureCaisse extends JPanel {
 		menu.add(lblRetour);
 		
 		JButton btnAccueil = new JButton("");
+		btnAccueil.setIcon(new ImageIcon("C:\\Users\\Quentin\\Documents\\GIT\\Boulangestion\\projetBoulang\\exit.png"));
 		btnAccueil.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				PanelsManager.contentPane.removeAll();
