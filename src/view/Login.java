@@ -29,7 +29,7 @@ public class Login extends JPanel {
 
 		BufferedImage img = null;
 		try {
-			img = ImageIO.read(new File("C:\\Users\\Quentin\\Downloads\\projetBoulang\\ApplicationFrameHost_9xgfw1hOm4.png"));
+			img = ImageIO.read(new File("C:\\Users\\fredb\\AFPA\\workspace-java\\Boulangestion\\projetBoulang\\ApplicationFrameHost_9xgfw1hOm4.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -40,7 +40,7 @@ public class Login extends JPanel {
 		JLabel lblBoulangestion = new JLabel("Boulangestion");
 		lblBoulangestion.setHorizontalAlignment(SwingConstants.CENTER);
 		lblBoulangestion.setForeground(new Color(157, 70, 6));
-		lblBoulangestion.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 80));
+		lblBoulangestion.setFont(new Font("Gentium Book Basic", Font.BOLD | Font.ITALIC, 80));
 		lblBoulangestion.setBounds(10, 38, 1420, 98);
 		add(lblBoulangestion);
 		
@@ -96,7 +96,7 @@ public class Login extends JPanel {
 			
 			if(usDao.login(login_saisie, pwd_saisie)) {
 				
-				JOptionPane.showMessageDialog(null, "F�licitation");			
+				JOptionPane.showMessageDialog(null, "Felicitation");			
 				PanelsManager.contentPane.removeAll();
 				PanelsManager.contentPane.add(PanelsManager.switchToAccueilMenu());
 				PanelsManager.contentPane.repaint();

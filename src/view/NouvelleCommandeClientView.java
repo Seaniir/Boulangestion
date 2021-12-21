@@ -29,6 +29,10 @@ import java.util.List;
 import java.util.*;
 
 public class NouvelleCommandeClientView extends JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	static public boolean modify = false;
 	static Client currentClient = new Client();
 	static CommandeClient currentCommande = new CommandeClient();

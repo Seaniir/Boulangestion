@@ -54,7 +54,7 @@ public class AccueilMenu extends JPanel {
 		setLayout(null);
 		
 		JPanel panel = new JPanel();
-		//les sous-menus disparaissent quand on clique n'importe o� dans la page
+		//les sous-menus disparaissent quand on clique n'importe ou dans la page
 		panel.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -67,7 +67,7 @@ public class AccueilMenu extends JPanel {
 		panel.setLayout(null);
 		BufferedImage img = null;
 		try {
-			img = ImageIO.read(new File("C:\\Users\\Quentin\\Downloads\\projetBoulang\\ApplicationFrameHost_9xgfw1hOm4.png"));
+			img = ImageIO.read(new File("C:\\Users\\fredb\\AFPA\\workspace-java\\Boulangestion\\projetBoulang\\ApplicationFrameHost_9xgfw1hOm4.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
