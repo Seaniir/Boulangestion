@@ -11,10 +11,10 @@ public class CommandeStock {
     private String produits;
     
     public CommandeStock() {
-		// TODO Auto-generated constructor stub
 	}
     
-	public CommandeStock(int id, Date dateReception, int fk_idfournisseur, int nbrArticles, float prixTotal) {
+	public CommandeStock(int id, Date dateReception, int fk_idfournisseur,
+			int nbrArticles, float prixTotal) {
 		super();
 		this.id = id;
 		this.dateReception = dateReception;
@@ -23,8 +23,8 @@ public class CommandeStock {
 		this.prixTotal = prixTotal;
 	}
 
-	public CommandeStock(int id, Date dateReception, int fk_idfournisseur, int nbrArticles, float prixTotal,
-			String produits) {
+	public CommandeStock(int id, Date dateReception, int fk_idfournisseur,
+			int nbrArticles, float prixTotal, String produits) {
 		super();
 		this.id = id;
 		this.dateReception = dateReception;

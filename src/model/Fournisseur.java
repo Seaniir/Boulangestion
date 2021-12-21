@@ -11,7 +11,6 @@ public class Fournisseur {
 	private String email;
 	
 	public Fournisseur() {
-		// TODO Auto-generated constructor stub
 	}
 	
 	public Fournisseur(String societe) {
@@ -19,8 +18,8 @@ public class Fournisseur {
 		this.societe = societe;
 	}
 
-	public Fournisseur(String societe, String correspondant, String adresse, int codePostal, String ville, String tel,
-			String email) {
+	public Fournisseur(String societe, String correspondant, String adresse,
+			int codePostal, String ville, String tel, String email) {
 		super();
 		this.societe = societe;
 		this.correspondant = correspondant;
@@ -31,8 +30,8 @@ public class Fournisseur {
 		this.email = email;
 	}
 
-	public Fournisseur(int id, String societe, String adresse, int codePostal, String ville,
-			String tel, String email) {
+	public Fournisseur(int id, String societe, String adresse, int codePostal,
+			String ville, String tel, String email) {
 		super();
 		this.id = id;
 		this.societe = societe;
@@ -43,8 +42,8 @@ public class Fournisseur {
 		this.email = email;
 	}
 	
-	public Fournisseur(int id, String societe, String correspondant, String adresse, int codePostal, String ville,
-			String tel, String email) {
+	public Fournisseur(int id, String societe, String correspondant, String adresse,
+			int codePostal, String ville, String tel, String email) {
 		super();
 		this.id = id;
 		this.societe = societe;

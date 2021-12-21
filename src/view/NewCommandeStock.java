@@ -57,6 +57,7 @@ public class NewCommandeStock extends JPanel {
 	private JLabel prixTotal_label;
 	JComboBox comboBox = new JComboBox();
 	ArrayList<Integer> idList = new ArrayList<Integer>();
+	ArrayList<Float> poidsList = new ArrayList<Float>();
 	/**
 	 * Create the panel.
 	 */
@@ -79,10 +80,11 @@ public class NewCommandeStock extends JPanel {
 				PanelsManager.contentPane.add(PanelsManager.switchtoCommandeStockView());
 				PanelsManager.contentPane.repaint();
 				PanelsManager.contentPane.revalidate();
-				//modify = false;
+				modify = false;
 			}
 		});
-		btnRetour.setIcon(new ImageIcon("C:\\Users\\fredb\\AFPA\\workspace-java\\Boulangestion\\projetBoulang\\arrow_left.png"));
+		btnRetour.setIcon(new ImageIcon
+			("C:\\Users\\fredb\\AFPA\\workspace-java\\Boulangestion\\projetBoulang\\arrow_left.png"));
 		btnRetour.setBounds(22, 11, 40, 40);
 		menu.add(btnRetour);
 		
@@ -100,9 +102,11 @@ public class NewCommandeStock extends JPanel {
 				PanelsManager.contentPane.add(PanelsManager.switchToAccueilMenu());
 				PanelsManager.contentPane.repaint();
 				PanelsManager.contentPane.revalidate();
+				modify = false;
 			}
 		});
-		btnAccueil.setIcon(new ImageIcon("C:\\Users\\fredb\\AFPA\\workspace-java\\Boulangestion\\projetBoulang\\exit.png"));
+		btnAccueil.setIcon(new ImageIcon
+			("C:\\Users\\fredb\\AFPA\\workspace-java\\Boulangestion\\projetBoulang\\exit.png"));
 		btnAccueil.setBounds(1370, 11, 40, 40);
 		menu.add(btnAccueil);
 		
@@ -139,7 +143,7 @@ public class NewCommandeStock extends JPanel {
 		lblAdress.setBounds(11, 63, 57, 14);
 		infosFournisseur.add(lblAdress);
 
-		JLabel lblTel = new JLabel("T\u00E9l\u00E9phone :");
+		JLabel lblTel = new JLabel("Telephone :");
 		lblTel.setBounds(11, 102, 72, 14);
 		infosFournisseur.add(lblTel);
 		
@@ -147,6 +151,7 @@ public class NewCommandeStock extends JPanel {
 		lblEmail.setBounds(11, 140, 72, 14);
 		infosFournisseur.add(lblEmail);
 		
+		//block info fournisseur:
 		JComboBox infoSociete = new JComboBox();
 		FournisseurDao fournisseurDao = new FournisseurDao();
 		List <Fournisseur> listSociete = new ArrayList < > ();
@@ -195,7 +200,8 @@ public class NewCommandeStock extends JPanel {
 							currentFournisseur.setVille(fournisseur.getVille());
 							currentFournisseur.setTel(fournisseur.getTel());
 							currentFournisseur.setEmail(fournisseur.getEmail());
-							adresseLabel.setText(fournisseur.getAdresse()+" "+fournisseur.getCodePostal()+" "+fournisseur.getVille());
+							adresseLabel.setText(fournisseur.getAdresse()+" "+
+									fournisseur.getCodePostal()+" "+fournisseur.getVille());
 							phoneLabel.setText(fournisseur.getTel());
 							mailLabel.setText(fournisseur.getEmail());
 						}
@@ -279,33 +285,40 @@ public class NewCommandeStock extends JPanel {
 		btnValider.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				CommandeStockDao commandeStockDao = new CommandeStockDao();
-
-				DateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE);
-				DateFormat inputFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE);
-				int m = cmd.getRowCount(), n = cmd.getColumnCount();
+				int m = cmd.getRowCount();
 				ArrayList < ArrayList < Produit >> matrix = new ArrayList < ArrayList < Produit >> ();
-
-				for (int i = 0; i < m; i++) {
-					ArrayList < Produit > row = new ArrayList < Produit > ();
-					Produit produit = new Produit();
-					produit.setId(idList.get(i));
-					produit.setQuantite(Integer.parseInt(cmd.getValueAt(i, 0).toString()));
-					produit.setLibelle((String) cmd.getValueAt(i, 1));
-					produit.setPrixHT(Float.parseFloat(cmd.getValueAt(i, 2).toString()));
-					produit.setPrixTTC(Float.parseFloat(cmd.getValueAt(i, 4).toString()));
-					
-					row.add(produit);
-					matrix.add(row);
-				}
-
+					for (int i = 0; i < m; i++) {
+						ArrayList < Produit > row = new ArrayList < Produit > ();
+						Produit produit = new Produit();
+						produit.setId(idList.get(i));
+						produit.setPoids(poidsList.get(i));
+						produit.setQuantite(Integer.parseInt(cmd.getValueAt(i, 0).toString()));
+						produit.setLibelle((String) cmd.getValueAt(i, 1));
+						produit.setPrixHT(Float.parseFloat(cmd.getValueAt(i, 2).toString()));
+						produit.setPrixTTC(Float.parseFloat(cmd.getValueAt(i, 4).toString()));
+						row.add(produit);
+						matrix.add(row);
+					}
 				String json = new Gson().toJson(matrix);
-				
 				Date newDate = Date.from(now.atZone(ZoneId.systemDefault()).toInstant());
-				if (modify)
-					commandeStockDao.update(new CommandeStock(currentCmdStock.getId(),newDate, currentFournisseur.getId(), cmd.getRowCount(), Float.parseFloat(prixTotal_label.getText()), json), currentCmdStock.getId());
-				else
-					commandeStockDao.create(new CommandeStock(currentCmdStock.getId(),newDate, currentFournisseur.getId(), cmd.getRowCount(), Float.parseFloat(prixTotal_label.getText()), json));
-			}
+				
+				if (modify) {
+					commandeStockDao.update(new CommandeStock(currentCmdStock.getId(),newDate,
+						currentFournisseur.getId(), cmd.getRowCount(),
+						Float.parseFloat(prixTotal_label.getText()), json),
+						currentCmdStock.getId());
+					modify = false;
+					//retour à la liste après la modif
+					PanelsManager.contentPane.removeAll();
+					PanelsManager.contentPane.add(PanelsManager.switchtoCommandeStockView());
+					PanelsManager.contentPane.repaint();
+					PanelsManager.contentPane.revalidate();
+				}else {
+					commandeStockDao.create(new CommandeStock(currentCmdStock.getId(),newDate,
+						currentFournisseur.getId(), cmd.getRowCount(),
+						Float.parseFloat(prixTotal_label.getText()), json));
+				}
+			}	
 		});
 		btnValider.setBackground(Color.ORANGE);
 		btnValider.setFont(new Font("Tahoma", Font.PLAIN, 25));
@@ -332,30 +345,34 @@ public class NewCommandeStock extends JPanel {
 					int row = cmd.getSelectedRow();
 					int column = cmd.getSelectedColumn();
 					if (cmd.getColumnName(column).equals("Quantité")) {
-						cmd.setValueAt(Float.parseFloat(cmd.getValueAt(row, 0).toString()) * (Float.parseFloat(cmd.getValueAt(row, 2).toString())), row, 3);
-						cmd.setValueAt(Float.parseFloat(cmd.getValueAt(row, 0).toString()) * (Float.parseFloat(cmd.getValueAt(row, 4).toString())), row, 5);
+						cmd.setValueAt(Float.parseFloat(cmd.getValueAt(row, 0).toString())
+							* (Float.parseFloat(cmd.getValueAt(row, 2).toString())), row, 3);
+						cmd.setValueAt(Float.parseFloat(cmd.getValueAt(row, 0).toString())
+							* (Float.parseFloat(cmd.getValueAt(row, 4).toString())), row, 5);
 						float prixTotal = 0;
 						for (int i = 0; i < cmd.getRowCount(); i++) {
 							prixTotal += Float.parseFloat(cmd.getValueAt(i, 5).toString());
 						}
 						prixTotal_label.setText(Float.toString(prixTotal));
 					}
-				} else {
-					// editing started
 				}
 			}
 		});
 		comboBox.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
-				if (e.getStateChange() == ItemEvent.SELECTED) { // Check if the value got selected, ignore if it has been deselected
+				if (e.getStateChange() == ItemEvent.SELECTED) {
+					// Check if the value got selected, ignore if it has been deselected
 					ProduitDAO produitDAO = new ProduitDAO();
 					List < Produit > listProduits = new ArrayList < > ();
 					listProduits.addAll(produitDAO.read());
 					int row = cmd.getSelectedRow();
 					for (Produit article: listProduits) {
 						if (article.getLibelle().equals(e.getItem())) {
-							idList.add(article.getId());
+							idList.remove(cmd.getSelectedRow());
+							idList.add(cmd.getSelectedRow(),article.getId());
+							poidsList.remove(cmd.getSelectedRow());
+							poidsList.add(cmd.getSelectedRow(),article.getPoids());
 							cmd.setValueAt(article.getPrixHT(),row, 2);
 							cmd.setValueAt(article.getPrixTTC(),row, 4);
 							float prixTotal = 0;
@@ -370,10 +387,12 @@ public class NewCommandeStock extends JPanel {
 		});
 		float prixTotal = 0;
 		for (int i = 0; i < cmd.getRowCount(); i++) {
-			prixTotal += Float.parseFloat(cmd.getValueAt(i, 4).toString());
+			prixTotal += Float.parseFloat(cmd.getValueAt(i, 5).toString());
 		}
 		prixTotal_label.setText(String.valueOf(prixTotal));
 	}
+	
+	//remplissage du tableau en fonction de modify
 	public DefaultTableModel liste() {
 		String[] col = {
 				"Quantité",
@@ -397,6 +416,8 @@ public class NewCommandeStock extends JPanel {
 			ArrayList < ArrayList < Produit >> contactList = gson.fromJson(currentCmdStock.getProduits(), type);
 			for (ArrayList < Produit > produit: contactList) {
 				Vector vect = new Vector();
+				poidsList.add(produit.get(0).getPoids());
+				idList.add(produit.get(0).getId());
 				vect.add(produit.get(0).getQuantite());
 				vect.add(produit.get(0).getLibelle());
 				vect.add(produit.get(0).getPrixHT());
@@ -407,6 +428,7 @@ public class NewCommandeStock extends JPanel {
 			}
 		} else {
 			Vector vect = new Vector();
+			poidsList.add(listProduits.get(0).getPoids());
 			idList.add(listProduits.get(0).getId());
 			vect.add(0);
 			vect.add(listProduits.get(0).getLibelle());
@@ -426,6 +448,8 @@ public class NewCommandeStock extends JPanel {
 		List < Produit > listProduits = new ArrayList < > ();
 		listProduits.addAll(produitDAO.read());
 		Vector vect = new Vector();
+		poidsList.add(listProduits.get(0).getPoids());
+		idList.add(listProduits.get(0).getId());
 		vect.add(0);
 		vect.add(listProduits.get(0).getLibelle());
 		vect.add(listProduits.get(0).getPrixHT());
@@ -437,7 +461,10 @@ public class NewCommandeStock extends JPanel {
 	}
 
 	public class DateLabelFormatter extends JFormattedTextField.AbstractFormatter {
-
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 		private String datePattern = "dd/MM/yyy";
 		private SimpleDateFormat dateFormatter = new SimpleDateFormat(datePattern);
 
@@ -452,9 +479,7 @@ public class NewCommandeStock extends JPanel {
 				Calendar cal = (Calendar) value;
 				return dateFormatter.format(cal.getTime());
 			}
-
 			return "";
 		}
-
 	}
 }

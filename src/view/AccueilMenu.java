@@ -8,17 +8,16 @@ import controller.PanelsManager;
 
 import javax.swing.ImageIcon;
 import java.awt.Color;
-import java.awt.BorderLayout;
 import java.awt.Font;
-import javax.swing.JMenuBar;
 import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
 public class AccueilMenu extends JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private final JLabel lblBoulangestion = new JLabel("\u00A9 2021 Boulangestion");
 	private JButton btnVente;
 	private JButton btnVenteDirecte;
@@ -150,7 +149,7 @@ public class AccueilMenu extends JPanel {
 		btnAide.setBounds(1161, 215, 161, 33);
 		panel.add(btnAide);
 		
-		//bouton de d�connexion qui revient � la page de connexion
+		//bouton de deconnexion qui revient a la page de connexion
 		JButton btnDeco = new JButton("");
 		btnDeco.addMouseListener(new MouseAdapter() {
 			@Override
@@ -162,10 +161,10 @@ public class AccueilMenu extends JPanel {
 			}
 		});
 		btnDeco.setIcon(new ImageIcon("C:\\Users\\fredb\\AFPA\\projetBoulang\\power_off.png"));
-		btnDeco.setBounds(1360, 820, 80, 80);
+		btnDeco.setBounds(1380, 840, 60, 60);
 		panel.add(btnDeco);
 		
-		//d�but des sous-menus
+		//debut des sous-menus
 		
 		btnVente.setFont(new Font("Tahoma", Font.PLAIN, 22));
 		btnVente.setBackground(new Color(242, 193, 102));
@@ -173,11 +172,6 @@ public class AccueilMenu extends JPanel {
 		panel.add(btnVente);
 		
 		btnVenteDirecte = new JButton("Vente directe");
-		btnVenteDirecte.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-			}
-		});
 		btnVenteDirecte.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		btnVenteDirecte.setBackground(new Color(242, 193, 102));
 		btnVenteDirecte.setBounds(114, 284, 161, 33);
@@ -249,11 +243,6 @@ public class AccueilMenu extends JPanel {
 		panel.add(btnClotureCaisse);
 		
 		btnStatistiques = new JButton("Statistiques");
-		btnStatistiques.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-			}
-		});
 		btnStatistiques.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		btnStatistiques.setBackground(new Color(242, 193, 102));
 		btnStatistiques.setBounds(370, 352, 161, 33);
@@ -367,7 +356,7 @@ public class AccueilMenu extends JPanel {
 		
 	}
 	
-	//m�thode pour rendre les sous-menus invisibles
+	//methode pour rendre les sous-menus invisibles
 	public void setSsBtnFalse() {
 		btnVente.setBackground(new Color(242, 193, 102));
 		btnVenteDirecte.setVisible(false);

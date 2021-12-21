@@ -200,8 +200,8 @@ public class CommandesClientView extends JPanel {
 
 		String[] col = {
 				"ID",
-				"Date crÃ©ation",
-				"Retirer Ã ",
+				"Date création",
+				"Retirer A ",
 				"Client",
 				"Nombres d'articles",
 				"Prix Total",

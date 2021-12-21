@@ -467,8 +467,8 @@ public class NouvelleCommandeClientView extends JPanel {
 
 	public DefaultTableModel liste() {
 		String[] col = {
-				"QuantitÃ©",
-				"LibellÃ©",
+				"Quantité",
+				"Libellé",
 				"Prix Unitaire HT",
 				"Prix total HT",
 				"Prix Unitaire TTC",
