@@ -62,7 +62,7 @@ public class CommandeStockDao implements IDao<CommandeStock>{
         try {
             PreparedStatement req = connect.prepareStatement("SELECT * FROM commandesstock INNER"+
             	" JOIN fournisseur ON fournisseur.id=commandesstock.fk_idfournisseur"+
-            	" AND commandesstock.isVisible=?");
+            	" AND commandesstock.isVisible=? ORDER BY commandesstock.id");
             req.setInt(1, 1);
             ResultSet rs = req.executeQuery();
             while(rs.next()) {
