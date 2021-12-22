@@ -188,7 +188,7 @@ public class ListeDevis extends JPanel {
 				int n = JOptionPane.showConfirmDialog(null, "Etes vous sur de passer ce devis en valider ?","Validation",JOptionPane.YES_NO_OPTION);
 				if (n == JOptionPane.YES_OPTION) {
 					CommandeClientDAO ccDao = new CommandeClientDAO();
-					ccDao.archive((int) table.getValueAt(table.getSelectedRow(), 0));
+					ccDao.enCours((int) table.getValueAt(table.getSelectedRow(), 0));
 					PanelsManager.contentPane.removeAll();
 					PanelsManager.contentPane.add(PanelsManager.switchtoListeDevisPanel());
 					PanelsManager.contentPane.repaint();
