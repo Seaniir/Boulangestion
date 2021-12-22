@@ -495,6 +495,7 @@ public class NewCommandeStock extends JPanel {
 	}
 
 	public void relisting() {
+		cmd.clearSelection();
 		DefaultTableModel model = (DefaultTableModel) cmd.getModel();
 		ProduitDAO produitDAO = new ProduitDAO();
 		List < Produit > listProduits = new ArrayList < > ();

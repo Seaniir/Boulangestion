@@ -507,6 +507,7 @@ public class NouvelleCommandeClientView extends JPanel {
 	}
 
 	public void relisting() {
+		table.clearSelection();
 		DefaultTableModel model = (DefaultTableModel) table.getModel();
 		ProduitDAO produitDAO = new ProduitDAO();
 		List<Produit> listProduits = new ArrayList<>(produitDAO.read());

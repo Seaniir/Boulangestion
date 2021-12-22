@@ -123,14 +123,14 @@ public class NouveauDevis extends JPanel {
 		Image imageReturnImage = imageReturn.getImage(); 
 		Image newimg3 = imageReturnImage.getScaledInstance(75, 75, java.awt.Image.SCALE_SMOOTH); 
 		imageReturn = new ImageIcon(newimg3); 
-		returnBtn.setBounds(100, 23, 40, 40);
+		returnBtn.setBounds(20, 11, 40, 40);
 		returnBtn.setIcon(new ImageIcon(returnURL));
 		panel_1.add(returnBtn);
 
 
 		JLabel lblNewLabel_10 = new JLabel("Retour");
 		lblNewLabel_10.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_10.setBounds(88, 74, 63, 18);
+		lblNewLabel_10.setBounds(10, 62, 63, 18);
 		panel_1.add(lblNewLabel_10);
 
 		JLabel lblNewLabel_11 = new JLabel("Accueil");
@@ -587,6 +587,7 @@ public class NouveauDevis extends JPanel {
 	}
 
 	public void relisting() {
+		table.clearSelection();
 		DefaultTableModel model = (DefaultTableModel) table.getModel();
 		ProduitDAO produitDAO = new ProduitDAO();
 		List < Produit > listProduits = new ArrayList < > ();
