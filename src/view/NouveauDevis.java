@@ -387,7 +387,7 @@ public class NouveauDevis extends JPanel {
 					produit.setQuantite(Integer.parseInt(table.getValueAt(i, 0).toString()));
 					produit.setLibelle((String) table.getValueAt(i, 1));
 					produit.setPrixHT(Float.parseFloat(table.getValueAt(i, 2).toString()));
-					produit.setPrixTTC(Float.parseFloat(table.getValueAt(i, 5).toString()));
+					produit.setPrixTTC(Float.parseFloat(table.getValueAt(i, 4).toString()));
 					row.add(produit);
 					matrix.add(row);
 				}
@@ -411,6 +411,7 @@ public class NouveauDevis extends JPanel {
 							typePaiment,
 							json),
 							currentCommande.getId());
+					modify = false;
 					PanelsManager.contentPane.removeAll();
 					PanelsManager.contentPane.add(PanelsManager.switchtoListeDevisPanel());
 					PanelsManager.contentPane.revalidate();
@@ -520,6 +521,8 @@ public class NouveauDevis extends JPanel {
 							poidList.add(table.getSelectedRow(),article.getPoids());
 							table.setValueAt(article.getPrixHT(),row, 2);
 							table.setValueAt(article.getPrixTTC(),row, 4);
+							table.setValueAt(Float.parseFloat(table.getValueAt(row, 0).toString()) * (Float.parseFloat(table.getValueAt(row, 2).toString())), row, 3);
+							table.setValueAt(Float.parseFloat(table.getValueAt(row, 0).toString()) * (Float.parseFloat(table.getValueAt(row, 4).toString())), row, 5);
 							float prixTotal = 0;
 							for (int i = 0; i < table.getRowCount(); i++) {
 								prixTotal += Float.parseFloat(table.getValueAt(i, 5).toString());
@@ -588,10 +591,10 @@ public class NouveauDevis extends JPanel {
 		ProduitDAO produitDAO = new ProduitDAO();
 		List < Produit > listProduits = new ArrayList < > ();
 		listProduits.addAll(produitDAO.read());
-		idList.add(listProduits.get(0).getId());
-		poidList.add(listProduits.get(0).getPoids());
 		Vector vect = new Vector();
 		vect.add(0);
+		idList.add(listProduits.get(0).getId());
+		poidList.add(listProduits.get(0).getPoids());
 		vect.add(listProduits.get(0).getLibelle());
 		vect.add(listProduits.get(0).getPrixHT());
 		vect.add(0);

@@ -431,6 +431,7 @@ public class NouvelleCommandeClientView extends JPanel {
 				}
 		);
 		comboBox.addItemListener(e -> {
+			System.out.println("nickel");
 			if (e.getStateChange() == ItemEvent.SELECTED) {
 				ProduitDAO produitDAO = new ProduitDAO();
 				List<Produit> listProduits = new ArrayList<>(produitDAO.read());
