@@ -159,7 +159,7 @@ public class NouveauProduit extends JPanel {
 		add(menu);
 		
 		JButton btnRetour = new JButton("");
-		URL returnURL = ClassLoader.getSystemResource("arrow_left.png");
+		URL returnURL = ClassLoader.getSystemResource("res/arrow_left.png");
 		btnRetour.setIcon(new ImageIcon(returnURL));
 		btnRetour.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -180,7 +180,7 @@ public class NouveauProduit extends JPanel {
 		menu.add(lblRetour);
 		
 		JButton btnAccueil = new JButton("");
-		URL exitURL = ClassLoader.getSystemResource("exit.png");
+		URL exitURL = ClassLoader.getSystemResource("res/exit.png");
 		btnAccueil.setIcon(new ImageIcon(exitURL));
 		btnAccueil.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

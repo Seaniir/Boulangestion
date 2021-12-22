@@ -73,7 +73,7 @@ public class CommandesClientView extends JPanel {
 		menu.setBounds(0, 0, 1440, 90);
 		add(menu);
 
-		URL returnURL = ClassLoader.getSystemResource("arrow_left.png");
+		URL returnURL = ClassLoader.getSystemResource("res/arrow_left.png");
 		JButton btnRetour = new JButton("");
 		btnRetour.setIcon(new ImageIcon(returnURL));
 		btnRetour.addActionListener(e -> {
@@ -91,7 +91,7 @@ public class CommandesClientView extends JPanel {
 		lblRetour.setBounds(10, 62, 63, 18);
 		menu.add(lblRetour);
 
-		URL exitURL = ClassLoader.getSystemResource("exit.png");
+		URL exitURL = ClassLoader.getSystemResource("res/exit.png");
 		JButton btnAccueil = new JButton("");
 		btnAccueil.setIcon(new ImageIcon(exitURL));
 		btnAccueil.addActionListener(e -> {

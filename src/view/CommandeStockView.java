@@ -63,7 +63,7 @@ public class CommandeStockView extends JPanel {
 			}
 		});
 
-		URL account = ClassLoader.getSystemResource("accountMenu.png");
+		URL account = ClassLoader.getSystemResource("res/accountMenu.png");
 		btnFournisseur.setIcon(new ImageIcon(account));
 		btnFournisseur.setBounds(38, 11, 40, 40);
 		menu.add(btnFournisseur);
@@ -85,7 +85,7 @@ public class CommandeStockView extends JPanel {
 			}
 		});
 
-		URL exitURL = ClassLoader.getSystemResource("exit.png");
+		URL exitURL = ClassLoader.getSystemResource("res/exit.png");
 		btnAccueil.setIcon(new ImageIcon(exitURL));
 		btnAccueil.setBounds(1370, 11, 40, 40);
 		menu.add(btnAccueil);

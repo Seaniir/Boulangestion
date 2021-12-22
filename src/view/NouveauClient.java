@@ -1,11 +1,7 @@
 package view;
 
-import javax.swing.JPanel;
+import javax.swing.*;
 import java.awt.Color;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.ImageIcon;
-import javax.swing.SwingConstants;
 
 import controller.ClientDao;
 import controller.PanelsManager;
@@ -15,8 +11,6 @@ import java.awt.Font;
 import java.net.URL;
 import java.util.regex.Pattern;
 
-import javax.swing.JTextField;
-import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
@@ -65,7 +59,7 @@ public class NouveauClient extends JPanel {
 			}
 		});
 		btnBack.setBackground(Color.WHITE);
-		URL returnURL = ClassLoader.getSystemResource("arrow_left.png");
+		URL returnURL = ClassLoader.getSystemResource("res/arrow_left.png");
 		btnBack.setIcon(new ImageIcon(returnURL));
 		btnBack.setBounds(22, 11, 40, 40);
 		panel.add(btnBack);
@@ -80,7 +74,7 @@ public class NouveauClient extends JPanel {
 				modify = false;
 			}
 		});
-		URL exitURL = ClassLoader.getSystemResource("exit.png");
+		URL exitURL = ClassLoader.getSystemResource("res/exit.png");
 		btnAccueil.setBackground(Color.WHITE);
 		btnAccueil.setIcon(new ImageIcon(exitURL));
 		btnAccueil.setBounds(1370, 11, 40, 40);
@@ -146,6 +140,21 @@ public class NouveauClient extends JPanel {
 		emailValue = new JTextField();
 		emailValue.setColumns(10);
 		emailValue.setBounds(168, 476, 571, 31);
+		emailValue.setInputVerifier(new InputVerifier() {
+
+			@Override
+			public boolean verify(JComponent input) {
+				String mail = ((JTextField) input).getText().trim();
+				if(mail.matches("^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+[.]+[a-zA-Z0-9]{2,6}+$")
+						|| mail.isEmpty()) {
+					return true;
+				}else {
+					JOptionPane.showMessageDialog(null, "Email invalide", "Error",
+							JOptionPane.ERROR_MESSAGE);
+					return false;
+				}
+			}
+		});
 		panel_1.add(emailValue);
 		
 		zipValue = new JTextField();
@@ -232,9 +241,6 @@ public class NouveauClient extends JPanel {
 							tel_saisie,
 							email_saisie
 							);
-					if(!(Pattern.matches("^[a-zA-Z0-9_.-]+[@][a-zA-Z0-9-]+[.]+[a-zA-Z0-9]+$",email_saisie))) {
-						JOptionPane.showMessageDialog(null, "Mail invalide","Error",JOptionPane.ERROR_MESSAGE);
-					}else {
 						
 						ClientDao clientDao = new ClientDao();
 						
@@ -252,7 +258,6 @@ public class NouveauClient extends JPanel {
 							
 						}
 					}
-			}
 			});
 		
 		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 20));

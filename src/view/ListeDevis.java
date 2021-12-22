@@ -73,7 +73,7 @@ public class ListeDevis extends JPanel {
 			}
 		});
 		btnAccueil.setBackground(Color.WHITE);
-		URL exitURL = ClassLoader.getSystemResource("exit.png");
+		URL exitURL = ClassLoader.getSystemResource("res/exit.png");
 		btnAccueil.setIcon(new ImageIcon(exitURL));
 		btnAccueil.setBounds(1370, 11, 40, 40);
 		panel.add(btnAccueil);
@@ -203,8 +203,8 @@ public class ListeDevis extends JPanel {
 		// Intitul� des colonnes
 		public DefaultTableModel liste() {
 			String [] col = {
-					"N� Devis",
-					"Cr�e le",
+					"ID Devis",
+					"Cree le",
 					"Client",
 					"Nbr articles", 
 					"Prix total TTC",

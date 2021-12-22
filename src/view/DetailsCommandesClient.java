@@ -35,12 +35,12 @@ public class DetailsCommandesClient extends JPanel {
 	public DetailsCommandesClient() {
 		setBounds(0, 0, 1440, 900);
 		setLayout(null);
-		URL exitURL = ClassLoader.getSystemResource("exit.png");
+		URL exitURL = ClassLoader.getSystemResource("res/exit.png");
 		ImageIcon accueilImage = new ImageIcon(exitURL);
 		Image accueilImageImage = accueilImage.getImage();
 		Image newimg4 = accueilImageImage.getScaledInstance(75, 75, java.awt.Image.SCALE_SMOOTH);
 		accueilImage = new ImageIcon(newimg4);
-		URL historyURL = ClassLoader.getSystemResource("history.png");
+		URL historyURL = ClassLoader.getSystemResource("res/history.png");
 		ImageIcon imageIcon = new ImageIcon(historyURL);
 		Image image = imageIcon.getImage();
 		Image newimg = image.getScaledInstance(75, 75, java.awt.Image.SCALE_SMOOTH);
@@ -48,7 +48,7 @@ public class DetailsCommandesClient extends JPanel {
 		button.addActionListener(
 				event -> JOptionPane.showMessageDialog(null, "Do you want to modify this line?")
 		);
-		URL returnURL = ClassLoader.getSystemResource("arrow_left.png");
+		URL returnURL = ClassLoader.getSystemResource("res/arrow_left.png");
 		ImageIcon imageReturn = new ImageIcon(returnURL);
 		Image imageReturnImage = imageReturn.getImage();
 		Image newimg3 = imageReturnImage.getScaledInstance(75, 75, java.awt.Image.SCALE_SMOOTH);
@@ -281,12 +281,12 @@ public class DetailsCommandesClient extends JPanel {
 
 	public DefaultTableModel liste() {
 		String[] col = {
-				"Quantité",
-				"Libellé",
+				"Quantite",
+				"Libelle",
 				"Prix Unitaire",
 				"Prix total HT",
 				"Prix total TTC",
-				"Montant réglé"
+				"Montant régle"
 		};
 		DefaultTableModel tab = new DefaultTableModel(null, col);
 

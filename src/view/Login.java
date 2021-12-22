@@ -27,7 +27,7 @@ public class Login extends JPanel {
 		setBackground(new Color(255, 239, 213));
 		setBounds(0,0,1440,900);
 		setLayout(null);
-		URL imageUrl = ClassLoader.getSystemResource("bg.png");
+		URL imageUrl = ClassLoader.getSystemResource("res/bg.png");
 		BufferedImage img = null;
 		try {
 			img = ImageIO.read(imageUrl);

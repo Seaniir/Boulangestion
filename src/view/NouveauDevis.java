@@ -84,7 +84,7 @@ public class NouveauDevis extends JPanel {
 		add(panel_1);
 
 		JButton accueilBtn = new JButton("");
-		URL exitURL = ClassLoader.getSystemResource("exit.png");
+		URL exitURL = ClassLoader.getSystemResource("res/exit.png");
 		ImageIcon accueilImage = new ImageIcon(exitURL);
 		Image accueilImageImage = accueilImage.getImage();
 		Image newimg4 = accueilImageImage.getScaledInstance(75, 75, java.awt.Image.SCALE_SMOOTH);
@@ -105,7 +105,7 @@ public class NouveauDevis extends JPanel {
 		});
 
 		JButton historiqueBtn = new JButton("");
-		URL historiqueURL = ClassLoader.getSystemResource("history.png");
+		URL historiqueURL = ClassLoader.getSystemResource("res/history.png");
 		ImageIcon imageIcon = new ImageIcon(historiqueURL);
 		Image image = imageIcon.getImage(); 
 		Image newimg = image.getScaledInstance(75, 75, java.awt.Image.SCALE_SMOOTH); 
@@ -120,7 +120,7 @@ public class NouveauDevis extends JPanel {
 					}
 				}
 		);
-		URL clientURL = ClassLoader.getSystemResource("account.png");
+		URL clientURL = ClassLoader.getSystemResource("res/account.png");
 		ImageIcon imageClient = new ImageIcon(clientURL);
 		Image imageClientImage = imageClient.getImage();
 		Image newimg2 = imageClientImage.getScaledInstance(75, 75, java.awt.Image.SCALE_SMOOTH); 
@@ -138,7 +138,7 @@ public class NouveauDevis extends JPanel {
 				PanelsManager.contentPane.repaint();
 			}
 		});
-		URL returnURL = ClassLoader.getSystemResource("arrow_left.png");
+		URL returnURL = ClassLoader.getSystemResource("res/arrow_left.png");
 		ImageIcon imageReturn = new ImageIcon(returnURL);
 		Image imageReturnImage = imageReturn.getImage(); 
 		Image newimg3 = imageReturnImage.getScaledInstance(75, 75, java.awt.Image.SCALE_SMOOTH); 
@@ -538,8 +538,8 @@ public class NouveauDevis extends JPanel {
 
 	public DefaultTableModel liste() {
 		String[] col = {
-				"Quantité",
-				"Libellé",
+				"Quantite",
+				"Libelle",
 				"Prix Unitaire HT",
 				"Prix total HT",
 				"Prix Unitaire TTC",

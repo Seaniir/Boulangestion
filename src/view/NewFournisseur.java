@@ -61,7 +61,7 @@ public class NewFournisseur extends JPanel {
 				modify = false;
 			}
 		});
-		URL returnURL = ClassLoader.getSystemResource("arrow_left.png");
+		URL returnURL = ClassLoader.getSystemResource("res/arrow_left.png");
 		btnRetour.setIcon(new ImageIcon(returnURL));
 		btnRetour.setBounds(22, 11, 40, 40);
 		menu.add(btnRetour);
@@ -83,7 +83,7 @@ public class NewFournisseur extends JPanel {
 				modify = false;
 			}
 		});
-		URL exitURL = ClassLoader.getSystemResource("exit.png");
+		URL exitURL = ClassLoader.getSystemResource("res/exit.png");
 		btnAccueil.setIcon(new ImageIcon(exitURL));
 		btnAccueil.setBounds(1370, 11, 40, 40);
 		menu.add(btnAccueil);

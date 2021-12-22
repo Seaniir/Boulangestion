@@ -62,7 +62,7 @@ public class ClotureCaisse extends JPanel {
 		menu.setBounds(0, 0, 1440, 90);
 		add(menu);
 
-		URL retourURL = ClassLoader.getSystemResource("arrow_left.png");
+		URL retourURL = ClassLoader.getSystemResource("res/arrow_left.png");
 
 		JButton btnRetour = new JButton("");
 		btnRetour.setIcon(new ImageIcon(retourURL));
@@ -83,7 +83,7 @@ public class ClotureCaisse extends JPanel {
 		lblRetour.setBounds(10, 62, 63, 18);
 		menu.add(lblRetour);
 
-		URL exitURL = ClassLoader.getSystemResource("exit.png");
+		URL exitURL = ClassLoader.getSystemResource("res/exit.png");
 		JButton btnAccueil = new JButton("");
 		btnAccueil.setIcon(new ImageIcon(exitURL));
 		btnAccueil.addActionListener(new ActionListener() {

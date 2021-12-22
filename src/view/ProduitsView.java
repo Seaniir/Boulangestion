@@ -87,7 +87,7 @@ public class ProduitsView extends JPanel {
 		add(menu);
 		
 		JButton btnRetour = new JButton("");
-		URL returnURL = ClassLoader.getSystemResource("arrow_left.png");
+		URL returnURL = ClassLoader.getSystemResource("res/arrow_left.png");
 		btnRetour.setIcon(new ImageIcon(returnURL));
 		btnRetour.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -107,7 +107,7 @@ public class ProduitsView extends JPanel {
 		menu.add(lblRetour);
 		
 		JButton btnAccueil = new JButton("");
-		URL exitURL = ClassLoader.getSystemResource("exit.png");
+		URL exitURL = ClassLoader.getSystemResource("res/exit.png");
 		btnAccueil.setIcon(new ImageIcon(exitURL));
 		btnAccueil.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -183,15 +183,15 @@ public class ProduitsView extends JPanel {
 
 		ProduitDAO produitDAO = new ProduitDAO();
 		List<Produit> produits = new ArrayList<>(produitDAO.read());
-		for (Produit produit: produits) {
+		for (int i = 1 ; i < produits.size() ; i++) {
 			Vector<java.io.Serializable> vect = new Vector<>();
-			idList.add(produit.getId());
-			vect.add(produit.getLibelle());
-			vect.add(produit.getFabricant());
-			vect.add(produit.getPoids());
-			vect.add(produit.getQuantite());
-			vect.add(produit.getPrixHT());
-			vect.add(produit.getPrixTTC());
+			idList.add(produits.get(i).getId());
+			vect.add(produits.get(i).getLibelle());
+			vect.add(produits.get(i).getFabricant());
+			vect.add(produits.get(i).getPoids());
+			vect.add(produits.get(i).getQuantite());
+			vect.add(produits.get(i).getPrixHT());
+			vect.add(produits.get(i).getPrixTTC());
 			tab.addRow(vect);
 		}
 		return tab;

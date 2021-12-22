@@ -67,7 +67,7 @@ public class ListeClients extends JPanel {
 				PanelsManager.contentPane.revalidate();
 			}
 		});
-		URL exitURL = ClassLoader.getSystemResource("exit.png");
+		URL exitURL = ClassLoader.getSystemResource("res/exit.png");
 		btnAccueil.setBackground(Color.WHITE);
 		btnAccueil.setIcon(new ImageIcon(exitURL));
 		btnAccueil.setBounds(1370, 11, 40, 40);

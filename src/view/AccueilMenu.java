@@ -64,7 +64,7 @@ public class AccueilMenu extends JPanel {
 		panel.setBounds(0, 0, 1440, 900);
 		add(panel);
 		panel.setLayout(null);
-		URL imageUrl = ClassLoader.getSystemResource("bg.png");
+		URL imageUrl = ClassLoader.getSystemResource("res/bg.png");
 		BufferedImage img = null;
 		try {
 			img = ImageIO.read(imageUrl);
@@ -160,6 +160,7 @@ public class AccueilMenu extends JPanel {
 				}
 			}
 		});
+		URL deconnexionURL = ClassLoader.getSystemResource("res/power_off.png");
 		btnDeco.setIcon(new ImageIcon(deconnexionURL));
 		btnDeco.setBounds(1380, 840, 60, 60);
 		panel.add(btnDeco);
