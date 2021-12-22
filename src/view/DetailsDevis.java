@@ -114,7 +114,7 @@ public class DetailsDevis extends JPanel {
 		panel.add(panel_3);
 		panel_3.setLayout(null);
 		// N° commande
-		JLabel lblNumCmd = new JLabel("Commande n ° :");
+		JLabel lblNumCmd = new JLabel("Devis n ° :");
 		lblNumCmd.setFont(new Font("Tahoma", Font.PLAIN, 22));
 		lblNumCmd.setBounds(447, 79, 189, 37);
 		panel_3.add(lblNumCmd);
