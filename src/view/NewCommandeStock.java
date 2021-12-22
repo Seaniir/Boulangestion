@@ -335,6 +335,10 @@ public class NewCommandeStock extends JPanel {
 					commandeStockDao.create(new CommandeStock(currentCmdStock.getId(),newDate,
 						currentFournisseur.getId(), cmd.getRowCount(),
 						Float.parseFloat(prixTotal_label.getText()), json));
+					PanelsManager.contentPane.removeAll();
+					PanelsManager.contentPane.add(PanelsManager.switchtoCommandeStockView());
+					PanelsManager.contentPane.repaint();
+					PanelsManager.contentPane.revalidate();
 				}
 			}	
 		});
