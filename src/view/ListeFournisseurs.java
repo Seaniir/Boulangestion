@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.Component;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
@@ -64,7 +65,8 @@ public class ListeFournisseurs extends JPanel {
 				PanelsManager.contentPane.revalidate();
 			}
 		});
-		btnAccueil.setIcon(new ImageIcon("C:\\Users\\Quentin\\Documents\\GIT\\Boulangestion\\projetBoulang\\exit.png"));
+		URL exitURL = ClassLoader.getSystemResource("res/exit.png");
+		btnAccueil.setIcon(new ImageIcon(exitURL));
 		btnAccueil.setBounds(1370, 11, 40, 40);
 		menu.add(btnAccueil);
 		
@@ -131,7 +133,7 @@ public class ListeFournisseurs extends JPanel {
 	        public void actionPerformed(ActionEvent event)
 	        {
 	        	PanelsManager.contentPane.removeAll();
-				PanelsManager.contentPane.add(PanelsManager.switchToLambdaPanel());
+				PanelsManager.contentPane.add(PanelsManager.switchtoCommandeStockView());
 				PanelsManager.contentPane.repaint();
 				PanelsManager.contentPane.revalidate();
 	        }

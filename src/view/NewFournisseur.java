@@ -18,6 +18,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.net.URL;
 
 public class NewFournisseur extends JPanel {
 	/**
@@ -60,7 +61,8 @@ public class NewFournisseur extends JPanel {
 				modify = false;
 			}
 		});
-		btnRetour.setIcon(new ImageIcon("C:\\Users\\Quentin\\Documents\\GIT\\Boulangestion\\projetBoulang\\arrow_left.png"));
+		URL returnURL = ClassLoader.getSystemResource("res/arrow_left.png");
+		btnRetour.setIcon(new ImageIcon(returnURL));
 		btnRetour.setBounds(22, 11, 40, 40);
 		menu.add(btnRetour);
 		
@@ -81,7 +83,8 @@ public class NewFournisseur extends JPanel {
 				modify = false;
 			}
 		});
-		btnAccueil.setIcon(new ImageIcon("C:\\Users\\Quentin\\Documents\\GIT\\Boulangestion\\projetBoulang\\exit.png"));
+		URL exitURL = ClassLoader.getSystemResource("res/exit.png");
+		btnAccueil.setIcon(new ImageIcon(exitURL));
 		btnAccueil.setBounds(1370, 11, 40, 40);
 		menu.add(btnAccueil);
 		
@@ -229,6 +232,10 @@ public class NewFournisseur extends JPanel {
 					//ajoute le fournisseur à la bdd
 					fournisseurDao.create(nouveau);
 					clearFields();
+					PanelsManager.contentPane.removeAll();
+					PanelsManager.contentPane.add(PanelsManager.switchToListeFournisseurs());
+					PanelsManager.contentPane.repaint();
+					PanelsManager.contentPane.revalidate();
 				}
 			});
 		}else {
@@ -273,6 +280,10 @@ public class NewFournisseur extends JPanel {
 						"Annulation", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 					clearFields();
 					modify = false;
+					PanelsManager.contentPane.removeAll();
+					PanelsManager.contentPane.add(PanelsManager.switchToListeFournisseurs());
+					PanelsManager.contentPane.repaint();
+					PanelsManager.contentPane.revalidate();
 				}
 			}
 		});

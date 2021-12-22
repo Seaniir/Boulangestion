@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.net.URL;
 
 public class NouveauProduit extends JPanel {
 	private final JTextField libelleField;
@@ -124,6 +125,10 @@ public class NouveauProduit extends JPanel {
 		btnNewButton.addActionListener(e -> {
 			ProduitDAO produitDAO = new ProduitDAO();
 			produitDAO.add(new Produit(libelleField.getText(), fabricantField.getText(), Float.parseFloat(poidsField.getText()), Integer.parseInt(quantiteField.getText()), Float.parseFloat(HTField.getText()), Float.parseFloat(TTCField.getText())));
+			PanelsManager.contentPane.removeAll();
+			PanelsManager.contentPane.add(PanelsManager.switchtoProduitsViewPanel());
+			PanelsManager.contentPane.repaint();
+			PanelsManager.contentPane.revalidate();
 		});
 	}
 		btnNewButton.setFont(new Font("Tahoma", Font.PLAIN, 20));
@@ -154,7 +159,8 @@ public class NouveauProduit extends JPanel {
 		add(menu);
 		
 		JButton btnRetour = new JButton("");
-		btnRetour.setIcon(new ImageIcon("C:\\Users\\Quentin\\Documents\\GIT\\Boulangestion\\projetBoulang\\arrow_left.png"));
+		URL returnURL = ClassLoader.getSystemResource("res/arrow_left.png");
+		btnRetour.setIcon(new ImageIcon(returnURL));
 		btnRetour.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				modify = false;
@@ -174,7 +180,8 @@ public class NouveauProduit extends JPanel {
 		menu.add(lblRetour);
 		
 		JButton btnAccueil = new JButton("");
-		btnAccueil.setIcon(new ImageIcon("C:\\Users\\Quentin\\Documents\\GIT\\Boulangestion\\projetBoulang\\exit.png"));
+		URL exitURL = ClassLoader.getSystemResource("res/exit.png");
+		btnAccueil.setIcon(new ImageIcon(exitURL));
 		btnAccueil.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				modify = false;

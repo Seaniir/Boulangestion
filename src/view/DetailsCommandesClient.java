@@ -12,6 +12,7 @@ import javax.swing.*;
 import javax.swing.table.*;
 import java.awt.*;
 import java.lang.reflect.Type;
+import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -34,18 +35,21 @@ public class DetailsCommandesClient extends JPanel {
 	public DetailsCommandesClient() {
 		setBounds(0, 0, 1440, 900);
 		setLayout(null);
-		ImageIcon accueilImage = new ImageIcon("C:\\Users\\Quentin\\Downloads\\sign-out.png");
+		URL exitURL = ClassLoader.getSystemResource("res/exit.png");
+		ImageIcon accueilImage = new ImageIcon(exitURL);
 		Image accueilImageImage = accueilImage.getImage();
 		Image newimg4 = accueilImageImage.getScaledInstance(75, 75, java.awt.Image.SCALE_SMOOTH);
 		accueilImage = new ImageIcon(newimg4);
-		ImageIcon imageIcon = new ImageIcon("C:\\Users\\Quentin\\Downloads\\history.png");
+		URL historyURL = ClassLoader.getSystemResource("res/history.png");
+		ImageIcon imageIcon = new ImageIcon(historyURL);
 		Image image = imageIcon.getImage();
 		Image newimg = image.getScaledInstance(75, 75, java.awt.Image.SCALE_SMOOTH);
 		imageIcon = new ImageIcon(newimg);
 		button.addActionListener(
 				event -> JOptionPane.showMessageDialog(null, "Do you want to modify this line?")
 		);
-		ImageIcon imageReturn = new ImageIcon("C:\\Users\\Quentin\\Downloads\\return.png");
+		URL returnURL = ClassLoader.getSystemResource("res/arrow_left.png");
+		ImageIcon imageReturn = new ImageIcon(returnURL);
 		Image imageReturnImage = imageReturn.getImage();
 		Image newimg3 = imageReturnImage.getScaledInstance(75, 75, java.awt.Image.SCALE_SMOOTH);
 		imageReturn = new ImageIcon(newimg3);
@@ -208,6 +212,16 @@ public class DetailsCommandesClient extends JPanel {
 		String strDate = dateFormat.format(date);
 		withdrawal_at_label.setText(strDate);
 		
+		JLabel lblNewLabel = new JLabel("Commande N\u00B0");
+		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		lblNewLabel.setBounds(470, 47, 141, 31);
+		panel_3.add(lblNewLabel);
+		
+		JLabel idCommandeLabel = new JLabel("");
+		idCommandeLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		idCommandeLabel.setBounds(605, 46, 46, 32);
+		panel_3.add(idCommandeLabel);
+		
 		JPanel menu = new JPanel();
 		menu.setLayout(null);
 		menu.setBackground(Color.WHITE);
@@ -215,7 +229,7 @@ public class DetailsCommandesClient extends JPanel {
 		add(menu);
 		
 		JButton btnRetour = new JButton("");
-		btnRetour.setIcon(new ImageIcon("C:\\Users\\Quentin\\Documents\\GIT\\Boulangestion\\projetBoulang\\arrow_left.png"));
+		btnRetour.setIcon(new ImageIcon(returnURL));
 		btnRetour.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				PanelsManager.contentPane.removeAll();
@@ -234,7 +248,7 @@ public class DetailsCommandesClient extends JPanel {
 		menu.add(lblRetour);
 		
 		JButton btnAccueil = new JButton("");
-		btnAccueil.setIcon(new ImageIcon("C:\\Users\\Quentin\\Documents\\GIT\\Boulangestion\\projetBoulang\\exit.png"));
+		btnAccueil.setIcon(new ImageIcon(exitURL));
 		btnAccueil.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				PanelsManager.contentPane.removeAll();
@@ -245,7 +259,7 @@ public class DetailsCommandesClient extends JPanel {
 		});
 		btnAccueil.setBounds(1370, 11, 40, 40);
 		menu.add(btnAccueil);
-		
+		idCommandeLabel.setText(String.valueOf(currentCommande.getId()));
 		JLabel lblAccueil = new JLabel("Accueil");
 		lblAccueil.setHorizontalAlignment(SwingConstants.CENTER);
 		lblAccueil.setFont(new Font("Tahoma", Font.PLAIN, 18));
@@ -267,12 +281,12 @@ public class DetailsCommandesClient extends JPanel {
 
 	public DefaultTableModel liste() {
 		String[] col = {
-				"Quantité",
-				"Libellé",
+				"Quantite",
+				"Libelle",
 				"Prix Unitaire",
 				"Prix total HT",
 				"Prix total TTC",
-				"Montant réglé"
+				"Montant régle"
 		};
 		DefaultTableModel tab = new DefaultTableModel(null, col);
 
@@ -298,5 +312,4 @@ public class DetailsCommandesClient extends JPanel {
 		return tab;
 
 	}
-
 }

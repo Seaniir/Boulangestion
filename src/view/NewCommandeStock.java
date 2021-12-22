@@ -12,6 +12,7 @@ import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.lang.reflect.Type;
+import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -92,7 +93,8 @@ public class NewCommandeStock extends JPanel {
 				modify = false;
 			}
 		});
-		btnRetour.setIcon(new ImageIcon("C:\\Users\\Quentin\\Documents\\GIT\\Boulangestion\\projetBoulang\\arrow_left.png"));
+		URL returnURL = ClassLoader.getSystemResource("res/arrow_left.png");
+		btnRetour.setIcon(new ImageIcon(returnURL));
 		btnRetour.setBounds(22, 11, 40, 40);
 		menu.add(btnRetour);
 		
@@ -113,7 +115,8 @@ public class NewCommandeStock extends JPanel {
 				modify = false;
 			}
 		});
-		btnAccueil.setIcon(new ImageIcon("C:\\Users\\Quentin\\Documents\\GIT\\Boulangestion\\projetBoulang\\exit.png"));
+		URL exitURL = ClassLoader.getSystemResource("res/exit.png");
+		btnAccueil.setIcon(new ImageIcon(exitURL));
 		btnAccueil.setBounds(1370, 11, 40, 40);
 		menu.add(btnAccueil);
 		
@@ -248,9 +251,7 @@ public class NewCommandeStock extends JPanel {
 		id_commande_label.setHorizontalAlignment(SwingConstants.CENTER);
 		id_commande_label.setFont(new Font("Tahoma", Font.PLAIN, 22));
 		id_commande_label.setBounds(349, 117, 99, 37);
-		if(modify) {
-			id_commande_label.setText(String.valueOf(currentCmdStock.getId()));
-		}
+		
 		datePanel.add(id_commande_label);
 		
 		JLabel lblTotal = new JLabel("Total :");
@@ -290,9 +291,15 @@ public class NewCommandeStock extends JPanel {
 		JButton btnValider = new JButton();
 		if (modify) {
 			btnValider.setText("Modifier");
+			adresseLabel.setText(currentFournisseur.getAdresse()+
+					" "+currentFournisseur.getCodePostal()+" "+currentFournisseur.getVille());
+			phoneLabel.setText(currentFournisseur.getTel());
+			mailLabel.setText(currentFournisseur.getEmail());
+			id_commande_label.setText(String.valueOf(currentCmdStock.getId()));
 		} else {
 			btnValider.setText("Valider");
 		}
+		
 		btnValider.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				CommandeStockDao commandeStockDao = new CommandeStockDao();
@@ -342,6 +349,7 @@ public class NewCommandeStock extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 				if (JOptionPane.showConfirmDialog(null, "Etes-vous sur de vouloir annuler?", "Attention",
 				        JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+					modify = false;
 					PanelsManager.contentPane.removeAll();
 					PanelsManager.contentPane.add(PanelsManager.switchtoCommandeStockView());
 					PanelsManager.contentPane.repaint();

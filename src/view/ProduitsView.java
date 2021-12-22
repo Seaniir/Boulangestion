@@ -15,6 +15,7 @@ import javax.swing.table.TableCellRenderer;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
@@ -86,7 +87,8 @@ public class ProduitsView extends JPanel {
 		add(menu);
 		
 		JButton btnRetour = new JButton("");
-		btnRetour.setIcon(new ImageIcon("C:\\Users\\Quentin\\Documents\\GIT\\Boulangestion\\projetBoulang\\arrow_left.png"));
+		URL returnURL = ClassLoader.getSystemResource("res/arrow_left.png");
+		btnRetour.setIcon(new ImageIcon(returnURL));
 		btnRetour.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				PanelsManager.contentPane.removeAll();
@@ -105,7 +107,8 @@ public class ProduitsView extends JPanel {
 		menu.add(lblRetour);
 		
 		JButton btnAccueil = new JButton("");
-		btnAccueil.setIcon(new ImageIcon("C:\\Users\\Quentin\\Documents\\GIT\\Boulangestion\\projetBoulang\\exit.png"));
+		URL exitURL = ClassLoader.getSystemResource("res/exit.png");
+		btnAccueil.setIcon(new ImageIcon(exitURL));
 		btnAccueil.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				PanelsManager.contentPane.removeAll();
@@ -161,25 +164,16 @@ public class ProduitsView extends JPanel {
 		table.getColumn("Modifier").setCellRenderer(new ButtonRenderer());
 		table.getColumn("Modifier").setCellEditor(new ButtonEditor(new JCheckBox()));
 		table.getColumn("Supprimer").setCellRenderer(new SecondButtonRenderer());
-		table.getColumn("Supprimer").setCellEditor(new SecondButtonEditor(new JCheckBox()));
-		ImageIcon imageIcon = new ImageIcon("C:\\Users\\Quentin\\Downloads\\history.png");
-		Image image = imageIcon.getImage();
-		Image newimg = image.getScaledInstance(75, 75, java.awt.Image.SCALE_SMOOTH);
-		imageIcon = new ImageIcon(newimg);
-		ImageIcon imageIcon1 = new ImageIcon("C:\\Users\\Quentin\\Downloads\\sign-out.png");
-		Image image1 = imageIcon1.getImage();
-		Image newimg1 = image1.getScaledInstance(75, 75, java.awt.Image.SCALE_SMOOTH);
-		imageIcon1 = new ImageIcon(newimg1);
-
+		table.getColumn("Supprimer").setCellEditor(new SecondButtonEditor(new JCheckBox()));;
 	}
 
 	public DefaultTableModel liste() {
 
 		String[] col = {
-				"Libellé",
+				"Libelle",
 				"Fabricant",
 				"Poids (kg)",
-				"Quantité",
+				"Quantite",
 				"Prix HT",
 				"Prix TTC",
 				"Modifier",
@@ -189,15 +183,15 @@ public class ProduitsView extends JPanel {
 
 		ProduitDAO produitDAO = new ProduitDAO();
 		List<Produit> produits = new ArrayList<>(produitDAO.read());
-		for (Produit produit: produits) {
+		for (int i = 1 ; i < produits.size() ; i++) {
 			Vector<java.io.Serializable> vect = new Vector<>();
-			idList.add(produit.getId());
-			vect.add(produit.getLibelle());
-			vect.add(produit.getFabricant());
-			vect.add(produit.getPoids());
-			vect.add(produit.getQuantite());
-			vect.add(produit.getPrixHT());
-			vect.add(produit.getPrixTTC());
+			idList.add(produits.get(i).getId());
+			vect.add(produits.get(i).getLibelle());
+			vect.add(produits.get(i).getFabricant());
+			vect.add(produits.get(i).getPoids());
+			vect.add(produits.get(i).getQuantite());
+			vect.add(produits.get(i).getPrixHT());
+			vect.add(produits.get(i).getPrixTTC());
 			tab.addRow(vect);
 		}
 		return tab;

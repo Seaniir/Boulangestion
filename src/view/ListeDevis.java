@@ -5,6 +5,9 @@ import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
@@ -30,9 +33,12 @@ import javax.swing.table.TableRowSorter;
 import com.mysql.cj.conf.ConnectionUrlParser;
 
 import controller.CommandeClientDAO;
+import controller.CommandeStockDao;
 import controller.PanelsManager;
 import model.Client;
 import model.CommandeClient;
+import model.CommandeStock;
+import model.Fournisseur;
 
 public class ListeDevis extends JPanel {
 	private JTable table;
@@ -67,7 +73,8 @@ public class ListeDevis extends JPanel {
 			}
 		});
 		btnAccueil.setBackground(Color.WHITE);
-		btnAccueil.setIcon(new ImageIcon("C:\\Users\\Quentin\\Documents\\GIT\\Boulangestion\\projetBoulang\\exit.png"));
+		URL exitURL = ClassLoader.getSystemResource("res/exit.png");
+		btnAccueil.setIcon(new ImageIcon(exitURL));
 		btnAccueil.setBounds(1370, 11, 40, 40);
 		panel.add(btnAccueil);
 		// Ajouter un client
@@ -100,6 +107,22 @@ public class ListeDevis extends JPanel {
 		
 		table = new JTable();
 		table.setRowSelectionAllowed(false);
+		// Cliquer sur une cellule ouvre le Details. 
+		table.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				int id = table.getSelectedRow();
+				CommandeClientDAO cCDao = new CommandeClientDAO();
+				ConnectionUrlParser.Pair < CommandeClient, Client > pair =
+						cCDao.findById((Integer) table.getValueAt(id, 0));
+				DetailsDevis.currentCommande = pair.left;
+				DetailsDevis.currentClient = pair.right;
+				PanelsManager.contentPane.removeAll();
+				PanelsManager.contentPane.add(PanelsManager.switchtoDetailsDevisPanel());
+				PanelsManager.contentPane.repaint();
+				PanelsManager.contentPane.revalidate();
+			}
+		});
 		scrollPane.setViewportView(table);
 		table.setRowHeight(100);
 		table.setModel(liste());
@@ -177,11 +200,11 @@ public class ListeDevis extends JPanel {
 			}
 		});
 	}
-		// Intitulé des colonnes
+		// Intitulï¿½ des colonnes
 		public DefaultTableModel liste() {
 			String [] col = {
-					"N° Devis",
-					"Crée le",
+					"ID Devis",
+					"Cree le",
 					"Client",
 					"Nbr articles", 
 					"Prix total TTC",
@@ -190,7 +213,7 @@ public class ListeDevis extends JPanel {
 					"Annuler",		
 			};
 			DefaultTableModel tab = new DefaultTableModel(null, col);
-			// Les données du tableau 
+			// Les donnï¿½es du tableau 
 			CommandeClientDAO hcv = new CommandeClientDAO();
 			ConnectionUrlParser.Pair<ArrayList<CommandeClient>, ArrayList<Client>> pair = 
 					hcv.readPairDevis();
@@ -206,7 +229,7 @@ public class ListeDevis extends JPanel {
 			return tab;
 		}	
 		
-	// Class qui créer les boutons dans la JTable  
+	// Class qui crï¿½er les boutons dans la JTable  
 	class ButtonRenderer extends JButton implements TableCellRenderer{
 			public ButtonRenderer() {
 				setOpaque(true);

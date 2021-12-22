@@ -8,6 +8,7 @@ import javax.swing.*;
 import javax.swing.table.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.net.URL;
 import java.text.*;
 import java.util.*;
 import java.util.List;
@@ -71,9 +72,10 @@ public class CommandesClientView extends JPanel {
 		menu.setBackground(Color.WHITE);
 		menu.setBounds(0, 0, 1440, 90);
 		add(menu);
-		
+
+		URL returnURL = ClassLoader.getSystemResource("res/arrow_left.png");
 		JButton btnRetour = new JButton("");
-		btnRetour.setIcon(new ImageIcon("C:\\Users\\Quentin\\Documents\\GIT\\Boulangestion\\projetBoulang\\arrow_left.png"));
+		btnRetour.setIcon(new ImageIcon(returnURL));
 		btnRetour.addActionListener(e -> {
 			PanelsManager.contentPane.removeAll();
 			PanelsManager.contentPane.add(PanelsManager.switchToAccueilMenu());
@@ -88,9 +90,10 @@ public class CommandesClientView extends JPanel {
 		lblRetour.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		lblRetour.setBounds(10, 62, 63, 18);
 		menu.add(lblRetour);
-		
+
+		URL exitURL = ClassLoader.getSystemResource("res/exit.png");
 		JButton btnAccueil = new JButton("");
-		btnAccueil.setIcon(new ImageIcon("C:\\Users\\Quentin\\Documents\\GIT\\Boulangestion\\projetBoulang\\exit.png"));
+		btnAccueil.setIcon(new ImageIcon(exitURL));
 		btnAccueil.addActionListener(e -> {
 			PanelsManager.contentPane.removeAll();
 			PanelsManager.contentPane.add(PanelsManager.switchToAccueilMenu());

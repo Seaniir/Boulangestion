@@ -20,6 +20,7 @@ import javax.swing.table.TableCellRenderer;
 import java.awt.*;
 import java.awt.event.ItemEvent;
 import java.lang.reflect.Type;
+import java.net.URL;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -52,21 +53,9 @@ public class NouvelleCommandeClientView extends JPanel {
 	public NouvelleCommandeClientView() {
 		setBounds(0, 0, 1440, 900);
 		setLayout(null);
-		ImageIcon accueilImage = new ImageIcon("C:\\Users\\Quentin\\Downloads\\sign-out.png");
-		Image accueilImageImage = accueilImage.getImage();
-		Image newimg4 = accueilImageImage.getScaledInstance(75, 75, java.awt.Image.SCALE_SMOOTH);
-		accueilImage = new ImageIcon(newimg4);
-		ImageIcon imageIcon = new ImageIcon("C:\\Users\\Quentin\\Downloads\\history.png");
-		Image image = imageIcon.getImage();
-		Image newimg = image.getScaledInstance(75, 75, java.awt.Image.SCALE_SMOOTH);
-		imageIcon = new ImageIcon(newimg);
 		button.addActionListener(
 				event -> JOptionPane.showMessageDialog(null, "Do you want to modify this line?")
 		);
-		ImageIcon imageReturn = new ImageIcon("C:\\Users\\Quentin\\Downloads\\return.png");
-		Image imageReturnImage = imageReturn.getImage();
-		Image newimg3 = imageReturnImage.getScaledInstance(75, 75, java.awt.Image.SCALE_SMOOTH);
-		imageReturn = new ImageIcon(newimg3);
 
 		JPanel panel = new JPanel();
 		panel.setLayout(null);
@@ -183,6 +172,18 @@ public class NouvelleCommandeClientView extends JPanel {
 		id_commande_label.setFont(new Font("Tahoma", Font.PLAIN, 22));
 		id_commande_label.setBounds(350, 100, 189, 37);
 		panel_3.add(id_commande_label);
+		
+		JLabel commandeIDLabel = new JLabel("Commande N\u00B0");
+		commandeIDLabel.setVisible(false);
+		commandeIDLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		commandeIDLabel.setBounds(447, 59, 141, 31);
+		panel_3.add(commandeIDLabel);
+		
+		JLabel idCommandeLabel = new JLabel("");
+		idCommandeLabel.setVisible(false);
+		idCommandeLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
+		idCommandeLabel.setBounds(579, 59, 46, 32);
+		panel_3.add(idCommandeLabel);
 
 		JLabel lblNewLabel_7 = new JLabel("Total :");
 
@@ -242,6 +243,9 @@ public class NouvelleCommandeClientView extends JPanel {
 		JButton btnNewButton_1 = new JButton();
 		if (modify) {
 			btnNewButton_1.setText("Modifier");
+			commandeIDLabel.setVisible(true);
+			idCommandeLabel.setVisible(true);
+			idCommandeLabel.setText(String.valueOf(currentCommande.getId()));
 		} else {
 			btnNewButton_1.setText("Valider");
 		}
@@ -348,7 +352,8 @@ public class NouvelleCommandeClientView extends JPanel {
 		add(menu);
 		
 		JButton btnRetour = new JButton("");
-		btnRetour.setIcon(new ImageIcon("C:\\Users\\Quentin\\Documents\\GIT\\Boulangestion\\projetBoulang\\arrow_left.png"));
+		URL returnURL = ClassLoader.getSystemResource("res/arrow_left.png");
+		btnRetour.setIcon(new ImageIcon(returnURL));
 		btnRetour.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				PanelsManager.contentPane.removeAll();
@@ -367,7 +372,8 @@ public class NouvelleCommandeClientView extends JPanel {
 		menu.add(lblRetour);
 		
 		JButton btnAccueil = new JButton("");
-		btnAccueil.setIcon(new ImageIcon("C:\\Users\\Quentin\\Documents\\GIT\\Boulangestion\\projetBoulang\\exit.png"));
+		URL exitURL = ClassLoader.getSystemResource("res/exit.png");
+		btnAccueil.setIcon(new ImageIcon(exitURL));
 		btnAccueil.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				PanelsManager.contentPane.removeAll();
