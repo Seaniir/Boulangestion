@@ -448,6 +448,12 @@ public class NouveauDevis extends JPanel {
 							"Devis",
 							typePaiment,
 							json));
+
+				modify = false;
+				PanelsManager.contentPane.removeAll();
+				PanelsManager.contentPane.add(PanelsManager.switchtoListeDevisPanel());
+				PanelsManager.contentPane.revalidate();
+				PanelsManager.contentPane.repaint();
 			}
 		});
 		btnNewButton_1.setBackground(Color.ORANGE);
@@ -461,8 +467,8 @@ public class NouveauDevis extends JPanel {
 		panel.add(btnNewButton_1_1);
 		float prixTotal = 0;
 		for (int i = 0; i < table.getRowCount(); i++) {
-			prixTotal += Float.parseFloat(table.getValueAt(i, 4).toString());
-			System.out.println(table.getValueAt(i, 4));
+			prixTotal += Float.parseFloat(table.getValueAt(i, 5).toString());
+			System.out.println(table.getValueAt(i, 5));
 		}
 		prixTotal_label.setText(String.valueOf(prixTotal));
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
@@ -482,7 +488,7 @@ public class NouveauDevis extends JPanel {
 					int row = table.getSelectedRow();
 					int column = table.getSelectedColumn();
 					System.out.println(table.getColumnName(column));
-					if (table.getColumnName(column).equals("Quantité")) {
+					if (table.getColumnName(column).equals("Quantite")) {
 						table.setValueAt(Float.parseFloat(table.getValueAt(row, 0).toString()) * 
 								(Float.parseFloat(table.getValueAt(row, 2).toString())), row, 3);
 						table.setValueAt(Float.parseFloat(table.getValueAt(row, 0).toString()) * 

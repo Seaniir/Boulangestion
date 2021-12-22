@@ -286,7 +286,7 @@ public class DetailsCommandesClient extends JPanel {
 				"Prix Unitaire",
 				"Prix total HT",
 				"Prix total TTC",
-				"Montant régle"
+				"Montant regle"
 		};
 		DefaultTableModel tab = new DefaultTableModel(null, col);
 
