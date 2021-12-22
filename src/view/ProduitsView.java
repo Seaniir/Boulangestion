@@ -15,6 +15,7 @@ import javax.swing.table.TableCellRenderer;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
@@ -86,7 +87,8 @@ public class ProduitsView extends JPanel {
 		add(menu);
 		
 		JButton btnRetour = new JButton("");
-		btnRetour.setIcon(new ImageIcon("C:\\Users\\Quentin\\Documents\\GIT\\Boulangestion\\projetBoulang\\arrow_left.png"));
+		URL returnURL = ClassLoader.getSystemResource("arrow_left.png");
+		btnRetour.setIcon(new ImageIcon(returnURL));
 		btnRetour.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				PanelsManager.contentPane.removeAll();
@@ -105,7 +107,8 @@ public class ProduitsView extends JPanel {
 		menu.add(lblRetour);
 		
 		JButton btnAccueil = new JButton("");
-		btnAccueil.setIcon(new ImageIcon("C:\\Users\\Quentin\\Documents\\GIT\\Boulangestion\\projetBoulang\\exit.png"));
+		URL exitURL = ClassLoader.getSystemResource("exit.png");
+		btnAccueil.setIcon(new ImageIcon(exitURL));
 		btnAccueil.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				PanelsManager.contentPane.removeAll();
@@ -161,16 +164,7 @@ public class ProduitsView extends JPanel {
 		table.getColumn("Modifier").setCellRenderer(new ButtonRenderer());
 		table.getColumn("Modifier").setCellEditor(new ButtonEditor(new JCheckBox()));
 		table.getColumn("Supprimer").setCellRenderer(new SecondButtonRenderer());
-		table.getColumn("Supprimer").setCellEditor(new SecondButtonEditor(new JCheckBox()));
-		ImageIcon imageIcon = new ImageIcon("C:\\Users\\Quentin\\Downloads\\history.png");
-		Image image = imageIcon.getImage();
-		Image newimg = image.getScaledInstance(75, 75, java.awt.Image.SCALE_SMOOTH);
-		imageIcon = new ImageIcon(newimg);
-		ImageIcon imageIcon1 = new ImageIcon("C:\\Users\\Quentin\\Downloads\\sign-out.png");
-		Image image1 = imageIcon1.getImage();
-		Image newimg1 = image1.getScaledInstance(75, 75, java.awt.Image.SCALE_SMOOTH);
-		imageIcon1 = new ImageIcon(newimg1);
-
+		table.getColumn("Supprimer").setCellEditor(new SecondButtonEditor(new JCheckBox()));;
 	}
 
 	public DefaultTableModel liste() {

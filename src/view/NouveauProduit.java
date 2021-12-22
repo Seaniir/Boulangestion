@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.net.URL;
 
 public class NouveauProduit extends JPanel {
 	private final JTextField libelleField;
@@ -158,7 +159,8 @@ public class NouveauProduit extends JPanel {
 		add(menu);
 		
 		JButton btnRetour = new JButton("");
-		btnRetour.setIcon(new ImageIcon("C:\\Users\\Quentin\\Documents\\GIT\\Boulangestion\\projetBoulang\\arrow_left.png"));
+		URL returnURL = ClassLoader.getSystemResource("arrow_left.png");
+		btnRetour.setIcon(new ImageIcon(returnURL));
 		btnRetour.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				modify = false;
@@ -178,7 +180,8 @@ public class NouveauProduit extends JPanel {
 		menu.add(lblRetour);
 		
 		JButton btnAccueil = new JButton("");
-		btnAccueil.setIcon(new ImageIcon("C:\\Users\\Quentin\\Documents\\GIT\\Boulangestion\\projetBoulang\\exit.png"));
+		URL exitURL = ClassLoader.getSystemResource("exit.png");
+		btnAccueil.setIcon(new ImageIcon(exitURL));
 		btnAccueil.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				modify = false;

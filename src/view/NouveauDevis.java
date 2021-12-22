@@ -139,7 +139,7 @@ public class NouveauDevis extends JPanel {
 			}
 		});
 		URL returnURL = ClassLoader.getSystemResource("arrow_left.png");
-		ImageIcon imageReturn = new ImageIcon("C:\\Users\\Quentin\\Downloads\\return.png");
+		ImageIcon imageReturn = new ImageIcon(returnURL);
 		Image imageReturnImage = imageReturn.getImage(); 
 		Image newimg3 = imageReturnImage.getScaledInstance(75, 75, java.awt.Image.SCALE_SMOOTH); 
 		imageReturn = new ImageIcon(newimg3); 
