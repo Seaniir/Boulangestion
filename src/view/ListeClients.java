@@ -86,18 +86,18 @@ public class ListeClients extends JPanel {
 		});
 		btnNewClient.setBackground(new Color(242, 193, 102));
 		btnNewClient.setFont(new Font("Tahoma", Font.PLAIN, 25));
-		btnNewClient.setBounds(503, 914, 463, 43);
+		btnNewClient.setBounds(470, 823, 499, 53);
 		add(btnNewClient);
 		
 		// Table
 		JPanel listing = new JPanel();
 		listing.setBackground(new Color(255, 255, 255));
-		listing.setBounds(264, 155, 912, 706);
+		listing.setBounds(40, 100, 1360, 624);
 		add(listing);
 		listing.setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(0, 0, 912, 706);
+		scrollPane.setBounds(0, 0, 1360, 624);
 		listing.add(scrollPane);
 		
 		listingClients = new JTable();
@@ -209,7 +209,7 @@ public class ListeClients extends JPanel {
 			}
 			public Component getTableCellRendererComponent(JTable table, Object value,
 														   boolean isSelected, boolean hasFocus, int row, int column) {
-				setText((value == null) ? "Modify" : value.toString());
+				setText((value == null) ? "Modifier" : value.toString());
 				return this;
 			}
 	}
@@ -223,7 +223,7 @@ public class ListeClients extends JPanel {
 		public Component getTableCellEditorComponent(JTable table, Object value,
 													 boolean isSelected, int row, int column)
 		{
-			label = (value == null) ? "Modify" : value.toString();
+			label = (value == null) ? "Modifier" : value.toString();
 			btnModify.setText(label);
 			return btnModify;
 		}

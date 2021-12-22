@@ -68,7 +68,9 @@ public class NouveauDevis extends JPanel {
 	JButton btnSupprimer = new JButton();
 	JComboBox comboBox = new JComboBox();
 	JLabel prixTotal_label = new JLabel();
-	ArrayList<Integer> idList = new ArrayList<Integer>();
+	ArrayList<Integer> idList = new ArrayList<>();
+	ArrayList<Float> poidList = new ArrayList<>();
+	
 	/**
 	 * Create the panel.
 	 */
@@ -104,28 +106,6 @@ public class NouveauDevis extends JPanel {
 			}
 		});
 
-		JButton historiqueBtn = new JButton("");
-		URL historiqueURL = ClassLoader.getSystemResource("res/history.png");
-		ImageIcon imageIcon = new ImageIcon(historiqueURL);
-		Image image = imageIcon.getImage(); 
-		Image newimg = image.getScaledInstance(75, 75, java.awt.Image.SCALE_SMOOTH); 
-		imageIcon = new ImageIcon(newimg); 
-		historiqueBtn.setIcon(new ImageIcon(historiqueURL));
-		historiqueBtn.setBounds(10, 23, 40, 40);
-		panel_1.add(historiqueBtn);
-		button.addActionListener(
-				new ActionListener() {
-					public void actionPerformed(ActionEvent event) {
-						JOptionPane.showMessageDialog(null, "Do you want to modify this line?");
-					}
-				}
-		);
-		URL clientURL = ClassLoader.getSystemResource("res/account.png");
-		ImageIcon imageClient = new ImageIcon(clientURL);
-		Image imageClientImage = imageClient.getImage();
-		Image newimg2 = imageClientImage.getScaledInstance(75, 75, java.awt.Image.SCALE_SMOOTH); 
-		imageClient = new ImageIcon(newimg2);
-
 		JButton returnBtn = new JButton("");
 		returnBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -147,10 +127,6 @@ public class NouveauDevis extends JPanel {
 		returnBtn.setIcon(new ImageIcon(returnURL));
 		panel_1.add(returnBtn);
 
-		JLabel lblNewLabel_9 = new JLabel("Historique");
-		lblNewLabel_9.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_9.setBounds(0, 74, 63, 18);
-		panel_1.add(lblNewLabel_9);
 
 		JLabel lblNewLabel_10 = new JLabel("Retour");
 		lblNewLabel_10.setHorizontalAlignment(SwingConstants.CENTER);
@@ -366,7 +342,7 @@ public class NouveauDevis extends JPanel {
 		if (modify) {
 			if (currentCommande.getTypePaiment().equals("Especes")) {
 				rdbtnNewRadioButton.setSelected(true);
-			} else if (currentCommande.getTypePaiment().equals("Carte banquaire")) {
+			} else if (currentCommande.getTypePaiment().equals("Carte bancaire")) {
 				rdbtnNewRadioButton_1.setSelected(true);
 			}
 			prenomLabel.setText(currentClient.getFirstName());
@@ -400,7 +376,6 @@ public class NouveauDevis extends JPanel {
 				DateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE);
 
 				DateFormat inputFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE);
-				System.out.println(datePicker.getJFormattedTextField().getText());
 				int m = table.getRowCount(), n = table.getColumnCount();
 				ArrayList < ArrayList < Produit >> matrix = new ArrayList < ArrayList < Produit >> ();
 
@@ -408,24 +383,23 @@ public class NouveauDevis extends JPanel {
 					ArrayList < Produit > row = new ArrayList < Produit > ();
 					Produit produit = new Produit();
 					produit.setId(idList.get(i));
-					produit.setPrixHT(Float.parseFloat(table.getValueAt(i, 2).toString()));
-					produit.setPrixTTC(Float.parseFloat(table.getValueAt(i, 4).toString()));
+					produit.setPoids(poidList.get(i));
 					produit.setQuantite(Integer.parseInt(table.getValueAt(i, 0).toString()));
 					produit.setLibelle((String) table.getValueAt(i, 1));
+					produit.setPrixHT(Float.parseFloat(table.getValueAt(i, 2).toString()));
+					produit.setPrixTTC(Float.parseFloat(table.getValueAt(i, 5).toString()));
 					row.add(produit);
 					matrix.add(row);
 				}
 
-				System.out.println(idList);
 				String json = new Gson().toJson(matrix);
-				System.out.println(json);
 				Date date = null;
 				try {
 					date = inputFormat.parse(datePicker.getJFormattedTextField().getText());
 				} catch (ParseException ex) {
 					ex.printStackTrace();
 				}
-				if (modify)
+				if (modify) {
 					commandeClientDAO.update(new CommandeClient(
 							date,
 							date, 
@@ -437,7 +411,12 @@ public class NouveauDevis extends JPanel {
 							typePaiment,
 							json),
 							currentCommande.getId());
-				else
+					PanelsManager.contentPane.removeAll();
+					PanelsManager.contentPane.add(PanelsManager.switchtoListeDevisPanel());
+					PanelsManager.contentPane.revalidate();
+					PanelsManager.contentPane.repaint();
+				}
+				else {
 					commandeClientDAO.add(new CommandeClient(
 							date, 
 							date, 
@@ -454,6 +433,7 @@ public class NouveauDevis extends JPanel {
 				PanelsManager.contentPane.add(PanelsManager.switchtoListeDevisPanel());
 				PanelsManager.contentPane.revalidate();
 				PanelsManager.contentPane.repaint();
+				}
 			}
 		});
 		btnNewButton_1.setBackground(Color.ORANGE);
@@ -462,13 +442,21 @@ public class NouveauDevis extends JPanel {
 		panel.add(btnNewButton_1);
 
 		JButton btnNewButton_1_1 = new JButton("Annuler");
+		btnNewButton_1_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				modify = false;
+				PanelsManager.contentPane.removeAll();
+				PanelsManager.contentPane.add(PanelsManager.switchtoListeDevisPanel());
+				PanelsManager.contentPane.revalidate();
+				PanelsManager.contentPane.repaint();
+			}
+		});
 		btnNewButton_1_1.setFont(new Font("Tahoma", Font.PLAIN, 25));
 		btnNewButton_1_1.setBounds(1102, 630, 249, 56);
 		panel.add(btnNewButton_1_1);
 		float prixTotal = 0;
 		for (int i = 0; i < table.getRowCount(); i++) {
 			prixTotal += Float.parseFloat(table.getValueAt(i, 5).toString());
-			System.out.println(table.getValueAt(i, 5));
 		}
 		prixTotal_label.setText(String.valueOf(prixTotal));
 		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
@@ -487,7 +475,6 @@ public class NouveauDevis extends JPanel {
 				if (evt.getNewValue() == null) {
 					int row = table.getSelectedRow();
 					int column = table.getSelectedColumn();
-					System.out.println(table.getColumnName(column));
 					if (table.getColumnName(column).equals("Quantite")) {
 						table.setValueAt(Float.parseFloat(table.getValueAt(row, 0).toString()) * 
 								(Float.parseFloat(table.getValueAt(row, 2).toString())), row, 3);
@@ -527,7 +514,10 @@ public class NouveauDevis extends JPanel {
 					int row = table.getSelectedRow();
 					for (Produit article: listProduits) {
 						if (article.getLibelle().equals(e.getItem())) {
-							idList.add(article.getId());
+							idList.remove(table.getSelectedRow());
+							idList.add(table.getSelectedRow(),article.getId());
+							poidList.remove(table.getSelectedRow());
+							poidList.add(table.getSelectedRow(),article.getPoids());
 							table.setValueAt(article.getPrixHT(),row, 2);
 							table.setValueAt(article.getPrixTTC(),row, 4);
 							float prixTotal = 0;
@@ -565,6 +555,9 @@ public class NouveauDevis extends JPanel {
 			Type type = new TypeToken < ArrayList < ArrayList < Produit >>> () {}.getType();
 			ArrayList < ArrayList < Produit >> contactList = gson.fromJson(currentCommande.getProduits(), type);
 			for (ArrayList < Produit > produit: contactList) {
+				
+				idList.add(produit.get(0).getId());
+				poidList.add(produit.get(0).getPoids());
 				Vector vect = new Vector();
 				vect.add(produit.get(0).getQuantite());
 				vect.add(produit.get(0).getLibelle());
@@ -575,8 +568,9 @@ public class NouveauDevis extends JPanel {
 				tab.addRow(vect);
 			}
 		} else {
-			Vector vect = new Vector();
 			idList.add(listProduits.get(0).getId());
+			poidList.add(listProduits.get(0).getPoids());
+			Vector vect = new Vector();
 			vect.add(0);
 			vect.add(listProduits.get(0).getLibelle());
 			vect.add(listProduits.get(0).getPrixHT());
@@ -594,6 +588,8 @@ public class NouveauDevis extends JPanel {
 		ProduitDAO produitDAO = new ProduitDAO();
 		List < Produit > listProduits = new ArrayList < > ();
 		listProduits.addAll(produitDAO.read());
+		idList.add(listProduits.get(0).getId());
+		poidList.add(listProduits.get(0).getPoids());
 		Vector vect = new Vector();
 		vect.add(0);
 		vect.add(listProduits.get(0).getLibelle());

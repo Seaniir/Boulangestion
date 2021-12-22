@@ -253,6 +253,11 @@ public class NouveauClient extends JPanel {
 							telValue.setText("");
 							emailValue.setText("");
 							clientDao.create(nouveau);
+							
+							PanelsManager.contentPane.removeAll();
+							PanelsManager.contentPane.add(PanelsManager.switchToListeClientsPanel());
+							PanelsManager.contentPane.repaint();
+							PanelsManager.contentPane.revalidate();
 						}else {
 							JOptionPane.showMessageDialog(null, "Mail existe deja","Error",JOptionPane.ERROR_MESSAGE);
 							
