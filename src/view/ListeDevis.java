@@ -77,6 +77,27 @@ public class ListeDevis extends JPanel {
 		btnAccueil.setIcon(new ImageIcon(exitURL));
 		btnAccueil.setBounds(1370, 11, 40, 40);
 		panel.add(btnAccueil);
+		
+		JLabel lblCommandes = new JLabel("Commandes");
+		lblCommandes.setHorizontalAlignment(SwingConstants.CENTER);
+		lblCommandes.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		lblCommandes.setBounds(10, 62, 82, 18);
+		panel.add(lblCommandes);
+		
+		JButton btnHisto = new JButton("");
+		URL historyURL = ClassLoader.getSystemResource("res/history.png");
+		btnHisto.setIcon(new ImageIcon(historyURL));
+		btnHisto.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				PanelsManager.contentPane.removeAll();
+				PanelsManager.contentPane.add(PanelsManager.switchToCommandesClientPanel());
+				PanelsManager.contentPane.repaint();
+				PanelsManager.contentPane.revalidate();
+			}
+		});
+		btnHisto.setBackground(Color.WHITE);
+		btnHisto.setBounds(34, 11, 40, 40);
+		panel.add(btnHisto);
 		// Ajouter un client
 		
 		JButton btnNewClient = new JButton("Nouveau Devis");
@@ -147,7 +168,7 @@ public class ListeDevis extends JPanel {
 		// Lors du clic sur le bouton modifier il se passe: 
 		btnModify.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int n = JOptionPane.showConfirmDialog(null, "Etes vous sur de modifier ?","Modification",JOptionPane.YES_NO_OPTION);
+				int n = JOptionPane.showConfirmDialog(null, "Etes vous sur de vouloir modifier ce devis ?","Modification",JOptionPane.YES_NO_OPTION);
 				if (n == JOptionPane.YES_OPTION) {
 					CommandeClientDAO commandeClientDAO = new CommandeClientDAO();
 					ConnectionUrlParser.Pair < CommandeClient, Client > pair = 
@@ -168,7 +189,7 @@ public class ListeDevis extends JPanel {
 		
 		btnDelete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int n = JOptionPane.showConfirmDialog(null, "Etes vous sur de supprimer ?","Suppression",JOptionPane.YES_NO_OPTION);
+				int n = JOptionPane.showConfirmDialog(null, "Etes vous sur de vouloir supprimer ce devis ?","Suppression",JOptionPane.YES_NO_OPTION);
 				if (n == JOptionPane.YES_OPTION) {
 					CommandeClientDAO ccDao = new CommandeClientDAO();
 					ccDao.delete((int) table.getValueAt(table.getSelectedRow(), 0));
@@ -185,7 +206,7 @@ public class ListeDevis extends JPanel {
 		
 		btnValidate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int n = JOptionPane.showConfirmDialog(null, "Etes vous sur de passer ce devis en valider ?","Validation",JOptionPane.YES_NO_OPTION);
+				int n = JOptionPane.showConfirmDialog(null, "Etes vous sur de vouloir valider ce devis ?","Validation",JOptionPane.YES_NO_OPTION);
 				if (n == JOptionPane.YES_OPTION) {
 					CommandeClientDAO ccDao = new CommandeClientDAO();
 					ccDao.enCours((int) table.getValueAt(table.getSelectedRow(), 0));
@@ -315,5 +336,4 @@ public class ListeDevis extends JPanel {
 	      return new String(label);
 	    }
 	}
-
 }

@@ -28,6 +28,7 @@ public class DetailsCommandesClient extends JPanel {
 	JButton button = new JButton();
 	JComboBox<String> comboBox = new JComboBox<>();
 	JLabel prixTotal_label;
+	static boolean fromHistorique = false;
 
 	/**
 	 * Create the panel.
@@ -233,7 +234,15 @@ public class DetailsCommandesClient extends JPanel {
 		btnRetour.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				PanelsManager.contentPane.removeAll();
-				PanelsManager.contentPane.add(PanelsManager.switchToCommandesClientPanel());
+				if (fromHistorique) {
+					PanelsManager.contentPane.add(PanelsManager.switchToHistoriqueVentesCommandesPanel());
+					fromHistorique = false;
+				}
+				else
+				{
+					PanelsManager.contentPane.add(PanelsManager.switchToCommandesClientPanel());
+					fromHistorique = false;
+				}
 				PanelsManager.contentPane.revalidate();
 				PanelsManager.contentPane.repaint();
 			}
@@ -251,6 +260,7 @@ public class DetailsCommandesClient extends JPanel {
 		btnAccueil.setIcon(new ImageIcon(exitURL));
 		btnAccueil.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				fromHistorique = false;
 				PanelsManager.contentPane.removeAll();
 				PanelsManager.contentPane.add(PanelsManager.switchToAccueilMenu());
 				PanelsManager.contentPane.revalidate();

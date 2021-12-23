@@ -185,11 +185,10 @@ public class NouveauClient extends JPanel {
 					String name_saisie = nameValue.getText();
 					String firstName_saisie = firstNameValue.getText();
 					String adress_saisie = adressValue.getText();
-					int zip_saisie = zipValue.getX();
+					int zip_saisie = Integer.parseInt(zipValue.getText());
 					String city_saisie = cityValue.getText();
 					String tel_saisie = telValue.getText();
 					String email_saisie = emailValue.getText();
-					
 					Client nouveau = new Client(
 							name_saisie,
 							firstName_saisie,
@@ -228,7 +227,7 @@ public class NouveauClient extends JPanel {
 					String name_saisie = nameValue.getText();
 					String firstName_saisie = firstNameValue.getText();
 					String adress_saisie = adressValue.getText();
-					int zip_saisie = zipValue.getX();
+					int zip_saisie = Integer.parseInt(zipValue.getText());
 					String city_saisie = cityValue.getText();
 					String tel_saisie = telValue.getText();
 					String email_saisie = emailValue.getText();
@@ -277,7 +276,7 @@ public class NouveauClient extends JPanel {
 		JButton btnAnnuler = new JButton("Annuler");
 		btnAnnuler.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int n = JOptionPane.showConfirmDialog(null, "Etes vous sur de vouloir annuler","Annuler",JOptionPane.YES_NO_OPTION);
+				int n = JOptionPane.showConfirmDialog(null, "Etes vous sur de vouloir annuler ?","Annuler",JOptionPane.YES_NO_OPTION);
 				if (n == JOptionPane.YES_OPTION) {
 					nameValue.setText("");
 					firstNameValue.setText("");

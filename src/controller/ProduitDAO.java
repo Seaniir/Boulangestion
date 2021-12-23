@@ -64,7 +64,7 @@ public class ProduitDAO {
         List<Produit> produits = new ArrayList<>();
 
         try {
-            PreparedStatement req = connect.prepareStatement("SELECT * FROM produits");
+            PreparedStatement req = connect.prepareStatement("SELECT * FROM produits ORDER BY libelle");
 
             ResultSet rs = req.executeQuery();
             //System.out.println(req);
