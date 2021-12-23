@@ -168,7 +168,7 @@ public class CommandeStockView extends JPanel {
 	        {
 	        	//pop-up de confirmation: si oui va sur la suppression du fournisseur
 	        	//dans ma liste, pas dans la bdd, si non, ne fait rien
-				if (JOptionPane.showConfirmDialog(null, "Etes-vous sûr de vouloir supprimer?", "Attention",
+				if (JOptionPane.showConfirmDialog(null, "Voulez-vous supprimer cette commande?", "Attention",
 			        JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 					CommandeStockDao commandeStockDao = new CommandeStockDao();
 					commandeStockDao.delete((int) listingCmdStock.getValueAt(listingCmdStock.getSelectedRow(), 0));
