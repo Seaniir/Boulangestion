@@ -79,6 +79,18 @@ public class CommandeClientDAO {
         }
 
     }
+    public void enCours(int idCommandeClient) {
+    	try {
+    		PreparedStatement sql = connect.prepareStatement("UPDATE commandesclients SET status=? WHERE commandesclients.id=?");
+    		sql.setString(1, "En cours");
+    		sql.setInt(2, idCommandeClient);
+    		sql.executeUpdate();
+    	} catch (SQLException e) {
+    		
+    		e.printStackTrace();
+    	}
+    	
+    }
 
     //Affichage des articles
     public List<CommandeClient> read() {
