@@ -88,6 +88,7 @@ public class HistoriqueCommandesVentes extends JPanel {
 				DetailsCommandesClient.currentClient = pair.right;
 				PanelsManager.contentPane.removeAll();
 				PanelsManager.contentPane.add(PanelsManager.switchtoDetailsCommandesClients());
+				DetailsCommandesClient.fromHistorique = true;
 				PanelsManager.contentPane.repaint();
 				PanelsManager.contentPane.revalidate();
 			}

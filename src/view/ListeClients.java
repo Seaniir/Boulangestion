@@ -125,7 +125,7 @@ public class ListeClients extends JPanel {
 		// Lors du clic sur le bouton modifier il se passe: 
 		btnModify.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int n = JOptionPane.showConfirmDialog(null, "Etes vous sur de modifier ?","Modification",JOptionPane.YES_NO_OPTION);
+				int n = JOptionPane.showConfirmDialog(null, "Etes vous sur de vouloir modifier ?","Modification",JOptionPane.YES_NO_OPTION);
 				if (n == JOptionPane.YES_OPTION) {
 					NouveauClient.modify = true;
 					ClientDao clientDao = new ClientDao();
@@ -143,7 +143,7 @@ public class ListeClients extends JPanel {
 		
 		btnDelete.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int n = JOptionPane.showConfirmDialog(null, "Etes vous sur de supprimer ?","Suppression",JOptionPane.YES_NO_OPTION);
+				int n = JOptionPane.showConfirmDialog(null, "Etes vous sur de vouloir supprimer ?","Suppression",JOptionPane.YES_NO_OPTION);
 				if (n == JOptionPane.YES_OPTION) {
 					ClientDao clientDao = new ClientDao();
 					clientDao.delete((int) listingClients.getValueAt(listingClients.getSelectedRow(), 0));

@@ -38,7 +38,6 @@ public class ClientDao implements IDao<Client> {
 			PreparedStatement sql = connect.prepareStatement("INSERT INTO"+ 
 		" clients (nom,prenom,adresse,zip,ville,telephone,email) VALUES"
 					+"(?,?,?,?,?,?,?)");
-			
 			sql.setString(1, client.getName());
 			sql.setString(2, client.getFirstName());
 			sql.setString(3, client.getAdress());
