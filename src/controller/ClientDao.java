@@ -74,7 +74,6 @@ public class ClientDao implements IDao<Client> {
             }
         }catch(Exception e) {
             e.printStackTrace();
-            System.out.println("Insertion KO - KO - KO");
         }
         return listeClient;
     }
