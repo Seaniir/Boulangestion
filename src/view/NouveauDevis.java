@@ -445,11 +445,14 @@ public class NouveauDevis extends JPanel {
 		JButton btnNewButton_1_1 = new JButton("Annuler");
 		btnNewButton_1_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				modify = false;
-				PanelsManager.contentPane.removeAll();
-				PanelsManager.contentPane.add(PanelsManager.switchtoListeDevisPanel());
-				PanelsManager.contentPane.revalidate();
-				PanelsManager.contentPane.repaint();
+				int n = JOptionPane.showConfirmDialog(null, "Voulez-vous annuler ?","Attention",JOptionPane.YES_NO_OPTION);
+				if (n == JOptionPane.YES_OPTION) {
+					modify = false;
+					PanelsManager.contentPane.removeAll();
+					PanelsManager.contentPane.add(PanelsManager.switchtoListeDevisPanel());
+					PanelsManager.contentPane.revalidate();
+					PanelsManager.contentPane.repaint();
+				}
 			}
 		});
 		btnNewButton_1_1.setFont(new Font("Tahoma", Font.PLAIN, 25));

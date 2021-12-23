@@ -329,10 +329,13 @@ public class NouvelleCommandeClientView extends JPanel {
 		JButton btnNewButton_1_1 = new JButton("Annuler");
 		btnNewButton_1_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				int n = JOptionPane.showConfirmDialog(null, "Voulez-vous annuler ?","Attention",JOptionPane.YES_NO_OPTION);
+				if (n == JOptionPane.YES_OPTION) {
 				PanelsManager.contentPane.removeAll();
 				PanelsManager.contentPane.add(PanelsManager.switchToCommandesClientPanel());
 				PanelsManager.contentPane.revalidate();
 				PanelsManager.contentPane.repaint();
+				}
 			}
 		});
 		btnNewButton_1_1.setFont(new Font("Tahoma", Font.PLAIN, 25));
