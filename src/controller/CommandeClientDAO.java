@@ -97,7 +97,7 @@ public class CommandeClientDAO {
         List<CommandeClient> commandeClient = new ArrayList<>();
 
         try {
-            PreparedStatement req = connect.prepareStatement("SELECT * FROM commandesclients WHERE commandesclients.status='En cours'");
+            PreparedStatement req = connect.prepareStatement("SELECT * FROM commandesclients WHERE commandesclients.status='En cours' ORDER BY commandesclients.id");
 
             ResultSet rs = req.executeQuery();
 
@@ -128,7 +128,7 @@ public class CommandeClientDAO {
         List<CommandeClient> commandeClient = new ArrayList<>();
 
         try {
-            PreparedStatement req = connect.prepareStatement("SELECT * FROM commandesclients WHERE commandesclients.cloturee='0'");
+            PreparedStatement req = connect.prepareStatement("SELECT * FROM commandesclients WHERE commandesclients.cloturee='0' ORDER BY commandesclients.id");
 
             ResultSet rs = req.executeQuery();
 
@@ -159,7 +159,7 @@ public class CommandeClientDAO {
     public ConnectionUrlParser.Pair<ArrayList<CommandeClient>, ArrayList<Client>> readPairDevis() {
     	ConnectionUrlParser.Pair<ArrayList<CommandeClient>, ArrayList<Client>> pair = new ConnectionUrlParser.Pair<ArrayList<CommandeClient>, ArrayList<Client>>(new ArrayList<CommandeClient>(), new ArrayList<Client>() );
     	try {
-    		PreparedStatement sql = connect.prepareStatement("SELECT * FROM commandesclients INNER JOIN clients ON commandesclients.fk_client = clients.id AND commandesclients.status = 'Devis' ");
+    		PreparedStatement sql = connect.prepareStatement("SELECT * FROM commandesclients INNER JOIN clients ON commandesclients.fk_client = clients.id AND commandesclients.status = 'Devis' ORDER BY commandesclients.id");
     		ResultSet rs = sql.executeQuery();
     		while(rs.next()) {
     			CommandeClient cC = new CommandeClient();
