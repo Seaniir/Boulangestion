@@ -183,7 +183,7 @@ public class ProduitsView extends JPanel {
 
 		ProduitDAO produitDAO = new ProduitDAO();
 		List<Produit> produits = new ArrayList<>(produitDAO.read());
-		for (int i = 1 ; i < produits.size() ; i++) {
+		for (int i = 0 ; i < produits.size() ; i++) {
 			Vector<java.io.Serializable> vect = new Vector<>();
 			idList.add(produits.get(i).getId());
 			vect.add(produits.get(i).getLibelle());
