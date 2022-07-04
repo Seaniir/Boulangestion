@@ -21,7 +21,6 @@ public class GetConnection {
 
 		     try {
 		    	 connect = DriverManager.getConnection(url+dbName,user,pwd);
-				//System.out.println("OK for connect");
 				
 				} catch (SQLException e) {
 				// TODO Auto-generated catch block
